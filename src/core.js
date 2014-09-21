@@ -7,30 +7,28 @@
  * @description
  * Global vars
  */
-var NODES = {
-        ELEMENT_NODE: 1,
-        ATTRIBUTE_NODE: 2,
-        TEXT_NODE: 3,
-        CDATA_SECTION_NODE: 4,
-        ENTITY_REFERENCE_NODE: 5,
-        ENTITY_NODE: 6,
-        PROCESSING_INSTRUCTION_NODE: 7,
-        COMMENT_NODE: 8,
-        DOCUMENT_NODE: 9,
-        DOCUMENT_TYPE_NODE: 10,
-        DOCUMENT_FRAGMENT_NODE: 11,
-        NOTATION_NODE: 12
-    },
-    /**
-     * to String
-     * @type {Function}
-     */
-    toString = Object.prototype.toString,
-    /**
-     * Used by next uid
-     * @type {string[]}
-     */
-    uid = 0;
+const ELEMENT_NODE = 1;
+const ATTRIBUTE_NODE = 2;
+const TEXT_NODE = 3;
+const CDATA_SECTION_NODE = 4;
+const ENTITY_REFERENCE_NODE = 5;
+const ENTITY_NODE = 6;
+const PROCESSING_INSTRUCTION_NODE = 7;
+const COMMENT_NODE = 8;
+const DOCUMENT_NODE = 9;
+const DOCUMENT_TYPE_NODE = 10;
+const DOCUMENT_FRAGMENT_NODE = 11;
+const NOTATION_NODE = 12;
+/**
+ * to String
+ * @type {Function}
+ */
+var toString = Object.prototype.toString;
+/**
+ * Used by next uid
+ * @type {string[]}
+ */
+var uid = 0;
 
 /**
  * @license  2014
@@ -43,7 +41,7 @@ var NODES = {
  * @description
  * Creates uniqe id
  * @example
- * nextUid(); // random -> "ABC"
+ * nextUid();
  */
 export function nextUid() {
     if (uid > Number.POSITIVE_INFINITY) {
@@ -566,7 +564,6 @@ export function forEach(obj, iterator, context) {
  * instanceOf(object, NgAttribute); // true
  */
 export function instanceOf(type, Class) {
-
     if (isFunction(Class)) {
         return type instanceof Class;
     }
@@ -613,7 +610,7 @@ export function isNode(node, type) {
  * isTextNode(node); // true
  */
 export function isTextNode(node) {
-    return isNode(node, NODES.TEXT_NODE);
+    return isNode(node, TEXT_NODE);
 }
 /**
  * @license  2014
@@ -630,7 +627,7 @@ export function isTextNode(node) {
  * isTextNode(document); // true
  */
 export function isDocumentNode(node) {
-    return isNode(node, NODES.DOCUMENT_NODE);
+    return isNode(node, DOCUMENT_NODE);
 }
 
 /**
@@ -648,7 +645,7 @@ export function isDocumentNode(node) {
  * isElementNode(node); // true
  */
 export function isElementNode(node) {
-    return isNode(node, NODES.ELEMENT_NODE);
+    return isNode(node, ELEMENT_NODE);
 }
 
 
@@ -675,13 +672,13 @@ export function textContent(node) {
         }
         for (var i = 0; i < node.childNodes.length; i++) {
             switch (node.childNodes[i].nodeType) {
-                case 1:
-                case 5:
+                case ELEMENT_NODE:
+                case ENTITY_REFERENCE_NODE:
                     result += textContent(node.childNodes[i]);
                     break;
-                case 2:
-                case 3:
-                case 4:
+                case ATTRIBUTE_NODE:
+                case TEXT_NODE:
+                case CDATA_SECTION_NODE:
                     result += node.childNodes[i].nodeValue;
                     break;
                 default:
@@ -1068,7 +1065,7 @@ export function getXML(url, callback, async, ctx) {
     var xhr = new XMLHttpRequest(),
         async = isDefined(async) && isBoolean(async) ? async : true,
         context;
-    if (isFunction(xhr.overrideMimeType)){
+    if (isFunction(xhr.overrideMimeType)) {
         xhr.overrideMimeType('text/xml');
     }
     xhr.open('GET', url, async);

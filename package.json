@@ -18,7 +18,7 @@
     "devDependencies": {
         "es6-shim": "0.18.x",
         "gulp": "~3.8.x",
-        "gulp-traceur": "git://github.com/igorzg/gulp-traceur.git#v0.14.0",
+        "gulp-traceur": "git://github.com/igorzg/gulp-traceur.git#master",
         "karma": "~0.12.x",
         "karma-chrome-launcher": "0.1.4",
         "karma-firefox-launcher": "0.1.3",
