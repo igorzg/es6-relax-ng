@@ -14,6 +14,10 @@ import {handleError} from '../core';
  */
 
 export class NgClass {
+
+    constructor(Class) {
+        this.instanceOf(Class)
+    }
     /**
      * @since 0.0.1
      * @method NgClass#instanceOf
@@ -21,9 +25,9 @@ export class NgClass {
      * @param {object} Class check class instance
      *
      */
-     constructor(Class) {
+    instanceOf(Class) {
         if (!(this instanceof Class)) {
             throw new NgError(handleError('Class {0} is not instantiated'));
         }
-     }
+    }
 }

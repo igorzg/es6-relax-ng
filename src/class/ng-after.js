@@ -149,8 +149,8 @@ class NgAfterError extends NgNotAllowed {
      * @param pattern
      */
     constructor(tree, pattern) {
-        super(handleError("Missing content"), tree, pattern);
         this.instanceOf(NgAfterError);
+        super(handleError("Missing content"), tree, pattern);
         this.type = 'NgAfterError';
     }
 }
