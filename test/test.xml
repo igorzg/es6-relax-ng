@@ -19,5 +19,7 @@
             <p>Programing namespaces</p>
         </div>
     </text>
+    <!--- this is an coment node -->
+    <igorns:annotation xmlns:igorns="http://www.igorivanovic.info"></igorns:annotation>
 </article>
 

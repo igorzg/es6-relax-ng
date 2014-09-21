@@ -626,6 +626,23 @@ export function isTextNode(node) {
  * @example
  * isTextNode(document); // true
  */
+export function isCommentNode(node) {
+    return isNode(node, COMMENT_NODE);
+}
+/**
+ * @license  2014
+ * @since 0.0.1
+ * @author Igor Ivanovic
+ * @name isDocumentNode
+ * @global
+ * @function isDocumentNode
+ * @param {object} node instance of Node
+ * @return {boolean}
+ * @description
+ * Check if object is valid document node node
+ * @example
+ * isTextNode(document); // true
+ */
 export function isDocumentNode(node) {
     return isNode(node, DOCUMENT_NODE);
 }

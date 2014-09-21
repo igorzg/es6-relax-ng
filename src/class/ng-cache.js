@@ -16,9 +16,25 @@ export class NgCache extends NgClass {
     constructor() {
         super(NgCache);
         var cache = [];
-        this.getCache = function() {
+        /**
+         * @since 0.0.1
+         * @method NgCache#getCache
+         * @description
+         * Get cached array
+         * @return array of cached data
+         */
+        this.getCache = function getCache() {
             return cache;
-        }
+        };
+        /**
+         * @since 0.0.1
+         * @method NgCache#destroy
+         * @description
+         * Destroy an cache
+         */
+        this.destroy = function destroy() {
+            cache = null;
+        };
     }
     /**
      * @since 0.0.1
@@ -38,7 +54,7 @@ export class NgCache extends NgClass {
      * @param {function} filter
      * return object which is filtered
      */
-    get(filter) {
+    filter(filter) {
         return this.getCache().filter(filter).pop();
     }
     /**
