@@ -1,3 +1,4 @@
+import {handleError} from '../core';
 /**
  * @license Mit Licence 2014
  * @since 0.0.1
@@ -14,8 +15,9 @@ export class NgError {
     /**
      * NgError constructor
      * @param message
+     * @param args
      */
-    constructor(message) {
-        throw new Error(message);
+    constructor(message, args) {
+        throw new Error(handleError(message, args));
     }
 }

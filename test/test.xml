@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<article>
+    <title>HTML enhanced for web apps!</title>
+    <subtitle>
+        <b>This is an fancy bold subtitle</b>
+        How it works ?
+    </subtitle>
+    <text>
+        <p>Hello Igor! This is a test only</p>
+        <pre code-type="application/javascript">
+            export function instanceOf(type, Class) {
+            if (isFunction(Class)) {
+            return type instanceof Class;
+            }
+            return false;
+            }
+        </pre>
+        <div>
+            <p>Programing namespaces</p>
+        </div>
+    </text>
+</article>
+

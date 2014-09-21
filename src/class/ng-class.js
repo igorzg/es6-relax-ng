@@ -1,5 +1,4 @@
 import {NgError} from './ng-error';
-import {handleError} from '../core';
 /**
  * @license Mit Licence 2014
  * @since 0.0.1
@@ -27,7 +26,7 @@ export class NgClass {
      */
     instanceOf(Class) {
         if (!(this instanceof Class)) {
-            throw new NgError(handleError('Class {0} is not instantiated'));
+            throw new NgError('Class {0} is not instantiated', [Class]);
         }
     }
 }

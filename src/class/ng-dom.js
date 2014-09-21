@@ -1,4 +1,5 @@
 import {NgClass} from './ng-class';
+import {NgError} from './ng-error';
 import {isNode, nextUid} from '../core';
 /**
  * @license Mit Licence 2014
@@ -15,6 +16,9 @@ import {isNode, nextUid} from '../core';
 export class NgDOM extends NgClass{
     constructor(node) {
         super(NgDOM);
+        if (!isNode(node)) {
+            throw new NgError('NgDOM error node is not valid');
+        }
         this.node = node;
         if (this.node.localName && this.node.prefix) {
             this.type = this.node.localName;
@@ -23,7 +27,6 @@ export class NgDOM extends NgClass{
             this.type = this.node.nodeName;
             this.typePrefix = null;
         }
-        this._events = {};
         // used for debugging
         this.id = nextUid();
     }
