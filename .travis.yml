@@ -1,0 +1,22 @@
+language: node_js
+
+node_js:
+  - 0.10
+
+env:
+  global:
+    - SAUCE_USERNAME=igorzg1987
+    - SAUCE_ACCESS_KEY=f58c7ebd-7331-4138-ad49-bb83a778f08c
+
+install:
+  - npm install
+  - npm install -g gulp
+  - npm install -g karma-cli
+  - npm install -g jasmine-node
+
+before_script:
+
+script:
+  - karma start --single-run --browsers SL_Chrome --reporters dots
+
+after_script:

@@ -28,6 +28,10 @@ module.exports = function (config) {
             'Chrome_harmony': {
                 base: 'Chrome',
                 flags: ['--js-flags=--harmony']
+            },
+            'SL_Chrome': {
+                base: 'SauceLabs',
+                browserName: 'chrome'
             }
         },
         browsers: ['Chrome'],
