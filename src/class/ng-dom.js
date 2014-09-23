@@ -11,6 +11,7 @@ import {
     isTextNode,
     isCommentNode,
     isSafari,
+    clean,
     parseXML
 } from '../core';
 /**
@@ -265,16 +266,38 @@ export class NgDOM extends NgClass{
      * @description
      * Insert before
      */
-    insertBefore(newNode, oldNode) {
+    insertBefore(newNode, beforeNode, importNode) {
         var n = this.getInstance(newNode),
-            o = this.getInstance(oldNode);
+            b = this.getInstance(beforeNode);
         try {
-            this.node.insertBefore(n.node, o.node);
+            if (!!importNode) {
+                this.importNode(newNode);
+            }
+            this.node.insertBefore(n.node, b.node);
         } catch (e) {
             throw new NgError('Unable to execute insert before error "{0}"', [e]);
         }
     }
-
+    /**
+     * @since 0.0.1
+     * @method NgDOM#destroyCache
+     * @description
+     * Clean up all references from cache
+     * @return boolean
+     */
+    flushAllCache() {
+        return ngCache.destroy();
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#getCacheSize
+     * @description
+     * Get cache size is used only for debugging and testing
+     * @return boolean
+     */
+    getCacheSize() {
+        return ngCache.size();
+    }
     /**
      * @since 0.0.1
      * @method NgDOM#isCached
@@ -347,12 +370,12 @@ export class NgDOM extends NgClass{
     }
     /**
      * @since 0.0.1
-     * @method NgDOM#clearCache
+     * @method NgDOM#flushCache
      * @description
-     * Clear all cache
+     * Clear cache
      * @return string
      */
-    clearCache() {
+    flushCache(cleanAllChildren) {
         var node = this.node.firstChild,
             stop = this.node,
             skip = false,
@@ -362,7 +385,12 @@ export class NgDOM extends NgClass{
 
         while (node && node !== stop) {
             obj = this.getInstance(node, true);
-            ngCache.remove(obj);
+            if (obj) {
+                ngCache.remove(obj);
+                if (cleanAllChildren) {
+                    clean(obj);
+                }
+            }
             if (node.firstChild && !skip) {
                 node = node.firstChild;
             } else if (node.nextSibling) {
@@ -384,14 +412,10 @@ export class NgDOM extends NgClass{
      * @return string
      */
     destroy() {
-        this.clearCache();
-        var key;
-        for (key in this) {
-            if (this.hasOwnProperty(key)) {
-                this[key] = null;
-            }
-        }
+        this.flushCache(true);
+        clean(this);
     }
+
     /**
      * @since 0.0.1
      * @method NgDOM#toString
@@ -493,4 +517,20 @@ export class NgDOM extends NgClass{
         }, this);
         return nodes;
     }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#childElements
+     * @description
+     * Get child elements
+     * @return array of nodes
+     */
+     childElements() {
+        var nodes = [];
+        forEach(this.node.childNodes, function (node) {
+            if (isElementNode(node)) {
+                nodes.push(this.getInstance(node));
+            }
+        }, this);
+        return nodes;
+     }
 }

@@ -745,8 +745,29 @@ export function getPrevElementSibling(node, tagName, regExp) {
     }
     return node;
 }
-
-
+/**
+ * @license  2014
+ * @since 0.0.1
+ * @author Igor Ivanovic
+ * @name clean
+ * @global
+ * @function clean
+ * @param {object} obj to clean
+ * @description
+ * Nullify all references in object
+ * clean({a:{}, b:1, c:1}); // {a:null, b:null, c:null}
+ */
+export function clean(obj) {
+    var key;
+    if (!isObject(obj) && !isArray(obj)) {
+        throw new NgError('obj param is not an object type', [e])
+    }
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            obj[key] = null;
+        }
+    }
+}
 /**
  * @license  2014
  * @since 0.0.1

@@ -33,7 +33,7 @@ export class NgCache extends NgClass {
          * Destroy an cache
          */
         this.destroy = function destroy() {
-            cache = null;
+            cache = [];
         };
     }
     /**
