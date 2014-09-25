@@ -515,6 +515,31 @@ describe('NgDOM', function () {
         expect(dom.getCacheSize()).toBe(0);
     });
 
+
+    it('Testing unwrap', function() {
+        var dom = clone(xmlDoc);
+        var fc1 = dom.firstElementChild();
+        var fc = fc1.firstElementChild();
+        expect(fc.type).toBe('title');
+        var wrap = fc1.createElement('wrap');
+        fc.wrap(wrap);
+        var fcc = fc1.firstElementChild();
+        expect(fcc.type).toBe('wrap');
+        var fc2 = fcc.firstElementChild();
+        expect(fc2.type).toBe('title');
+
+        expect(fc1.firstElementChild().toString()).toBe('<wrap><title>HTML enhanced for web apps!</title></wrap>');
+
+        fcc.unwrap();
+
+        var fc3 = fc1.firstElementChild();
+        expect(fc3.type).toBe('title');
+        expect(fc3.toString()).toBe('<title>HTML enhanced for web apps!</title>');
+
+        dom.destroy();
+        expect(dom.getCacheSize()).toBe(0);
+    });
+
     it('Testing setAttributeNS|removeAttributeNS|setAttribute|removeAttribute|getAttributes|getAttributeNode|getAttribute', function() {
         var dom = clone(xmlDoc);
         var fc = dom.firstElementChild();
@@ -547,7 +572,7 @@ describe('NgDOM', function () {
         expect(fc.getAttributeNode("valid")).toBe(null);
         expect(fc.getAttribute("valid")).toBe(null);
         expect(fc.getAttributes().length).toBe(1);
-        expect(fc.toString()).toBe('<article xlink:test2="b">one</article>');
+
     });
 });
 

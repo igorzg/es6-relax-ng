@@ -677,6 +677,21 @@ export class NgDOM extends NgClass{
     }
     /**
      * @since 0.0.1
+     * @method NgDOM#unwrap
+     * @description
+     * Unwrap current element
+     * @return {object}
+     */
+    unwrap() {
+        var parent = this.parentNode();
+        forEach(this.children(), function (cNode) {
+            parent.insertBefore(cNode.clone(), this);
+        }, this);
+        this.remove();
+        return parent;
+    }
+    /**
+     * @since 0.0.1
      * @method NgDOM#setAttributeNS
      * @description
      * Set namespaced attribute to node
