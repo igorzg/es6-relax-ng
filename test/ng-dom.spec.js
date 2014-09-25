@@ -1,8 +1,15 @@
 import {NgDOM} from '../src/class/ng-dom';
-import {getXML, isNode, isNumber} from '../src/core';
+import {getXML, isNode, isNumber,  isMozilla, isDocumentFragmentNode} from '../src/core';
 
 describe('NgDOM', function () {
     var xmlDoc;
+
+    function clone(xmlDoc) {
+        var dom = new NgDOM(xmlDoc);
+        var clone = dom.clone();
+        dom.destroy();
+        return clone;
+    }
     beforeEach(function () {
         getXML('/base/test/test.xml', function (data) {
             xmlDoc = data;
@@ -10,7 +17,7 @@ describe('NgDOM', function () {
     });
 
     it('Should create an instance', function () {
-        var dom = new NgDOM(xmlDoc);
+        var dom = clone(xmlDoc);
         expect(dom instanceof NgDOM).toBe(true);
         expect(isNode(dom.node)).toBe(true);
         expect(dom.type).toBe('#document');
@@ -33,38 +40,17 @@ describe('NgDOM', function () {
     });
 
     it('Should serialize to string', function() {
-        var dom = new NgDOM(xmlDoc);
+        var dom = clone(xmlDoc), cl = clone(xmlDoc);
         var str = dom.toString();
-        var multiline = `<?xml version="1.0" encoding="UTF-8"?><article>
-    <title>HTML enhanced for web apps!</title>
-    <subtitle>
-        <b>This is an fancy bold subtitle</b>
-        How it works ?
-    </subtitle>
-    <text>
-        <p>Hello Igor! This is a test only</p>
-        <pre code-type="application/javascript">
-            export function instanceOf(type, Class) {
-            if (isFunction(Class)) {
-            return type instanceof Class;
-            }
-            return false;
-            }
-        </pre>
-        <div>
-            <p>Programing namespaces</p>
-        </div>
-    </text>
-    <!--- this is an coment node -->
-    <igorns:annotation xmlns:igorns="http://www.igorivanovic.info"/>
-</article>`;
-        expect(str).toBe(multiline);
+
+        expect(str).toBe(cl.toString());
+        cl.destroy();
         dom.destroy();
         expect(dom.getCacheSize()).toBe(0);
     });
 
     it('Should be cached', function() {
-        var dom = new NgDOM(xmlDoc);
+        var dom = clone(xmlDoc);
         var inst = dom.getInstance(dom.node);
         expect(dom.id).toBe(inst.id);
         dom.destroy();
@@ -73,7 +59,7 @@ describe('NgDOM', function () {
 
 
     it('Testing firstChild|firstElementChild', function() {
-        var dom = new NgDOM(xmlDoc);
+        var dom = clone(xmlDoc);
         var fc = dom.firstChild(), fc1, fc2;
         expect(fc.type).toBe('article');
         fc1 = fc.firstChild();
@@ -85,7 +71,7 @@ describe('NgDOM', function () {
     });
 
     it('Testing lastChild|lastElementChild', function() {
-        var dom = new NgDOM(xmlDoc);
+        var dom = clone(xmlDoc);
         var fc = dom.lastChild(), fc1, fc2;
         expect(fc.type).toBe('article');
         fc1 = fc.lastChild();
@@ -98,7 +84,7 @@ describe('NgDOM', function () {
     });
 
     it('Testing nextSibling|nextElementSibling', function() {
-        var dom = new NgDOM(xmlDoc);
+        var dom = clone(xmlDoc);
         var fc = dom.firstChild(), fc1, fc2, fc3, fc4;
         expect(fc.type).toBe('article');
         fc1 = fc.firstChild();
@@ -114,7 +100,7 @@ describe('NgDOM', function () {
     });
 
     it('Testing previousSibling|previousElementSibling', function() {
-        var dom = new NgDOM(xmlDoc);
+        var dom = clone(xmlDoc);
         var fc = dom.firstChild(), fc1, fc2, fc3, fc4;
         expect(fc.type).toBe('article');
         expect(fc.typePrefix).toBe(null);
@@ -132,7 +118,7 @@ describe('NgDOM', function () {
     });
 
     it('Testing parentNode', function() {
-        var dom = new NgDOM(xmlDoc);
+        var dom = clone(xmlDoc);
         var fc = dom.firstChild(), fc1, fc2, fc3, fc4, fc5, fc6;
         expect(fc.type).toBe('article');
         fc1 = fc.lastElementChild().previousElementSibling();
@@ -152,7 +138,7 @@ describe('NgDOM', function () {
     });
 
     it('Testing createElement|createElementNs', function() {
-        var dom = new NgDOM(xmlDoc);
+        var dom = clone(xmlDoc);
         var fc = dom.firstChild(), lc = fc.lastElementChild();
         var node = fc.createElement('test'), node2;
         expect(node.type).toBe('test');
@@ -169,10 +155,8 @@ describe('NgDOM', function () {
     });
 
     it('Testing importNode|clone|addChild', function() {
-        var dom1 = new NgDOM(xmlDoc), dom2, dom;
+        var dom = clone(xmlDoc), dom2 = clone(xmlDoc);
 
-        dom = dom1.clone();
-        dom2 = dom.clone();
         expect(dom.toString()).toBe(dom2.toString());
         expect(dom === dom2).toBe(false);
         var fc = dom.firstChild();
@@ -188,16 +172,12 @@ describe('NgDOM', function () {
         var sb2 = sb.nextElementSibling();
         expect(sb2.type).toBe('mac');
         dom.destroy();
-        dom1.destroy();
         dom2.destroy();
         expect(dom.getCacheSize()).toBe(0);
     });
 
     it('Testing remove|importNode', function() {
-        var dom1 = new NgDOM(xmlDoc), dom2, dom;
-
-        dom = dom1.clone();
-        dom2 = dom.clone();
+        var dom = clone(xmlDoc), dom2 = clone(xmlDoc);
         expect(dom.toString()).toBe(dom2.toString());
         var fc = dom.firstChild();
         var ne = dom2.createElement('import');
@@ -219,16 +199,12 @@ describe('NgDOM', function () {
         expect(fc.getCached(b)).toBe(undefined);
         expect(fc.getCached(fc.node)).toBe(fc);
         dom.destroy();
-        dom1.destroy();
         dom2.destroy();
         expect(dom.getCacheSize()).toBe(0);
     });
 
     it('Testing replaceNode', function() {
-        var dom1 = new NgDOM(xmlDoc), dom2, dom;
-
-        dom = dom1.clone();
-        dom2 = dom.clone();
+        var dom = clone(xmlDoc), dom2 = clone(xmlDoc);
         expect(dom.toString()).toBe(dom2.toString());
 
         var nn = dom.createElement('test');
@@ -253,17 +229,13 @@ describe('NgDOM', function () {
         expect(fc.getCached(b)).toBe(undefined);
         expect(fc.getCached(fc.node)).toBe(fc);
         dom.destroy();
-        dom1.destroy();
         dom2.destroy();
         expect(dom.getCacheSize()).toBe(0);
     });
 
 
     it('Testing insertBefore', function() {
-        var dom1 = new NgDOM(xmlDoc), dom2, dom;
-
-        dom = dom1.clone();
-        dom2 = dom.clone();
+        var dom = clone(xmlDoc), dom2 = clone(xmlDoc);
         expect(dom.toString()).toBe(dom2.toString());
 
         var nn = dom.createElement('test');
@@ -280,7 +252,6 @@ describe('NgDOM', function () {
         expect(sb3.type).toBe('import');
 
         dom.destroy();
-        dom1.destroy();
         dom2.destroy();
         expect(dom.getCacheSize()).toBe(0);
     });
@@ -288,7 +259,7 @@ describe('NgDOM', function () {
 
 
     it('Testing isCached|getCached', function() {
-        var dom1 = new NgDOM(xmlDoc), dom = dom1.clone();
+        var dom = clone(xmlDoc), dom1 = clone(xmlDoc);
 
         var nn = dom.createElement('bold');
         var fc = dom.firstChild();
@@ -305,7 +276,7 @@ describe('NgDOM', function () {
     });
 
     it('Testing flushCache 1', function() {
-        var dom1 = new NgDOM(xmlDoc), dom = dom1.clone();
+        var dom = clone(xmlDoc), dom1 = clone(xmlDoc);
 
         var nn = dom.createElement('bold');
         var fc = dom.firstChild();
@@ -332,7 +303,7 @@ describe('NgDOM', function () {
 
 
     it('Testing flushCache 2', function() {
-        var dom1 = new NgDOM(xmlDoc), dom = dom1.clone();
+        var dom = clone(xmlDoc), dom1 = clone(xmlDoc);
 
         var nn = dom.createElement('bold');
         var fc = dom.firstChild();
@@ -360,12 +331,13 @@ describe('NgDOM', function () {
 
 
     it('Testing destroy|clean', function() {
-        var dom = new NgDOM(xmlDoc),
+        var dom = clone(xmlDoc), dom1 = clone(xmlDoc),
             fc, lc;
         fc = dom.firstChild();
         lc = fc.lastElementChild();
         expect(fc.type).toBe('article');
         expect(lc.type).toBe('annotation');
+        dom1.destroy();
         dom.destroy();
         expect(dom.getCacheSize()).toBe(0);
         expect(dom.node).toBe(null);
@@ -376,7 +348,8 @@ describe('NgDOM', function () {
     });
 
     it('Testing isCommentNode|isTextNode|isElementNode|isDocumentNode destroy and cache size', function() {
-        var dom = new NgDOM(xmlDoc), e1, e2, e3, e4;
+        var dom = clone(xmlDoc), dom1 = clone(xmlDoc), e1, e2, e3, e4;
+        dom1.destroy();
         expect(dom.getCacheSize()).toBe(1);
         e1 = dom.firstChild();
         expect(dom.getCacheSize()).toBe(2);
@@ -408,7 +381,7 @@ describe('NgDOM', function () {
 
 
     it('Testing getDocument', function() {
-        var dom = new NgDOM(xmlDoc), e1, e2, e3, e4, ne;
+        var dom = clone(xmlDoc), e1, e2, e3, e4, ne;
         e1 = dom.firstChild();
         e2 = e1.lastElementChild();
         e3 = e2.previousSibling();
@@ -428,7 +401,7 @@ describe('NgDOM', function () {
 
 
     it('Testing children', function() {
-        var dom = new NgDOM(xmlDoc), c1, c2, c3, fc = dom.firstElementChild(), fcl = fc.lastElementChild().previousElementSibling();
+        var dom = clone(xmlDoc), c1, c2, c3, fc = dom.firstElementChild(), fcl = fc.lastElementChild().previousElementSibling();
         c1 = dom.children();
         c2 = fc.children();
         c3 = fcl.children();
@@ -440,7 +413,7 @@ describe('NgDOM', function () {
     });
 
     it('Testing childElements', function() {
-        var dom = new NgDOM(xmlDoc), c1, c2, c3, fc = dom.firstElementChild(), fcl = fc.lastElementChild().previousElementSibling();
+        var dom = clone(xmlDoc), c1, c2, c3, fc = dom.firstElementChild(), fcl = fc.lastElementChild().previousElementSibling();
         c1 = dom.childElements();
         c2 = fc.childElements();
         c3 = fcl.childElements();
@@ -452,7 +425,7 @@ describe('NgDOM', function () {
     });
 
     it('Testing flushAllCache', function() {
-        var dom = new NgDOM(xmlDoc), c1, c2, c3, fc = dom.firstElementChild(), fcl = fc.lastElementChild().previousElementSibling();
+        var dom = clone(xmlDoc), c1, c2, c3, fc = dom.firstElementChild(), fcl = fc.lastElementChild().previousElementSibling();
         c1 = dom.childElements();
         c2 = fc.childElements();
         c3 = fcl.childElements();
@@ -461,6 +434,67 @@ describe('NgDOM', function () {
         expect(c2.length).toBe(4);
         expect(c3.length).toBe(3);
         dom.flushAllCache();
+        expect(dom.getCacheSize()).toBe(0);
+    });
+
+
+    it('Testing createFragment', function() {
+        var dom = clone(xmlDoc);
+        var fdoc = dom.createFragment();
+        expect(fdoc.isDocumentFragmentNode()).toBe(true);
+        dom.destroy();
+        fdoc.destroy();
+        expect(dom.getCacheSize()).toBe(0);
+    });
+
+    it('Testing hasChildren|removeChildren', function() {
+        var dom = clone(xmlDoc);
+        var fc = dom.firstElementChild();
+        expect(fc.hasChildren()).toBe(true);
+        fc.removeChildren();
+        expect(fc.hasChildren()).toBe(false);
+        dom.destroy();
+        expect(dom.getCacheSize()).toBe(0);
+    });
+
+
+    it('Testing parse', function() {
+        var html = "<first><second>aaaa</second></first>";
+        var dom = clone(xmlDoc);
+        var fc = dom.parse(html);
+        expect(fc.toString()).toBe(html);
+        var e1 = fc.firstElementChild();
+        var e2 = e1.firstElementChild();
+
+        expect(e1.type).toBe('first');
+        expect(e2.type).toBe('second');
+        dom.destroy();
+        fc.destroy();
+        expect(dom.getCacheSize()).toBe(0);
+    });
+
+    it('Testing setValue|getValue', function() {
+        var html = "<first><second>aaaa bbbb cccc</second></first>";
+        var dom = clone(xmlDoc);
+        var fc = dom.firstElementChild();
+        var lc = fc.lastElementChild();
+        expect(lc.type).toBe('annotation');
+        expect(lc.getValue()).toBe('ANN');
+        lc.setValue(html);
+        expect(lc.getValue()).toBe(html);
+
+        var bc = lc.firstElementChild().firstElementChild();
+        var bcf = bc.firstChild();
+
+        expect(bcf.type).toBe('#text');
+        expect(bcf.getValue()).toBe('aaaa bbbb cccc');
+        bcf.setValue(html);
+        expect(bcf.getValue()).toBe(html);
+        expect(bcf.hasChildren()).toBe(false);
+        bcf.setValue('1111');
+        expect(bcf.getValue()).toBe('1111');
+        expect(bcf.hasChildren()).toBe(false);
+        dom.destroy();
         expect(dom.getCacheSize()).toBe(0);
     });
 });

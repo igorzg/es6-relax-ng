@@ -10,7 +10,9 @@ import {
     isElementNode,
     isTextNode,
     isCommentNode,
+    isDocumentFragmentNode,
     isSafari,
+    isIE,
     clean,
     parseXML
 } from '../core';
@@ -404,6 +406,8 @@ export class NgDOM extends NgClass{
             }
         }
     }
+
+
     /**
      * @since 0.0.1
      * @method NgDOM#destroy
@@ -468,6 +472,16 @@ export class NgDOM extends NgClass{
     }
     /**
      * @since 0.0.1
+     * @method NgDOM#isDocumentFragmentNode
+     * @description
+     * Check if current node is document fragment
+     * @return boolean
+     */
+    isDocumentFragmentNode() {
+        return isDocumentFragmentNode(this.node);
+    }
+    /**
+     * @since 0.0.1
      * @method NgDOM#getDocument
      * @description
      * Get document of current node
@@ -487,7 +501,7 @@ export class NgDOM extends NgClass{
      * @description
      * Return instance of current class
      * @param {object} node
-     * @param {boolean} avoidCreate
+     * @param {boolean|optional} avoidCreate
      * @return object instance of current class
      */
     getInstance(node, avoidCreate) {
@@ -505,6 +519,94 @@ export class NgDOM extends NgClass{
     }
     /**
      * @since 0.0.1
+     * @method NgDOM#setValue
+     * @description
+     * Set value to text or element node
+     * @param {string} value
+     */
+    setValue(value) {
+        if (this.isTextNode()) {
+            this.node.nodeValue = value;
+            return true;
+        } else if (this.isElementNode()) {
+            if (isSafari() || isIE()) { // safari,IE
+                this.removeChildren();
+                this.addChild(this.parse(value));
+            } else {
+                this.node.innerHTML = value;
+            }
+            return true;
+        }
+        return false;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#getValue
+     * @description
+     * Get value from text or element node
+     */
+    getValue() {
+        var str = '';
+        if (this.isTextNode()) {
+            return this.node.nodeValue;
+        } else if (this.isElementNode()) {
+            if (isSafari() || isIE()) {
+                forEach(this.children(), function (cNode) {
+                    if (cNode.isTextNode()) {
+                        str += cNode.getValue();
+                    } else {
+                        str += cNode.toString();
+                    }
+                });
+                return str;
+            } else {
+                return this.node.innerHTML;
+            }
+        }
+        return str;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#createFragment
+     * @description
+     * Create fragment from current document
+     */
+    createFragment() {
+        var doc = this.getDocument();
+        if (doc) {
+            return this.getInstance(doc.node.createDocumentFragment());
+        }
+        return null;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#parse
+     * @description
+     * Parse html string
+     * @param {string} html
+     */
+    parse(html) {
+        var docFragment = this.createFragment(), parseElement, importNode = false;
+        if (docFragment) {
+            if (isSafari() || isIE()) { /// safari,IE
+                parseElement = this.getInstance(parseXML('<div>' + html + '</div>').documentElement.cloneNode(true));
+                importNode = true;
+            } else {
+                parseElement = docFragment.createElement('div');
+                parseElement.node.innerHTML = html;
+            }
+            if (parseElement.hasChildren()) {
+                forEach(parseElement.children(), function (cNode) {
+                    docFragment.addChild(cNode.clone(), importNode);
+                });
+            }
+            parseElement.destroy();
+            return docFragment;
+        }
+        return false;
+    }
+    /**
+     * @since 0.0.1
      * @method NgDOM#children
      * @description
      * Get all children
@@ -516,6 +618,32 @@ export class NgDOM extends NgClass{
             nodes.push(this.getInstance(node));
         }, this);
         return nodes;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#removeChildren
+     * @description
+     * Remove child nodes
+     * @return {object} instance
+     */
+    removeChildren() {
+        forEach(this.children(), function (cNode) {
+            cNode.remove();
+        });
+        return this;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#hasChildren
+     * @description
+     * Get information if node have children
+     * @return boolean
+     */
+    hasChildren() {
+        if (this.node) {
+            return this.node.hasChildNodes();
+        }
+       return false;
     }
     /**
      * @since 0.0.1

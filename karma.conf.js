@@ -32,9 +32,39 @@ module.exports = function (config) {
             'SL_Chrome': {
                 base: 'SauceLabs',
                 browserName: 'chrome'
+            },
+            'SL_Firefox': {
+                base: 'SauceLabs',
+                browserName: 'firefox'
+            },
+            'SL_Opera': {
+                base: 'SauceLabs',
+                browserName: 'opera'
+            },
+            'SL_Safari': {
+                base: 'SauceLabs',
+                browserName: 'safari'
+            },
+            "SL_IE_9": {
+                "base": "SauceLabs",
+                "browserName": "Internet Explorer",
+                "platform": "Windows 8",
+                "version": "9"
+            },
+            "SL_IE_10": {
+                "base": "SauceLabs",
+                "browserName": "Internet Explorer",
+                "platform": "Windows 8",
+                "version": "10"
+            },
+            "SL_IE_11": {
+                "base": "SauceLabs",
+                "browserName": "Internet explorer",
+                "platform": "Windows 8.1",
+                "version": "11"
             }
         },
-        browsers: ['Chrome'],
+        browsers: [/*'Firefox',  'Opera', 'Safari', */ 'Chrome'],
         plugins: [
             'karma-*'
         ]

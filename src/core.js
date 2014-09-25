@@ -651,6 +651,24 @@ export function isDocumentNode(node) {
  * @license  2014
  * @since 0.0.1
  * @author Igor Ivanovic
+ * @name isDocumentFragmentNode
+ * @global
+ * @function isDocumentFragmentNode
+ * @param {object} node instance of Node
+ * @return {boolean}
+ * @description
+ * Check if object is valid document fragment node node
+ * @example
+ * isDocumentFragmentNode(document); // false
+ */
+export function isDocumentFragmentNode(node) {
+    return isNode(node, DOCUMENT_FRAGMENT_NODE);
+}
+
+/**
+ * @license  2014
+ * @since 0.0.1
+ * @author Igor Ivanovic
  * @name isElementNode
  * @global
  * @function isElementNode
@@ -934,43 +952,6 @@ export function getFirstElementChild(parentNode, tagName, regExp) {
     return node;
 };
 
-/**
- * @license  2014
- * @since 0.0.1
- * @author Igor Ivanovic
- * @name removeChildren
- * @global
- * @function removeChildren
- * @param {object} node instance of Node
- * @return {object} instance of Node
- * @description
- * Remove all child nodes
- * @example
- * removeChildren(node);
- */
-export function removeChildren(node) {
-    while (node.hasChildNodes()) {
-        node.removeChild(node.lastChild);
-    }
-    return node;
-}
-/**
- * @license  2014
- * @since 0.0.1
- * @author Igor Ivanovic
- * @name getElementTagName
- * @global
- * @function getElementTagName
- * @param {object} node instance of Node
- * @return {string} tag name
- * @description
- * Get element tag name
- * @example
- * getElementTagName(node);
- */
-export function getElementTagName(node) {
-    return isElementNode(node) ? node.tagName.toLowerCase() : null;
-}
 /**
  * @license  2014
  * @since 0.0.1
