@@ -2,7 +2,7 @@ import {NgDOM} from '../src/class/ng-dom';
 import {getXML, isNode, isNumber,  isMozilla, isDocumentFragmentNode} from '../src/core';
 
 describe('NgDOM', function () {
-    var xmlDoc;
+    var xmlDoc, xmlDoc2;
 
     function clone(xmlDoc) {
         var dom = new NgDOM(xmlDoc);
@@ -13,6 +13,9 @@ describe('NgDOM', function () {
     beforeEach(function () {
         getXML('/base/test/test.xml', function (data) {
             xmlDoc = data;
+        }, false);
+        getXML('/base/test/test2.xml', function (data) {
+            xmlDoc2 = data;
         }, false);
     });
 
@@ -573,7 +576,144 @@ describe('NgDOM', function () {
         expect(fc.getAttribute("valid")).toBe(null);
         expect(fc.getAttributes().length).toBe(1);
 
+        dom.destroy();
+        expect(dom.getCacheSize()).toBe(0);
     });
+
+
+    it('Testing wrapChildren|unwrap', function() {
+        var dom = clone(xmlDoc);
+        var e1, e2, e3, e4;
+        e1 = dom.firstElementChild();
+        e2 = e1.firstElementChild();
+        expect(e1.type).toBe('article');
+        expect(e2.type).toBe('title');
+        e1.wrapChildren(dom.createElement('one'));
+        e2 = e1.firstElementChild();
+        expect(e2.type).toBe('one');
+        e2.unwrap();
+        e2 = e1.firstElementChild();
+        expect(e2.type).toBe('title');
+
+        e1.wrapChildren(dom.createElement('two'), 'title');
+
+        e2 = e1.firstElementChild();
+        expect(e2.type).toBe('title');
+        e3 = e2.nextElementSibling();
+        expect(e3.type).toBe('two');
+        e3.unwrap();
+
+        e2 = e1.firstElementChild();
+        e3 = e2.nextElementSibling();
+        expect(e2.type).toBe('title');
+        expect(e3.type).toBe('subtitle');
+
+        e1.wrapChildren(dom.createElement('three'), ['title', 'text']);
+
+
+        e2 = e1.firstElementChild();
+        e3 = e2.nextElementSibling();
+        e4 = e3.nextElementSibling();
+        expect(e2.type).toBe('title');
+        expect(e3.type).toBe('text');
+        expect(e4.type).toBe('three');
+        e4.unwrap();
+
+        e2 = e1.firstElementChild();
+        e3 = e2.nextElementSibling();
+        e4 = e3.nextElementSibling();
+        expect(e2.type).toBe('title');
+        expect(e3.type).toBe('text');
+        expect(e4.type).toBe('subtitle');
+
+        dom.destroy();
+        expect(dom.getCacheSize()).toBe(0);
+
+    });
+
+    it('Testing wrapAllToTwoChildNs', function() {
+        var dom = clone(xmlDoc2);
+        var e1, e2, e3, e4, e5, e6, e7, e8;
+        e1 = dom.firstElementChild();
+        e2 = e1.firstElementChild();
+        expect(e1.type).toBe('article');
+        expect(e2.type).toBe('title');
+
+        e1.wrapDeepInTwoChildNs('choice', 'http://relaxng.org/ns/structure/1.0', 'rng:');
+        e2 = e1.firstElementChild();
+        expect(e2.nextElementSibling().type).toBe('div');
+        expect(e2.nextElementSibling().getValue()).toBe('Programing namespaces2');
+        expect(e2.type).toBe('choice');
+        expect(e2.typePrefix).toBe('rng');
+        e3 = e2.firstElementChild();
+        expect(e3.nextElementSibling().type).toBe('div');
+        expect(e3.type).toBe('choice');
+        expect(e3.typePrefix).toBe('rng');
+        e4 = e3.firstElementChild();
+        expect(e4.nextElementSibling().type).toBe('pre');
+        expect(e4.type).toBe('choice');
+        expect(e4.typePrefix).toBe('rng');
+        e5 = e4.firstElementChild();
+        expect(e5.nextElementSibling().type).toBe('p');
+        expect(e5.type).toBe('choice');
+        expect(e5.typePrefix).toBe('rng');
+        e6 = e5.firstElementChild();
+        expect(e6.nextElementSibling().type).toBe('text');
+        expect(e6.type).toBe('choice');
+        expect(e6.typePrefix).toBe('rng');
+        e7 = e6.firstElementChild();
+        expect(e7.type).toBe('title');
+        expect(e7.nextElementSibling().type).toBe('subtitle');
+
+        expect(e2.parentNode().type).toBe('article');
+
+
+        dom.destroy();
+        expect(dom.getCacheSize()).toBe(0);
+
+    });
+
+    it('Testing wrapAllToTwoChildNs without namespace', function() {
+        var dom = clone(xmlDoc2);
+        var e1, e2, e3, e4, e5, e6, e7, e8;
+        e1 = dom.firstElementChild();
+        e2 = e1.firstElementChild();
+        expect(e1.type).toBe('article');
+        expect(e2.type).toBe('title');
+
+        e1.wrapDeepInTwoChildNs('choice');
+        e2 = e1.firstElementChild();
+        expect(e2.nextElementSibling().type).toBe('div');
+        expect(e2.nextElementSibling().getValue()).toBe('Programing namespaces2');
+        expect(e2.type).toBe('choice');
+        expect(e2.typePrefix).toBe(null);
+        e3 = e2.firstElementChild();
+        expect(e3.nextElementSibling().type).toBe('div');
+        expect(e3.type).toBe('choice');
+        expect(e3.typePrefix).toBe(null);
+        e4 = e3.firstElementChild();
+        expect(e4.nextElementSibling().type).toBe('pre');
+        expect(e4.type).toBe('choice');
+        expect(e4.typePrefix).toBe(null);
+        e5 = e4.firstElementChild();
+        expect(e5.nextElementSibling().type).toBe('p');
+        expect(e5.type).toBe('choice');
+        expect(e5.typePrefix).toBe(null);
+        e6 = e5.firstElementChild();
+        expect(e6.nextElementSibling().type).toBe('text');
+        expect(e6.type).toBe('choice');
+        expect(e6.typePrefix).toBe(null);
+        e7 = e6.firstElementChild();
+        expect(e7.type).toBe('title');
+        expect(e7.nextElementSibling().type).toBe('subtitle');
+
+        expect(e2.parentNode().type).toBe('article');
+
+
+        dom.destroy();
+        expect(dom.getCacheSize()).toBe(0);
+
+    })
 });
 
 

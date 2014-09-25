@@ -3,6 +3,8 @@ import {NgError} from './ng-error';
 import {NgCache} from './ng-cache';
 import {
     isNode,
+    isArray,
+    isString,
     nextUid,
     forEach,
     instanceOf,
@@ -689,6 +691,81 @@ export class NgDOM extends NgClass{
         }, this);
         this.remove();
         return parent;
+    }
+
+    /**
+     * @since 0.0.1
+     * @method NgDOM#wrapChildren
+     * @description
+     * Wrap child elements with new node
+     * @return {object}
+     */
+    wrapChildren(node, prevent) {
+        var nodesToSlice = [];
+        if (isArray(prevent) || isString(prevent)) {
+            forEach(this.children(), function (cNode) {
+                if (isArray(prevent)) {
+                    if (prevent.indexOf(cNode.type) === -1) {
+                        nodesToSlice.push(cNode);
+                    }
+                } else if (cNode.type !== prevent) {
+                    nodesToSlice.push(cNode);
+                }
+            });
+        } else {
+            nodesToSlice = this.children();
+        }
+        forEach(nodesToSlice, function (cNode) {
+            node.addChild(cNode.clone());
+            cNode.remove();
+        });
+        this.addChild(node);
+        return this;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#wrapChildren
+     * @description
+     * Wrap child elements with new node
+     * @example
+     * var tree = new NgDOM(node);
+     * tree.wrapAllToTwoChildNs('choice', 'http://relaxng.org/ns/structure/1.0', 'rng:');
+     */
+    wrapDeepInTwoChildNs(node, ns, prefix) {
+        var children = this.childElements();
+        /// process multiple time
+        if (children.length > 2) {
+            do {
+                wrap.call(this, children, node, ns, prefix);
+                children = this.childElements();
+            }
+            while (children.length > 2);
+        }
+        /**
+         * Wrap children
+         * @param childNodes
+         * @param nodeName
+         * @param nameSpace
+         * @param nsPrefix
+         */
+        function wrap(childNodes, nodeName, nameSpace, nsPrefix) {
+            var wrapNode;
+            if (nodeName && !nameSpace) {
+                wrapNode = this.createElement(nodeName);
+            } else {
+                if (nsPrefix) {
+                    nodeName = nsPrefix + nodeName;
+                }
+                wrapNode = this.createElementNs(nameSpace, nodeName);
+            }
+            forEach(childNodes.splice(0, 2), function (cNode) {
+                wrapNode.addChild(cNode.clone());
+                cNode.remove();
+            });
+            this.insertBefore(wrapNode, this.firstElementChild());
+        }
+
+        return this;
     }
     /**
      * @since 0.0.1
