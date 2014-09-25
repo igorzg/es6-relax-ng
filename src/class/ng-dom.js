@@ -728,8 +728,8 @@ export class NgDOM extends NgClass{
      * @description
      * Wrap child elements with new node
      * @example
-     * var tree = new NgDOM(node);
-     * tree.wrapAllToTwoChildNs('choice', 'http://relaxng.org/ns/structure/1.0', 'rng:');
+     * var doc = new NgDOM(node);
+     * doc.wrapDeepInTwoChildNs('choice', 'http://relaxng.org/ns/structure/1.0', 'rng:');
      */
     wrapDeepInTwoChildNs(node, ns, prefix) {
         var children = this.childElements();
