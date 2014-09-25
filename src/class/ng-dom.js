@@ -530,6 +530,7 @@ export class NgDOM extends NgClass{
             this.node.nodeValue = value;
             return true;
         } else if (this.isElementNode()) {
+            this.flushCache(true);
             if (isSafari() || isIE()) { // safari,IE
                 this.removeChildren();
                 this.addChild(this.parse(value));
@@ -731,5 +732,14 @@ export class NgDOM extends NgClass{
      */
     getAttributeNode(name) {
         return this.node.getAttributeNode(name);
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#getAttribute
+     * @description
+     * Get attribute value
+     */
+    getAttribute(name) {
+        return this.node.getAttribute(name);
     }
 }

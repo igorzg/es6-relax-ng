@@ -497,6 +497,58 @@ describe('NgDOM', function () {
         dom.destroy();
         expect(dom.getCacheSize()).toBe(0);
     });
+
+    it('Testing wrap', function() {
+        var dom = clone(xmlDoc);
+        var fc = dom.firstElementChild();
+        expect(fc.type).toBe('article');
+        var wrap = dom.createElement('wrap');
+        fc.wrap(wrap);
+        var fcc = dom.firstElementChild();
+        expect(fcc.type).toBe('wrap');
+        var fc2 = fcc.firstElementChild();
+        expect(fc2.type).toBe('article');
+        fcc.setValue('a');
+        expect(fcc.getValue()).toBe('a');
+        expect(dom.toString()).toBe('<wrap>a</wrap>');
+        dom.destroy();
+        expect(dom.getCacheSize()).toBe(0);
+    });
+
+    it('Testing setAttributeNS|removeAttributeNS|setAttribute|removeAttribute|getAttributes|getAttributeNode|getAttribute', function() {
+        var dom = clone(xmlDoc);
+        var fc = dom.firstElementChild();
+        fc.setValue('one');
+        expect(fc.type).toBe('article');
+        expect(fc.getAttributes().length).toBe(0);
+
+        fc.setAttribute("valid", 1);
+        expect(fc.getAttributes().length).toBe(1);
+        expect(fc.getAttribute("valid")).toBe('1');
+        expect(fc.getAttributeNode("valid").value).toBe('1');
+
+        fc.setAttributeNS("http://www.igorivanovic.info", "test", "b");
+        fc.setAttributeNS("http://www.w3.org/1999/xlink", "test2", "b");
+        expect(fc.getAttributes().length).toBe(3);
+        expect(fc.getAttribute("test")).toBe('b');
+        expect(fc.getAttribute("test2")).toBe('b');
+        expect(fc.getAttributeNode("test").value).toBe('b');
+        expect(fc.getAttributeNode("test").namespaceURI).toBe('http://www.igorivanovic.info');
+        expect(fc.getAttributeNode("test2").value).toBe('b');
+        expect(fc.getAttributeNode("test2").namespaceURI).toBe('http://www.w3.org/1999/xlink');
+
+
+        fc.removeAttributeNS("http://www.igorivanovic.info", "test");
+        expect(fc.getAttributes().length).toBe(2);
+        expect(fc.getAttribute("test")).toBe(null);
+        expect(fc.getAttributeNode("test")).toBe(null);
+
+        fc.removeAttribute("valid");
+        expect(fc.getAttributeNode("valid")).toBe(null);
+        expect(fc.getAttribute("valid")).toBe(null);
+        expect(fc.getAttributes().length).toBe(1);
+        expect(fc.toString()).toBe('<article xlink:test2="b">one</article>');
+    });
 });
 
 
