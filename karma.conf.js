@@ -36,12 +36,12 @@ module.exports = function (config) {
             },
             'SL_Firefox': {
                 base: 'SauceLabs',
-                platform: "Windows 8.1",
+                platform: 'Mac 10.9',
                 browserName: 'firefox'
             },
             'SL_Opera': {
                 base: 'SauceLabs',
-                platform: "Windows 8.1",
+                platform:'Mac 10.9',
                 browserName: 'opera'
             },
             'SL_Safari': {
