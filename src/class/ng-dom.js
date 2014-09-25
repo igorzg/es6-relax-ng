@@ -14,7 +14,8 @@ import {
     isSafari,
     isIE,
     clean,
-    parseXML
+    parseXML,
+    toXML
 } from '../core';
 /**
  * Cache dom
@@ -646,13 +647,13 @@ export class NgDOM extends NgClass{
        return false;
     }
     /**
-     * @since 0.0.1
-     * @method NgDOM#childElements
-     * @description
-     * Get child elements
-     * @return array of nodes
-     */
-     childElements() {
+    * @since 0.0.1
+    * @method NgDOM#childElements
+    * @description
+    * Get child elements
+    * @return array of nodes
+    */
+    childElements() {
         var nodes = [];
         forEach(this.node.childNodes, function (node) {
             if (isElementNode(node)) {
@@ -660,5 +661,75 @@ export class NgDOM extends NgClass{
             }
         }, this);
         return nodes;
-     }
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#wrap
+     * @description
+     * Wrap current node with new node
+     * @return {object}
+     */
+    wrap(node) {
+        node.addChild(this.clone());
+        this.replaceNode(node);
+        return node;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#setAttributeNS
+     * @description
+     * Set namespaced attribute to node
+     */
+    setAttributeNS(namespace, name, value) {
+        this.node.setAttributeNS(namespace, name, value);
+        return this;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#removeAttributeNS
+     * @description
+     * Remove namespaced attribute to node
+     */
+    removeAttributeNS(namespace, name) {
+        this.node.removeAttributeNS(namespace, name);
+        return this;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#setAttribute
+     * @description
+     * Set attribute to node
+     */
+    setAttribute(name, value) {
+        this.node.setAttribute(name, value);
+        return this;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#removeAttribute
+     * @description
+     * Remove attribute from node
+     */
+    removeAttribute(name) {
+        this.node.removeAttribute(name);
+        return this;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#getAttributes
+     * @description
+     * Get all attributes
+     */
+    getAttributes() {
+        return Array.prototype.slice.call(this.node.attributes);
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#getAttributeNode
+     * @description
+     * Get attribute node
+     */
+    getAttributeNode(name) {
+        return this.node.getAttributeNode(name);
+    }
 }
