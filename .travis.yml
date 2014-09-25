@@ -17,6 +17,6 @@ install:
 before_script:
 
 script:
-  - karma start --single-run --browsers SL_Chrome,SL_Firefox,SL_Opera,SL_Safari,SL_IE_9,SL_IE_10,SL_IE_11 --reporters dots
+  - karma start --single-run --browsers SL_Chrome,SL_Firefox,SL_Opera,SL_IE_10,SL_IE_11 --reporters dots
 
 after_script:
