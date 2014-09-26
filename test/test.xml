@@ -20,6 +20,6 @@
         </div>
     </text>
     <!--- this is an coment node -->
-    <igorns:annotation xmlns:igorns="http://www.igorivanovic.info">ANN</igorns:annotation>
+    <igorns:annotation xmlns:igorns="http://www.igorivanovic.info"  xmlns:igornsone="http://www.igorivanovic.info/one" igornsone:test="this is an test" two="testing">ANN</igorns:annotation>
 </article>
 

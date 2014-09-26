@@ -31,7 +31,8 @@ module.exports = function (config) {
             },
             'SL_Chrome': {
                 base: 'SauceLabs',
-                browserName: 'chrome'
+                browserName: 'chrome',
+                platform: 'OS X 10.9'
             },
             'SL_Firefox': {
                 base: 'SauceLabs',
@@ -43,7 +44,8 @@ module.exports = function (config) {
             },
             'SL_Safari': {
                 base: 'SauceLabs',
-                browserName: 'safari'
+                browserName: 'safari',
+                platform: 'OS X 10.9'
             },
             "SL_IE_10": {
                 base: "SauceLabs",
@@ -58,6 +60,7 @@ module.exports = function (config) {
                 version: "11"
             }
         },
+        reporters: ['dots', 'saucelabs'],
         browsers: [/*'Firefox',  'Opera', 'Safari', */ 'Chrome'],
         plugins: [
             'karma-*'

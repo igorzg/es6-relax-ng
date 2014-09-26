@@ -543,7 +543,7 @@ describe('NgDOM', function () {
         expect(dom.getCacheSize()).toBe(0);
     });
 
-    it('Testing setAttributeNS|removeAttributeNS|setAttribute|removeAttribute|getAttributes|getAttributeNode|getAttribute', function() {
+    it('Testing setAttributeNS|removeAttributeNS|setAttribute|removeAttribute|getAttributes|getAttributeNode|getAttribute|getAttributeNodeNS|getAttribute|removeAttributeNode|hasAttributeNS|hasAttribute', function() {
         var dom = clone(xmlDoc);
         var fc = dom.firstElementChild();
         fc.setValue('one');
@@ -555,27 +555,59 @@ describe('NgDOM', function () {
         expect(fc.getAttribute("valid")).toBe('1');
         expect(fc.getAttributeNode("valid").value).toBe('1');
 
-        fc.setAttributeNS("http://www.igorivanovic.info", "test", "b");
+        var ns1 = "http://www.igorivanovic.info/one", ns2 = "http://www.igorivanovic.info/two";
+        fc.setAttributeNS(ns1, "test", "one");
+        fc.setAttributeNS(ns2, "test", "two");
         fc.setAttributeNS("http://www.w3.org/1999/xlink", "test2", "b");
-        expect(fc.getAttributes().length).toBe(3);
-        expect(fc.getAttribute("test")).toBe('b');
+        expect(fc.getAttributes().length).toBe(4);
+        expect(fc.getAttribute("test")).toBe('one');
         expect(fc.getAttribute("test2")).toBe('b');
-        expect(fc.getAttributeNode("test").value).toBe('b');
-        expect(fc.getAttributeNode("test").namespaceURI).toBe('http://www.igorivanovic.info');
+        expect(fc.getAttributeNode("test").value).toBe('one');
+        expect(fc.getAttributeNode("test").namespaceURI).toBe(ns1);
+
+        expect(fc.getAttributeNS(ns1, "test")).toBe('one');
+        expect(fc.getAttributeNS(ns2, "test")).toBe('two');
+
+        expect(fc.hasAttributeNS(ns1, "test")).toBe(true);
+        expect(fc.hasAttributeNS(ns2, "test")).toBe(true);
+
+        expect(fc.hasAttribute("valid")).toBe(true);
+
+        expect(fc.getAttributeNodeNS(ns1, "test").value).toBe('one');
+        expect(fc.getAttributeNodeNS(ns1, "test").namespaceURI).toBe(ns1);
+
+
+        expect(fc.getAttributeNodeNS(ns2, "test").value).toBe('two');
+        expect(fc.getAttributeNodeNS(ns2, "test").namespaceURI).toBe(ns2);
+
         expect(fc.getAttributeNode("test2").value).toBe('b');
         expect(fc.getAttributeNode("test2").namespaceURI).toBe('http://www.w3.org/1999/xlink');
 
 
-        fc.removeAttributeNS("http://www.igorivanovic.info", "test");
-        expect(fc.getAttributes().length).toBe(2);
-        expect(fc.getAttribute("test")).toBe(null);
-        expect(fc.getAttributeNode("test")).toBe(null);
+        fc.removeAttributeNS(ns1, "test");
+        expect(fc.getAttributes().length).toBe(3);
+        expect(fc.getAttributeNodeNS(ns1, "test")).toBe(null);
+        expect(fc.getAttributeNodeNS(ns1, "test")).toBe(null);
+
+
+        expect(fc.getAttributeNodeNS(ns2, "test").value).toBe('two');
+        expect(fc.getAttributeNodeNS(ns2, "test").namespaceURI).toBe(ns2);
 
         fc.removeAttribute("valid");
+
+
         expect(fc.getAttributeNode("valid")).toBe(null);
         expect(fc.getAttribute("valid")).toBe(null);
-        expect(fc.getAttributes().length).toBe(1);
+        expect(fc.getAttributes().length).toBe(2);
 
+        fc.setAttribute("valid1", "1");
+        expect(fc.getAttributeNode("valid1").value).toBe("1");
+        expect(fc.getAttribute("valid1")).toBe("1");
+
+        fc.removeAttributeNode(fc.getAttributeNode("valid1"));
+
+        expect(fc.getAttributeNode("valid1")).toBe(null);
+        expect(fc.getAttribute("valid1")).toBe(null);
         dom.destroy();
         expect(dom.getCacheSize()).toBe(0);
     });
@@ -708,6 +740,42 @@ describe('NgDOM', function () {
         expect(e7.nextElementSibling().type).toBe('subtitle');
 
         expect(e2.parentNode().type).toBe('article');
+
+
+        dom.destroy();
+        expect(dom.getCacheSize()).toBe(0);
+
+    })
+
+    it('Testing isNamespace|getNamespaces', function() {
+        var dom = clone(xmlDoc);
+        var e1, e2, e3, e4, e5, e6, e7, e8;
+        e1 = dom.firstElementChild();
+        e2 = e1.lastElementChild();
+        var attr = e2.getAttributeNode("xmlns:igorns");
+        expect(e2.isNamespace(attr)).toBe(true);
+
+        expect(e2.node.attributes.length).toBe(4);
+        expect(e2.getNamespaces().length).toBe(2);
+
+        dom.destroy();
+        expect(dom.getCacheSize()).toBe(0);
+
+    });
+
+    it('Testing querySelector|querySelectorAll|querySelectorAllNS', function() {
+        var dom = clone(xmlDoc);
+        var e1, e2, e3, e4, e5, e6, e7, e8;
+        var ns1 = "http://www.igorivanovic.info";
+        var ns2 = "http://www.igorivanovic.info/one";
+
+        e1 = dom.querySelector('article');
+
+        expect(e1).toBe(dom.firstElementChild());
+        expect(dom.querySelectorAll('p').length).toBe(2);
+
+        expect(dom.querySelectorAllNS(ns1, 'annotation').length).toBe(1);
+        expect(dom.querySelectorAllNS(ns2, 'annotation').length).toBe(0);
 
 
         dom.destroy();

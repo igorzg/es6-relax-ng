@@ -50,10 +50,12 @@ export class NgDOM extends NgClass{
         if (this.node.localName && this.node.prefix) {
             this.type = this.node.localName;
             this.typePrefix = this.node.prefix;
+
         } else {
             this.type = this.node.nodeName;
             this.typePrefix = null;
         }
+        this.namespaceURI = this.node.namespaceURI;
         // used for debugging
         this.id = nextUid();
         ngCache.add(this);
@@ -779,22 +781,22 @@ export class NgDOM extends NgClass{
     }
     /**
      * @since 0.0.1
-     * @method NgDOM#removeAttributeNS
-     * @description
-     * Remove namespaced attribute to node
-     */
-    removeAttributeNS(namespace, name) {
-        this.node.removeAttributeNS(namespace, name);
-        return this;
-    }
-    /**
-     * @since 0.0.1
      * @method NgDOM#setAttribute
      * @description
      * Set attribute to node
      */
     setAttribute(name, value) {
         this.node.setAttribute(name, value);
+        return this;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#removeAttributeNS
+     * @description
+     * Remove namespaced attribute to node
+     */
+    removeAttributeNS(namespace, name) {
+        this.node.removeAttributeNS(namespace, name);
         return this;
     }
     /**
@@ -806,6 +808,75 @@ export class NgDOM extends NgClass{
     removeAttribute(name) {
         this.node.removeAttribute(name);
         return this;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#removeAttributeNode
+     * @description
+     * Remove attribute node
+     */
+    removeAttributeNode(attrNode) {
+        this.node.removeAttributeNode(attrNode);
+        return this;
+    }
+    /**
+    * @since 0.0.1
+    * @method NgDOM#hasAttribute
+    * @description
+    * Has attribute
+    */
+    hasAttributeNS(namespace, name) {
+        return this.node.hasAttributeNS(namespace, name);
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#hasAttribute
+     * @description
+     * Has attribute
+     */
+    hasAttribute(name) {
+        return this.node.hasAttribute(name);
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#isNamespace
+     * @description
+     * Check if attribute is an namespace
+     */
+    isNamespace(attrNode) {
+        if(
+            (attrNode.prefix === 'xmlns' && this.node && attrNode.localName === this.node.prefix) ||
+            (attrNode.name === 'xmlns' && !attrNode.prefix) ||
+            (attrNode.prefix === 'xmlns')
+          ) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#getNamespaces
+     * @description
+     * Get all namespaces
+     */
+    getNamespaces() {
+        var namespaces = [];
+        if (this.isElementNode()) {
+            forEach(this.node.attributes, function (value) {
+                if (this.isNamespace(value)) {
+                    namespaces.push({
+                        name: value.nodeName,
+                        prefix: value.prefix,
+                        localName: value.localName,
+                        type: value.nodeType,
+                        value: value.nodeValue,
+                        baseURI: value.baseURI,
+                        namespaceURI: value.namespaceURI
+                    });
+                }
+            }, this);
+        }
+        return namespaces;
     }
     /**
      * @since 0.0.1
@@ -827,11 +898,71 @@ export class NgDOM extends NgClass{
     }
     /**
      * @since 0.0.1
+     * @method NgDOM#getAttributeNodeNS
+     * @description
+     * Get attribute with namespace node
+     */
+    getAttributeNodeNS(namespace, name) {
+        return this.node.getAttributeNodeNS(namespace, name);
+    }
+    /**
+     * @since 0.0.1
      * @method NgDOM#getAttribute
      * @description
      * Get attribute value
      */
     getAttribute(name) {
         return this.node.getAttribute(name);
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#getAttributeNS
+     * @description
+     * Get attribute with namespace value
+     */
+    getAttributeNS(namespace, name) {
+        return this.node.getAttributeNS(namespace, name);
+    }
+
+    /**
+     * @since 0.0.1
+     * @method NgDOM#querySelector
+     * @description
+     * Query tree
+     */
+    querySelector(selector) {
+        if (this.node && isString(selector)){
+            return this.getInstance(this.node.querySelector(selector));
+        }
+        return null;
+    }
+
+    /**
+     * @since 0.0.1
+     * @method NgDOM#querySelectorAll
+     * @description
+     * Query tree
+     */
+    querySelectorAll(selector) {
+        if (isArray(selector)) {
+            selector = selector.join(',');
+        }
+        if (this.node) {
+            return [].map.call(this.node.querySelectorAll(selector), this.getInstance.bind(this));
+        }
+        return null;
+    }
+
+    /**
+     * @since 0.0.1
+     * @method NgDOM#querySelectorAllNS
+     * @description
+     * Query tree
+     */
+    querySelectorAllNS(namespace, selector) {
+        if (isString(selector) && isString(namespace)) {
+            return this.querySelectorAll('*|' + selector).filter((item) => { return item.namespaceURI === namespace; });
+        }
+        return null;
     }
 }
