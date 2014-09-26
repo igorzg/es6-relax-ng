@@ -31,22 +31,18 @@ module.exports = function (config) {
             },
             'SL_Chrome': {
                 base: 'SauceLabs',
-                platform: "Windows 8.1",
                 browserName: 'chrome'
             },
             'SL_Firefox': {
                 base: 'SauceLabs',
-                platform: 'Mac 10.9',
                 browserName: 'firefox'
             },
             'SL_Opera': {
                 base: 'SauceLabs',
-                platform:'Mac 10.9',
                 browserName: 'opera'
             },
             'SL_Safari': {
                 base: 'SauceLabs',
-                platform: 'Mac 10.9',
                 browserName: 'safari'
             },
             "SL_IE_10": {
