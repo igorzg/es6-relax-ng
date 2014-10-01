@@ -11,10 +11,10 @@ describe('NgDOM', function () {
         return clone;
     }
     beforeEach(function () {
-        getXML('/base/test/test.xml', function (data) {
+        getXML('/base/test/xml/test.xml', function (data) {
             xmlDoc = data;
         }, false);
-        getXML('/base/test/test2.xml', function (data) {
+        getXML('/base/test/xml/test2.xml', function (data) {
             xmlDoc2 = data;
         }, false);
     });
@@ -777,6 +777,7 @@ describe('NgDOM', function () {
         expect(dom.querySelectorAllNS(ns1, 'annotation').length).toBe(1);
         expect(dom.querySelectorAllNS(ns2, 'annotation').length).toBe(0);
 
+       // console.log(dom.querySelectorAllNS(ns1, 'annotation').pop().getNamespace(ns1));
 
         dom.destroy();
         expect(dom.getCacheSize()).toBe(0);

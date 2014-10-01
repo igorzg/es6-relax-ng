@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+    <start>
+        <element name="html">
+            <zeroOrMore>
+                <ref name="section"/>
+            </zeroOrMore>
+        </element>
+    </start>
+    <!--- comment  3 -->
+    <define name="section">
+        <element name="div">
+            <attribute name="class"><value>section</value></attribute>
+            <zeroOrMore>
+                <element name="para">
+                    <text/>
+                </element>
+            </zeroOrMore>
+            <zeroOrMore>
+                <ref name="subsection"/>
+            </zeroOrMore>
+        </element>
+    </define>
+    <!--- comment  4 -->
+    <define name="subsection">
+        <element name="div">
+            <attribute name="class"><value>subsection</value></attribute>
+            <zeroOrMore>
+                <element name="para">
+                    <text/>
+                </element>
+            </zeroOrMore>
+        </element>
+    </define>
+
+</grammar>

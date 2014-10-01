@@ -15,7 +15,11 @@ module.exports = function (config) {
             'test-main.js',
             {pattern: 'src/**/*.js', included: false},
             {pattern: 'test/*.js', included: false},
+            {pattern: 'test/**/*.js', included: false},
             {pattern: 'test/*.xml', included: false},
+            {pattern: 'test/**/*.xml', included: false},
+            {pattern: 'test/*.rng', included: false},
+            {pattern: 'test/**/*.rng', included: false},
             {pattern: 'node_modules/es6-shim/es6-shim.js', included: false}
         ],
 

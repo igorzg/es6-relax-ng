@@ -22,4 +22,3 @@
     <!--- this is an coment node -->
     <igorns:annotation xmlns:igorns="http://www.igorivanovic.info"  xmlns:igornsone="http://www.igorivanovic.info/one" igornsone:test="this is an test" two="testing">ANN</igorns:annotation>
 </article>
-

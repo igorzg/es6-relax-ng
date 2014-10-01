@@ -633,9 +633,7 @@ export class NgDOM extends NgClass{
      * @return {object} instance
      */
     removeChildren() {
-        forEach(this.children(), function (cNode) {
-            cNode.remove();
-        });
+        forEach(this.children(), (cNode) => { cNode.remove(); });
         return this;
     }
     /**
@@ -877,6 +875,15 @@ export class NgDOM extends NgClass{
             }, this);
         }
         return namespaces;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#hasNamespace
+     * @description
+     * Check if namespace exists
+     */
+    getNamespace(namespace) {
+        return this.getNamespaces().filter((item) => { return item.value === namespace; }).shift();
     }
     /**
      * @since 0.0.1

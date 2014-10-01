@@ -14,10 +14,12 @@ import {handleError} from '../core';
 export class NgError {
     /**
      * NgError constructor
-     * @param message
-     * @param args
      */
-    constructor(message, args) {
+    constructor() {
+        var args = Array.prototype.slice.call(arguments), message = args.shift();
+        if (Array.isArray(args[0]) && args.length === 1) {
+            args = args[0];
+        }
         throw new Error(handleError(message, args));
     }
 }

@@ -729,44 +729,6 @@ export function textContent(node) {
  * @license  2014
  * @since 0.0.1
  * @author Igor Ivanovic
- * @name getPrevElementSibling
- * @global
- * @function getPrevElementSibling
- * @param {object} node instance of Node
- * @param {string} tagName some tag name
- * @param {boolean} regExp tagName needs to be regexed
- * @return node
- * @description
- * Return prev element sibling
- * @example
- * getPrevElementSibling(node, /b/g, true); // node
- *  getPrevElementSibling(node); // prev
- */
-export function getPrevElementSibling(node, tagName, regExp) {
-    var re;
-    if (isDocumentNode(node) || !isElementNode(node)) {
-        return false;
-    }
-    node = node.previousSibling;
-    if (regExp) {
-        re = new RegExp(tagName, 'ig');
-    }
-    while (node && !isElementNode(node)) {
-        node = node.previousSibling;
-    }
-    if (regExp) {
-        if (node && node.tagName && !node.tagName.match(re)) {
-            return getPrevElementSibling(node, tagName, regExp);
-        }
-    } else if (tagName && isElementNode(node) && node.tagName.toLowerCase() != tagName.toLowerCase()) {
-        return getPrevElementSibling(node, tagName);
-    }
-    return node;
-}
-/**
- * @license  2014
- * @since 0.0.1
- * @author Igor Ivanovic
  * @name clean
  * @global
  * @function clean
@@ -786,171 +748,6 @@ export function clean(obj) {
         }
     }
 }
-/**
- * @license  2014
- * @since 0.0.1
- * @author Igor Ivanovic
- * @name getNextElementSibling
- * @global
- * @function getNextElementSibling
- * @param {object} node instance of Node
- * @param {string} tagName some tag name
- * @param {boolean} regExp tagName needs to be regexed
- * @return node
- * @description
- * Return prev element sibling
- * @example
- * getNextElementSibling(node, /b/g, true); // node
- * getNextElementSibling(node); // next
- */
-export function getNextElementSibling(node, tagName, regExp) {
-    var re;
-    if (isDocumentNode(node) || !isElementNode(node)) {
-        return false;
-    }
-    node = node.nextSibling;
-    if (regExp) {
-        re = new RegExp(tagName, 'ig');
-    }
-    while (node && !isElementNode(node)) {
-        node = node.nextSibling;
-    }
-    if (regExp) {
-        if (node && node.tagName && !node.tagName.match(re)) {
-            return getNextElementSibling(node, tagName, regExp);
-        }
-    } else if (tagName && isElementNode(node) && node.tagName.toLowerCase() != tagName.toLowerCase()) {
-        return getNextElementSibling(node, tagName);
-    }
-    return node;
-}
-
-/**
- * @license  2014
- * @since 0.0.1
- * @author Igor Ivanovic
- * @name getAllChildren
- * @global
- * @function getAllChildren
- * @param {object} parentNode instance of Node
- * @param {string} tagName some tag name
- * @param {boolean} regExp tagName needs to be regexed
- * @return {array} of nodes
- * @description
- * Return prev element sibling
- * @example
- * getAllChildren(node, /b/g, true); // node
- * getAllChildren(node); // all
- */
-export function getAllChildren(parentNode, tagName, regExp) {
-    var nodes = [], re;
-    if (regExp) {
-        re = new RegExp(tagName, 'ig');
-    }
-    if (isNode(parentNode)) {
-        forEach(parentNode.childNodes, function (node) {
-            if (tagName) {
-                if (regExp) {
-                    if (node.tagName.match(re)) {
-                        nodes.push(node);
-                    }
-                } else {
-                    if (node.tagName.toLowerCase() === tagName) {
-                        nodes.push(node);
-                    }
-                }
-            } else {
-                nodes.push(node);
-            }
-        });
-    }
-    return nodes;
-}
-/**
- * @license  2014
- * @since 0.0.1
- * @author Igor Ivanovic
- * @name getChildElements
- * @global
- * @function getChildElements
- * @param {object} parentNode instance of Node
- * @param {string} tagName some tag name
- * @param {boolean} regExp tagName needs to be regexed
- * @return {array} of nodes
- * @description
- * Return all child element
- * @example
- * getChildElements(node, /b/g, true); // node
- * getChildElements(node); // all
- */
-export function getChildElements(parentNode, tagName, regExp) {
-    var nodes = [], re;
-    if (regExp) {
-        re = new RegExp(tagName, 'ig');
-    }
-    if (isElementNode(parentNode)) {
-        forEach(parentNode.childNodes, function (node) {
-            if (isElementNode(node)) {
-                if (tagName) {
-                    if (regExp) {
-                        if (node.tagName.match(re)) {
-                            nodes.push(node);
-                        }
-                    } else {
-                        if (node.tagName.toLowerCase() === tagName) {
-                            nodes.push(node);
-                        }
-                    }
-                } else {
-                    nodes.push(node);
-                }
-            }
-        });
-    }
-    return nodes;
-};
-/**
- * @license  2014
- * @since 0.0.1
- * @author Igor Ivanovic
- * @name getFirstElementChild
- * @global
- * @function getFirstElementChild
- * @param {object} parentNode instance of Node
- * @param {string} tagName some tag name
- * @param {boolean} regExp tagName needs to be regexed
- * @return {array} of nodes
- * @description
- * Return all child element
- * @example
- * getFirstElementChild(node, /b/g, true); // node
- * getFirstElementChild(node);
- */
-export function getFirstElementChild(parentNode, tagName, regExp) {
-    var node, re;
-    if (regExp) {
-        re = new RegExp(tagName, 'ig');
-    }
-    if (isElementNode(parentNode) || isDocumentNode(parentNode)) {
-        node = parentNode.firstChild;
-    } else {
-        return false;
-    }
-    while (node && !isElementNode(node)) {
-        node = node.nextSibling;
-    }
-
-    if (isElementNode(node)) {
-        if (regExp) {
-            if (!node.tagName.match(re)) {
-                node = getNextElementSibling(node, tagName, regExp);
-            }
-        } else if (isDefined(tagName) && node.tagName.toLowerCase() != tagName.toLowerCase()) {
-            node = getNextElementSibling(node, tagName);
-        }
-    }
-    return node;
-};
 
 /**
  * @license  2014
@@ -1003,63 +800,6 @@ export function handleError(message, attrs) {
         });
     }
     return message;
-}
-/**
- * @license  2014
- * @since 0.0.1
- * @author Igor Ivanovic
- * @name removeClass
- * @global
- * @function removeClass
- * @param {object} node instance of Node
- * @param {object} cssClasses string of classes
- * @param {object} attr special can be applyd for instead class attr
- * @description
- * Remove provided classes
- * @example
- * removeClass(node, 'one two three');
- */
-export function removeClass(node, cssClasses, attr) {
-    var key = attr || 'class';
-    if (cssClasses && node.setAttribute) {
-        forEach(cssClasses.split(' '), function (cssClass) {
-            node.setAttribute(key, trim(
-                    (" " + (node.getAttribute(key) || '') + " ")
-                        .replace(/[\n\t]/g, " ")
-                        .replace(" " + trim(cssClass) + " ", " "))
-            );
-        });
-    }
-}
-
-/**
- * @license  2014
- * @since 0.0.1
- * @author Igor Ivanovic
- * @name addClass
- * @global
- * @function addClass
- * @param {object} node instance of Node
- * @param {object} cssClasses string of classes
- * @param {object} attr special can be applyd for instead class attr
- * @description
- * Add provided classes
- * @example
- * addClass(node, 'one two three'); // <div class="one two three" />
- */
-export function addClass(node, cssClasses, attr) {
-    if (cssClasses && node.setAttribute) {
-        var existingClasses = (' ' + (node.getAttribute('class') || '') + ' ')
-            .replace(/[\n\t]/g, " ");
-
-        forEach(cssClasses.split(' '), function (cssClass) {
-            cssClass = trim(cssClass);
-            if (existingClasses.indexOf(' ' + cssClass + ' ') === -1) {
-                existingClasses += cssClass + ' ';
-            }
-        });
-        node.setAttribute(attr || 'class', trim(existingClasses));
-    }
 }
 
 /**
@@ -1168,10 +908,34 @@ export function parseXML(str) {
  * removeComments(node);
  */
 export function removeComments(node) {
-    if (isNode(node, NODES.COMMENT_NODE)) {
-        node.parentNode.removeChild(node);
+    var skip = false, nLoop = node, cache;
+    try {
+        while (true) {
+            if (isCommentNode(nLoop)) {
+                if (nLoop.nextSibling) {
+                    cache = nLoop.nextSibling;
+                } else {
+                    cache = nLoop.parentNode;
+                    skip = true;
+                }
+                nLoop.parentNode.removeChild(nLoop);
+                nLoop = cache;
+            }
+            if (nLoop.firstChild && !skip) {
+                nLoop = nLoop.firstChild;
+            } else if (nLoop.nextSibling) {
+                skip = false;
+                nLoop = nLoop.nextSibling;
+            } else if (nLoop.parentNode) {
+                nLoop = nLoop.parentNode;
+                skip = true;
+            } else {
+                break;
+            }
+        }
+    } catch (e) {
+        throw new NgError('to many iterations', [e, e.stack]);
     }
-    forEach(getAllChildren(node), removeComments);
     return node;
 }
 /**

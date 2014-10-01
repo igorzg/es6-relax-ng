@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0">
+    <rng:start>
+        <rng:element name="html">
+            <rng:zeroOrMore>
+                <rng:ref name="section"/>
+            </rng:zeroOrMore>
+        </rng:element>
+    </rng:start>
+    <!--- comment  1 -->
+    <rng:define name="section">
+        <rng:element name="div">
+            <rng:attribute name="class"><rng:value>section</rng:value></rng:attribute>
+            <rng:zeroOrMore>
+                <rng:element name="para">
+                    <rng:text/>
+                </rng:element>
+            </rng:zeroOrMore>
+            <rng:zeroOrMore>
+                <rng:ref name="subsection"/>
+            </rng:zeroOrMore>
+        </rng:element>
+    </rng:define>
+<!--- comment -->
+    <rng:define name="subsection">
+        <rng:element name="div">
+            <rng:attribute name="class"><rng:value>subsection</rng:value></rng:attribute>
+            <rng:zeroOrMore>
+                <rng:element name="para">
+                    <rng:text/>
+                </rng:element>
+            </rng:zeroOrMore>
+        </rng:element>
+    </rng:define>
+
+</rng:grammar>
