@@ -10,7 +10,9 @@
     <!--- comment  1 -->
     <rng:define name="section">
         <rng:element name="div">
-            <rng:attribute name="class"><rng:value>section</rng:value></rng:attribute>
+            <rng:attribute name="replace">
+                <rng:value>section</rng:value>
+            </rng:attribute>
             <rng:zeroOrMore>
                 <rng:element name="para">
                     <rng:text/>
@@ -24,7 +26,9 @@
 <!--- comment -->
     <rng:define name="subsection">
         <rng:element name="div">
-            <rng:attribute name="class"><rng:value>subsection</rng:value></rng:attribute>
+            <rng:attribute name="class">
+                <rng:value>subsection</rng:value>
+            </rng:attribute>
             <rng:zeroOrMore>
                 <rng:element name="para">
                     <rng:text/>

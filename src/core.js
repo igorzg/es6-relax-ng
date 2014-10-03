@@ -563,9 +563,9 @@ export function forEach(obj, iterator, context) {
  * var object = new NgAttribute();
  * instanceOf(object, NgAttribute); // true
  */
-export function instanceOf(type, Class) {
+export function instanceOf(object, Class) {
     if (isFunction(Class)) {
-        return type instanceof Class;
+        return object instanceof Class;
     }
     return false;
 }
@@ -911,21 +911,32 @@ export function removeComments(node) {
     var skip = false, nLoop = node, cache;
     try {
         while (true) {
-            if (isCommentNode(nLoop)) {
-                if (nLoop.nextSibling) {
-                    cache = nLoop.nextSibling;
-                } else {
-                    cache = nLoop.parentNode;
-                    skip = true;
-                }
-                nLoop.parentNode.removeChild(nLoop);
-                nLoop = cache;
-            }
+
             if (nLoop.firstChild && !skip) {
                 nLoop = nLoop.firstChild;
+                if (isCommentNode(nLoop)) {
+                    if (nLoop.nextSibling) {
+                        cache = nLoop.nextSibling;
+                    } else {
+                        cache = nLoop.parentNode;
+                        skip = true;
+                    }
+                    nLoop.parentNode.removeChild(nLoop);
+                    nLoop = cache;
+                }
             } else if (nLoop.nextSibling) {
                 skip = false;
                 nLoop = nLoop.nextSibling;
+                if (isCommentNode(nLoop)) {
+                    if (nLoop.nextSibling) {
+                        cache = nLoop.nextSibling;
+                    } else {
+                        cache = nLoop.parentNode;
+                        skip = true;
+                    }
+                    nLoop.parentNode.removeChild(nLoop);
+                    nLoop = cache;
+                }
             } else if (nLoop.parentNode) {
                 nLoop = nLoop.parentNode;
                 skip = true;
@@ -952,7 +963,7 @@ export function removeComments(node) {
  * getXMLHeader();
  */
 export function getXMLHeader() {
-    return '<?xml version="1.0" encoding="UTF-8" ?>';
+    return '<?xml version="1.0" encoding="UTF-8" ?>\n';
 }
 /**
  * @license  2014

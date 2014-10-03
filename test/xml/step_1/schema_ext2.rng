@@ -1,0 +1,18 @@
+<brb:grammar xmlns:brb="http://relaxng.org/ns/structure/1.0">
+    <brb:start>
+        <brb:ref name="inline"/>
+    </brb:start>
+    <brb:define name="inline">
+        <brb:zeroOrMore>
+            <brb:choice>
+                <brb:text/>
+                <brb:element name="code">
+                    <brb:ref name="inline"/>
+                </brb:element>
+                <brb:element name="em">
+                    <brb:ref name="inline"/>
+                </brb:element>
+            </brb:choice>
+        </brb:zeroOrMore>
+    </brb:define>
+</brb:grammar>

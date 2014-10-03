@@ -1,7 +1,19 @@
 import {NgClass} from './ng-class';
 import {NgDOM} from "./ng-dom";
 import {NgError} from './ng-error';
-import {extend, isNode, removeComments, toXML, isObject, clean, isFunction} from "../core";
+import {
+    extend,
+    isNode,
+    removeComments,
+    toXML,
+    isObject,
+    clean,
+    isFunction,
+    getXML,
+    instanceOf,
+    isString,
+    isArray
+} from "../core";
 /**
  * @license Mit Licence 2014
  * @since 0.0.1
@@ -70,7 +82,9 @@ export class NgSchema extends NgClass {
             fc = this.schema.firstElementChild();
             ns = fc.getNamespace(this.rngNs);
             if (ns && ns.localName) {
-                this.localName = ns.localName;
+                if (ns.localName !== 'xmlns') {
+                    this.localName = ns.localName;
+                }
             } else {
                 throw new NgError('Schema is not valid relax ng schema, missing ns or is not valid structure');
             }
@@ -103,37 +117,129 @@ export class NgSchema extends NgClass {
     }
     /**
      * @since 0.0.1
+     * @method NgSchema#step_1
+     * @description
+     * Replacing rng:externalRef with external content
+     */
+    step_1() {
+        var parents = [
+            'attribute', 'choice', 'define', 'element',
+            'except', 'group', 'interleave', 'list',
+            'mixed', 'oneOrMore', 'optional', 'start',
+            'zeroOrMore'
+        ];
+        this.traverse(function step_1_traverse(node) {
+            var parent = node.parentNode(), message, href, replacedNode = null;
+            if (this.matchNode(parent, parents)) {
+                href = node.getAttribute('href');
+                if (href) {
+                    getXML(href, function (data, error, status) {
+                        if (status === 200) {
+                            replacedNode = node.replaceNode(mergeExternal.call(this, data), true);
+                        } else {
+                            throw new NgError("field to load xml file status code: {0}", status);
+                        }
+                    }, false, this); // sync call
+                }
+            } else {
+                message = 'invalid schema definition in step step_1 externalRef don\'t have provided correct parent current parent is "{0}" but allowed are: "{1}"';
+                throw new NgError(message, parent.type, parents.join(','));
+            }
+            return replacedNode;
+        }, 'externalRef');
+
+        /**
+         * Merge external schema
+         * @param data
+         * @returns {Object}
+         */
+        function mergeExternal(data) {
+            var doc = new NgDOM(data), fc, ns, message;
+            fc = doc.firstElementChild();
+            ns = fc.getNamespace(this.rngNs);
+            if (ns && ns.localName) {
+                if(ns.localName !== 'xmlns' && this.localName !== ns.localName) {
+                    message = 'external file don\'t have correct namespace external: "{0}", ';
+                    message += 'don\'t match "{1}" . Exchange external or internal to do ';
+                    message += 'correct schema merge.';
+                    throw new NgError(message, ns.localName, this.localName);
+                } else {
+                    return fc;
+                }
+            } else {
+                throw new NgError('step_1_traverse, checkExternal: invalid schema xml structure');
+            }
+        }
+
+    }
+
+
+    /**
+     * @since 0.0.1
+     * @method NgSchema#matchNode
+     * @description
+     * Go over tree and execute function
+     */
+    matchNode(node, match) {
+        if (match && node) {
+            if (this.localName && this.localName !== node.typePrefix) {
+                return false;
+            } else if (isArray(match) && match.indexOf(node.type) === -1) {
+                return false;
+            } else if (isString(match) && match !== node.type) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+    /**
+     * @since 0.0.1
      * @method NgSchema#traverse
      * @description
      * Go over tree and execute function
      */
-    traverse(callback) {
-        var node = this.schema, skip = false, result;
+    traverse(callback, match) {
+        var node = this.schema, skip = false;
         try {
             while (true) {
-                if (isFunction(callback)) {
-                    result = callback.call(this, node);
-                    if (result && isNode(result)) {
-                        node = result;
-                        skip = false;
-                    }
-                } else {
-                    throw new NgError('NgSchema traverse: callback is not function');
-                }
-                if (node.firstChild() && !skip) {
-                    node = node.firstChild();
-                } else if (node.nextSibling()) {
+                if (node.firstElementChild() && !skip) {
+                    node = node.firstElementChild();
+                    apply.call(this);
+                } else if (node.nextElementSibling()) {
+                    node = node.nextElementSibling();
+                    apply.call(this);
                     skip = false;
-                    node = node.nextSibling();
                 } else if (node.parentNode()) {
-                    skip = true;
                     node = node.parentNode();
+                    skip = true;
                 } else {
                     break;
                 }
             }
         } catch (e) {
-            throw new NgError('NgSchema traverse: to many iterations {0}, {1}, {2}', callback, e, e.stack);
+            throw new NgError('NgSchema traverse: ' + e.message, callback.toString(), e.stack ? e.stack.toString() : e.toString());
+        }
+
+        function apply() {
+            var result;
+            if (isFunction(callback)) {
+                if (match) {
+                    if (this.matchNode(node, match)) {
+                        result = callback.call(this, node);
+                        if (result && instanceOf(result, NgDOM)) {
+                            node = result;
+                        }
+                    }
+                } else {
+                    result = callback.call(this, node);
+                    if (result && instanceOf(result, NgDOM)) {
+                        node = result;
+                    }
+                }
+            } else {
+                new NgError('callback is not function');
+            }
         }
     }
     /**
@@ -143,7 +249,7 @@ export class NgSchema extends NgClass {
      * Convert schema to string
      */
     createElement(element) {
-        if (this.localName !== 'xmlns') {
+        if (this.localName) {
             return this.schema.createElementNs(this.rngNs,  this.localName + ':' + element);
         }
         return this.schema.createElement(element);

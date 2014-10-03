@@ -33,7 +33,7 @@ describe('NgSchema', function () {
     it('should create an instance', function() {
         var schema = clone(xmlDoc);
         expect(instanceOf(schema, NgSchema)).toBe(true);
-        expect(schema.localName).toBe('xmlns');
+        expect(schema.localName).toBe(null);
     });
 
     it('should create an instance2', function() {
@@ -56,22 +56,67 @@ describe('NgSchema', function () {
 
 
     it('traverse', function() {
-        var schema = clone(xmlDocRng), counter = 0, queue = [];
+        var schema = clone(xmlDocRng), counter = 0, counter2 = 0, counter3 = 0;
 
         schema.traverse(function(node) {
-            if (node.isElementNode() && queue.indexOf(node) === -1) {
-                counter += 1;
-                queue.push(node);
+            var nNode, nNode2;
+            if(this.matchNode(node, 'attribute') && node.getAttribute("name") === "replace") {
+                nNode = schema.createElement('div');
+                nNode.setAttribute("name", "replaced");
+                nNode2 = schema.createElement('element');
+                nNode.addChild(nNode2);
+                counter2 += 1;
+                return node.replaceNode(nNode);
             }
+            counter2 += 1;
+            counter3 += 1;
         });
-        queue = [];
+        schema.traverse(function() {
+            counter += 1;
+        });
         schema.destroy();
         expect(counter).toBe(21);
+        expect(counter2).toBe(22);
+        expect(counter3).toBe(21);
+    });
 
-    })
 
 
+    it('step_1', function() {
+        getXML('/base/test/xml/step_1/schema.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        expect(schemaInstance.schema.querySelectorAll('grammar').length).toBe(2);
+    });
 
+    it('step_1 fail', function() {
+        var message = 'NgSchema traverse: invalid schema definition in step step_1 externalRef don\'t have provided correct parent current parent is "div" but allowed are: "attribute,choice,define,element,except,group,interleave,list,mixed,oneOrMore,optional,start,zeroOrMore"';
+        getXML('/base/test/xml/step_1/schema2.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        try {
+            schemaInstance.step_1();
+        } catch (e) {
+            expect(e.message).toBe(message);
+        }
+    });
+
+
+    it('step_1 fail 2', function() {
+        var message = 'NgSchema traverse: external file don\'t have correct namespace external: "brb", don\'t match "rng" . Exchange external or internal to do correct schema merge.';
+        getXML('/base/test/xml/step_1/schema3.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        try {
+            schemaInstance.step_1();
+        } catch (e) {
+            expect(e.message).toBe(message);
+        }
+    });
 });
 
 
