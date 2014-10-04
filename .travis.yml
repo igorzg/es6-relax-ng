@@ -14,9 +14,8 @@ install:
   - npm install -g karma-cli
   - npm install -g jasmine-node
 
-before_script:
 
 script:
   - karma start karma.conf.js --single-run --browsers SL_Chrome --reporters dots
 
-after_script:
+
