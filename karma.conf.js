@@ -64,14 +64,4 @@ module.exports = function (config) {
         ],
         browserNoActivityTimeout: 1000000
     });
-
-
-    if (!process.env.SAUCE_USERNAME) {
-        process.env.SAUCE_USERNAME = 'igorzg1987';
-        process.env.SAUCE_ACCESS_KEY = 'f58c7ebd-7331-4138-ad49-bb83a778f08c';
-    }
-    if (process.env.TRAVIS) {
-        config.sauceLabs.build = 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')';
-        config.sauceLabs.tunnelIdentifier = process.env.TRAVIS_JOB_NUMBER;
-    }
 };
