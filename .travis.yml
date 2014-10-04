@@ -17,6 +17,6 @@ install:
 before_script:
 
 script:
-  - karma start --single-run --browsers SL_Chrome --reporters dots
+  - karma start karma.conf.js --single-run --browsers SL_Chrome --reporters dots
 
 after_script:
