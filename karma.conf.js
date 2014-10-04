@@ -35,8 +35,7 @@ module.exports = function (config) {
             },
             'SL_Chrome': {
                 base: 'SauceLabs',
-                browserName: 'chrome',
-                platform: 'OS X 10.9'
+                browserName: 'chrome'
             },
             'SL_Firefox': {
                 base: 'SauceLabs',
