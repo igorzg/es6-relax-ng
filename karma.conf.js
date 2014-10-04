@@ -11,7 +11,7 @@ module.exports = function (config) {
                 modules: 'amd'
             }
         },
-        logLevel: config.LOG_DEBUG,
+        logLevel: config.LOG_INFO,
         files: [
             'test-main.js',
             {pattern: 'src/**/*.js', included: false},

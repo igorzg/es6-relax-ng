@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0">
+    <rng:start>
+        <rng:ref name="id"></rng:ref>
+    </rng:start>
+    <rng:define name="id">
+        <rng:element name="addressBook">
+            <rng:zeroOrMore>
+                <rng:element name="card">
+                    <rng:choice>
+                        <rng:element name="name">
+                            <rng:text/>
+                        </rng:element>
+                        <rng:group>
+                            <rng:element name="givenName">
+                                <rng:text/>
+                            </rng:element>
+                            <rng:element name="familyName">
+                                <rng:text/>
+                            </rng:element>
+                        </rng:group>
+                    </rng:choice>
+                    <rng:element name="email">
+                        <rng:text/>
+                    </rng:element>
+                    <rng:optional>
+                        <rng:element name="note">
+                            <rng:text/>
+                        </rng:element>
+                    </rng:optional>
+                </rng:element>
+            </rng:zeroOrMore>
+        </rng:element>
+    </rng:define>
+    <rng:include href="/base/test/xml/step_2/schema_ext.rng">
+          <rng:element name="inline">
+              <rng:ref name="id"></rng:ref>
+          </rng:element>
+    </rng:include>
+</rng:grammar>
+

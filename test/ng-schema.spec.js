@@ -89,10 +89,11 @@ describe('NgSchema', function () {
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
         expect(schemaInstance.schema.querySelectorAll('grammar').length).toBe(2);
+        expect(schemaInstance.schema.querySelectorAll('externalRef').length).toBe(0);
     });
 
     it('step_1 fail', function() {
-        var message = 'NgSchema traverse: invalid schema definition in step step_1 externalRef don\'t have provided correct parent current parent is "div" but allowed are: "attribute,choice,define,element,except,group,interleave,list,mixed,oneOrMore,optional,start,zeroOrMore"';
+        var message = 'NgSchema traverse: invalid schema definition in step step_1 externalRef don\'t have provided correct parent current parent is "div" but allowed are: "attribute,choice,define,element,except,group,interleave,list,mixed,oneOrMore,optional,start,zeroOrMore" or node don\'t have correct namespace assigned';
         getXML('/base/test/xml/step_1/schema2.rng', function (data) {
             xmlDoc = data;
         }, false);
@@ -116,6 +117,128 @@ describe('NgSchema', function () {
         } catch (e) {
             expect(e.message).toBe(message);
         }
+    });
+
+
+
+    it('step_2', function() {
+        getXML('/base/test/xml/step_2/schema.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        expect(schemaInstance.schema.querySelectorAll('grammar').length).toBe(2);
+        expect(schemaInstance.schema.querySelectorAll('include').length).toBe(0);
+    });
+
+
+    it('step_2 fail', function() {
+        getXML('/base/test/xml/step_2/schema_invalid_children.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        try {
+            schemaInstance.step_2();
+        } catch (e) {
+            expect(e.message).toBe('NgSchema traverse: invalid schema definition in step step_2, include don\'t have provided correct children, current children is element at index 0 but allowed are: define,div,start')
+        }
+    });
+
+    it('step_2 fail 2', function() {
+        getXML('/base/test/xml/step_2/schema_invalid_parent.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        try {
+            schemaInstance.step_2();
+        } catch (e) {
+            expect(e.message).toBe('NgSchema traverse: invalid schema definition in step step_2 include don\'t have provided correct parent current parent is "element" but allowed are: "div,grammar" or node don\'t have correct namespace assigned')
+        }
+    });
+
+    it('step_2 children no replace', function() {
+        getXML('/base/test/xml/step_2/schema_valid_children_no_replace.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc), e1;
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        expect(schemaInstance.schema.querySelectorAll('grammar').length).toBe(2);
+        expect(schemaInstance.schema.querySelectorAll('start').length).toBe(2);
+        e1 = schemaInstance.schema.querySelector('define[name=inline]');
+        expect(e1.firstElementChild().type).toBe('zeroOrMore');
+        expect(e1.firstElementChild().getAttribute('name')).toBe(null);
+    });
+
+    it('step_2 children replace', function() {
+        getXML('/base/test/xml/step_2/schema_valid_children_no_replace_2.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc), e1;
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        expect(schemaInstance.schema.querySelectorAll('grammar').length).toBe(2);
+        expect(schemaInstance.schema.querySelectorAll('start').length).toBe(1);
+        e1 = schemaInstance.schema.querySelector('define[name=inline]');
+        expect(e1.firstElementChild().type).toBe('zeroOrMore');
+        expect(e1.firstElementChild().getAttribute('name')).toBe(null);
+    });
+
+    it('step_2 children replace', function() {
+        getXML('/base/test/xml/step_2/schema_valid_children_with_replace.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc), e1;
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+
+        expect(schemaInstance.schema.querySelectorAll('grammar').length).toBe(2);
+        expect(schemaInstance.schema.querySelectorAll('start').length).toBe(2);
+        e1 = schemaInstance.schema.querySelector('define[name=inline]');
+        expect(e1.firstElementChild().type).toBe('element');
+        expect(e1.firstElementChild().getAttribute('name')).toBe('em');
+    });
+
+
+    it('step_3 merge grammars', function() {
+        getXML('/base/test/xml/step_2/schema_valid_children_with_replace.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        expect(schemaInstance.schema.querySelectorAll('grammar').length).toBe(1);
+        expect(schemaInstance.schema.querySelectorAll('start').length).toBe(2);
+    });
+
+    it('step_4 merge starts no change', function() {
+        getXML('/base/test/xml/step_2/schema_valid_children_with_replace.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        expect(schemaInstance.schema.querySelectorAll('grammar').length).toBe(1);
+        expect(schemaInstance.schema.querySelectorAll('start').length).toBe(2);
+    });
+
+    it('step_4 merge starts unwrap', function() {
+        getXML('/base/test/xml/step_2/schema2.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        expect(schemaInstance.schema.querySelectorAll('grammar').length).toBe(1);
+        expect(schemaInstance.schema.querySelectorAll('start').length).toBe(1);
     });
 });
 

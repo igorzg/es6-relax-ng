@@ -1,0 +1,15 @@
+<rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0">
+    <rng:define name="inline">
+        <rng:zeroOrMore>
+            <rng:choice>
+                <rng:text/>
+                <rng:element name="code">
+                    <rng:ref name="inline"/>
+                </rng:element>
+                <rng:element name="em">
+                    <rng:ref name="inline"/>
+                </rng:element>
+            </rng:choice>
+        </rng:zeroOrMore>
+    </rng:define>
+</rng:grammar>

@@ -60,7 +60,19 @@ export class NgDOM extends NgClass{
         this.id = nextUid();
         ngCache.add(this);
     }
-
+    /**
+     * @since 0.0.1
+     * @method NgDOM#is
+     * @description
+     * Is correct type and prefix
+     * @return boolean
+     */
+    is(type, prefix) {
+       if (prefix) {
+           return this.type === type && this.typePrefix === prefix;
+       }
+       return this.type === type;
+    }
     /**
      * @since 0.0.1
      * @method NgDOM#firstChild

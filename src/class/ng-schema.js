@@ -12,7 +12,8 @@ import {
     getXML,
     instanceOf,
     isString,
-    isArray
+    isArray,
+    forEach
 } from "../core";
 /**
  * @license Mit Licence 2014
@@ -38,7 +39,7 @@ export class NgSchema extends NgClass {
          * If not schema
          */
         if (!schema && !isNode(schema)) {
-            throw new NgError('Schema is not provided or have parsing errors schema:', schema);
+            throw new NgError('NgSchema: schema is not provided or have parsing errors schema:', schema);
         }
 
         /**
@@ -142,7 +143,7 @@ export class NgSchema extends NgClass {
                     }, false, this); // sync call
                 }
             } else {
-                message = 'invalid schema definition in step step_1 externalRef don\'t have provided correct parent current parent is "{0}" but allowed are: "{1}"';
+                message = 'invalid schema definition in step step_1 externalRef don\'t have provided correct parent current parent is "{0}" but allowed are: "{1}" or node don\'t have correct namespace assigned';
                 throw new NgError(message, parent.type, parents.join(','));
             }
             return replacedNode;
@@ -173,7 +174,114 @@ export class NgSchema extends NgClass {
 
     }
 
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_2
+     * @description
+     * Replacing rng:include with external content
+     */
+    step_2() {
+        var parents = ['div', 'grammar'],
+            children = ['define', 'div', 'start'];
 
+        this.traverse(function step_2_traverse(node) {
+            var parent = node.parentNode(), message, href, replacedNode = null;
+            if (this.matchNode(parent, parents)) {
+                forEach(node.childElements(), function (cNode, index) {
+                    if (!this.matchNode(cNode, children)) {
+                        var message = 'invalid schema definition in step step_2';
+                        message += ', include don\'t have provided correct children';
+                        message += ', current children is {0} at index {1} but allowed are: {2}';
+                        throw new NgError(message, cNode.type, index, children.join(','));
+                    } else if (this.matchNode(cNode, 'div')) {
+                        cNode.unwrap();
+                    }
+                }, this);
+                href = node.getAttribute('href');
+                if (href) {
+                    getXML(href, function (data, error, status) {
+                        if (status === 200) {
+                            replacedNode = node.replaceNode(mergeExternal.call(this, data, node), true);
+                        } else {
+                            throw new NgError("field to load xml file status code: {0}", status);
+                        }
+                    }, false, this); // sync call
+                }
+            } else {
+                message = 'invalid schema definition in step step_2 include don\'t have provided correct parent current parent is "{0}" but allowed are: "{1}" or node don\'t have correct namespace assigned';
+                throw new NgError(message, parent.type, parents.join(','));
+            }
+
+            return replacedNode;
+        }, 'include');
+
+        /**
+         * Merge external schema
+         * @param data
+         * @param node
+         * @returns {Object}
+         */
+        function mergeExternal(data, node) {
+            var doc = new NgDOM(data), fc, ce, ns, message;
+            fc = doc.firstElementChild();
+            ce = fc.childElements();
+
+            ///merge
+            forEach(node.childElements(), function step2_merge_external(cNode) {
+                forEach(
+                    ce.filter(function (nItem) {
+                        return nItem.type === cNode.type;
+                    }),
+                    function step2_merge_external_filter(fItem) {
+                        if (fItem.is('start') || (fItem.is('define') && cNode.is('define') && fItem.getAttribute('name') ===  cNode.getAttribute('name'))) {
+                            fItem.replaceNode(cNode, true);
+                        }
+                    }
+                );
+            });
+
+            ns = fc.getNamespace(this.rngNs);
+            if (ns && ns.localName) {
+                if(ns.localName !== 'xmlns' && this.localName !== ns.localName) {
+                    message = 'external file don\'t have correct namespace external: "{0}", ';
+                    message += 'don\'t match "{1}" . Exchange external or internal to do ';
+                    message += 'correct schema merge.';
+                    throw new NgError(message, ns.localName, this.localName);
+                } else {
+                    return fc;
+                }
+            } else {
+                throw new NgError('step_2_traverse, checkExternal: invalid schema xml structure');
+            }
+        }
+    }
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_3
+     * @description
+     * Replace child grammars with its content
+     */
+    step_3() {
+        this.traverse(function grammar_no_parent_doc(node) {
+            if (!this.matchNode(node.parentNode(), '#document')) {
+                return node.unwrap();
+            }
+        }, 'grammar');
+    }
+
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_4
+     * @description
+     * Replace starts whit its content if parent is not grammar
+     */
+    step_4() {
+        this.traverse(function merge_start(node) {
+            if (!this.matchNode(node.parentNode(), 'grammar')) {
+                return node.unwrap();
+            }
+        }, 'start');
+    }
     /**
      * @since 0.0.1
      * @method NgSchema#matchNode
@@ -182,7 +290,7 @@ export class NgSchema extends NgClass {
      */
     matchNode(node, match) {
         if (match && node) {
-            if (this.localName && this.localName !== node.typePrefix) {
+            if (!node.isDocumentNode() && this.localName && this.localName !== node.typePrefix) {
                 return false;
             } else if (isArray(match) && match.indexOf(node.type) === -1) {
                 return false;
