@@ -28,12 +28,12 @@
         "karma-jasmine": "0.1.5",
         "karma-phantomjs-launcher": "0.1.4",
         "karma-requirejs": "0.2.2",
-        "karma-sauce-launcher": "~0.2.4",
+        "karma-sauce-launcher": "~0.2.5",
         "karma-script-launcher": "git://github.com/igorzg/karma-traceur-preprocessor.git#master",
         "traceur": "~0.0.65"
     },
     "scripts": {
-        "test": "karma start --single-run"
+        "test": "karma start karma.conf.js"
     },
     "engines": {
         "node": ">=0.8.0"

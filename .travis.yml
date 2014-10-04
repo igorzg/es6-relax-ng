@@ -12,10 +12,9 @@ install:
   - npm install
   - npm install -g gulp
   - npm install -g karma-cli
-  - npm install -g jasmine-node
 
 
 script:
-  - karma start karma.conf.js --single-run --browsers SL_Chrome --reporters dots
+  - karma start --single-run --browsers SL_Chrome --reporters dot
 
 

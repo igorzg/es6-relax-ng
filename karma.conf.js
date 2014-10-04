@@ -1,6 +1,7 @@
 
 module.exports = function (config) {
 
+
     config.set({
         // list of files / patterns to load in the browser
         frameworks: ['jasmine', 'traceur', 'requirejs'],
@@ -10,15 +11,12 @@ module.exports = function (config) {
                 modules: 'amd'
             }
         },
-
+        logLevel: config.LOG_DEBUG,
         files: [
             'test-main.js',
             {pattern: 'src/**/*.js', included: false},
-            {pattern: 'test/*.js', included: false},
             {pattern: 'test/**/*.js', included: false},
-            {pattern: 'test/*.xml', included: false},
             {pattern: 'test/**/*.xml', included: false},
-            {pattern: 'test/*.rng', included: false},
             {pattern: 'test/**/*.rng', included: false},
             {pattern: 'node_modules/es6-shim/es6-shim.js', included: false}
         ],
@@ -29,10 +27,6 @@ module.exports = function (config) {
         },
 
         customLaunchers: {
-            'Chrome_harmony': {
-                base: 'Chrome',
-                flags: ['--js-flags=--harmony']
-            },
             'SL_Chrome': {
                 base: 'SauceLabs',
                 browserName: 'chrome'
@@ -67,7 +61,17 @@ module.exports = function (config) {
         browsers: [/*'Firefox',  'Opera', 'Safari', */ 'Chrome'],
         plugins: [
             'karma-*'
-        ]
+        ],
+        browserNoActivityTimeout: 1000000
     });
 
+
+    if (!process.env.SAUCE_USERNAME) {
+        process.env.SAUCE_USERNAME = 'igorzg1987';
+        process.env.SAUCE_ACCESS_KEY = 'f58c7ebd-7331-4138-ad49-bb83a778f08c';
+    }
+    if (process.env.TRAVIS) {
+        config.sauceLabs.build = 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')';
+        config.sauceLabs.tunnelIdentifier = process.env.TRAVIS_JOB_NUMBER;
+    }
 };
