@@ -5,8 +5,8 @@ node_js:
 
 env:
   global:
-    - SAUCE_USERNAME=igorzg1987
-    - SAUCE_ACCESS_KEY=f58c7ebd-7331-4138-ad49-bb83a778f08c
+    - SAUCE_USERNAME=igorzg
+    - SAUCE_ACCESS_KEY=2b2136fe-063d-4485-9262-e6f57903bbb0
 
 install:
   - npm install
