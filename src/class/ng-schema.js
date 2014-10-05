@@ -96,7 +96,6 @@ export class NgSchema extends NgClass {
                 throw new NgError('Invalid schema xml structure');
             }
         }
-
         /**
          * Clone complex schema
          */
@@ -105,11 +104,6 @@ export class NgSchema extends NgClass {
         } else {
             this.complex = this.schema;
         }
-        /**
-         * Invalid nodes
-         * @type {Array}
-         */
-        this.invalidNodes = [];
         /**
          * Annotations
          * @type {Array}
@@ -284,13 +278,96 @@ export class NgSchema extends NgClass {
     }
     /**
      * @since 0.0.1
+     * @method NgSchema#step_5
+     * @description
+     * Collect all defined which parent is not grammar and attach them to grammar
+     */
+    step_5() {
+        this.traverse(function merge_define(node) {
+            if (!this.matchNode(node.parentNode(), 'grammar')) {
+                node.getDocument().querySelector('grammar').addChild(node);
+            }
+        }, 'define');
+    }
+
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_6
+     * @description
+     * Merge starts add choice to roots if there is more then one start
+     */
+    step_6() {
+        var nodes = [], first;
+        this.traverse(function merge_start(node) {
+            if (this.matchNode(node.parentNode(), 'grammar')) {
+                if (nodes.length > 1 && node.getAttribute('combine') && node.getAttribute('combine') !== 'choice') {
+                    throw new NgError('while merging schema, multiple start nodes must have combine as choice pattern');
+                }
+                nodes.push(node);
+            }
+        }, 'start');
+        if (nodes.length > 1) {
+            first = nodes.shift();
+            nodes.forEach(iNode => {
+                first.addChild(iNode);
+                iNode.unwrap();
+            });
+            first.wrapChildren(this.createElement('choice'));
+        } else {
+            nodes = null;
+        }
+    }
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_7
+     * @description
+     * Annotations (elements) are removed.
+     */
+    step_7() {
+        this.traverse(function step_7_remove_annotations(node) {
+            var parent;
+            if (this.isAnnotation(node)) {
+                this.annotations.push(node.clone());
+                parent = node.parentNode();
+                node.remove();
+                return parent;
+            }
+        });
+    }
+    /**
+     * @since 0.0.1
+     * @method NgSchema#simplify
+     * @description
+     * Simplify schema
+     */
+    simplify() {
+        this.step_1();
+        this.step_2();
+        this.step_3();
+        this.step_4();
+        this.step_5();
+        this.step_6();
+        this.step_7();
+    }
+
+    /**
+     * @since 0.0.1
+     * @method NgSchema#isAnnotation
+     * @description
+     * Is node annotation
+     */
+    isAnnotation(node) {
+        return this.localName !== node.typePrefix;
+    }
+    /**
+     * @since 0.0.1
      * @method NgSchema#matchNode
      * @description
      * Go over tree and execute function
      */
     matchNode(node, match) {
         if (match && node) {
-            if (!node.isDocumentNode() && this.localName && this.localName !== node.typePrefix) {
+            if (!node.isDocumentNode() && this.localName && this.isAnnotation(node)) {
                 return false;
             } else if (isArray(match) && match.indexOf(node.type) === -1) {
                 return false;
@@ -362,7 +439,24 @@ export class NgSchema extends NgClass {
         }
         return this.schema.createElement(element);
     }
-
+    /**
+     * @since 0.0.1
+     * @method NgSchema#querySelector
+     * @description
+     * Map to query selector
+     */
+    querySelectorAll(selector) {
+        return this.schema.querySelectorAll(selector);
+    }
+    /**
+     * @since 0.0.1
+     * @method NgSchema#querySelector
+     * @description
+     * Map to query selector
+     */
+    querySelector(selector) {
+        return this.schema.querySelector(selector);
+    }
     /**
      * @since 0.0.1
      * @method NgSchema#toString

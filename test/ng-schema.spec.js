@@ -240,6 +240,59 @@ describe('NgSchema', function () {
         expect(schemaInstance.schema.querySelectorAll('grammar').length).toBe(1);
         expect(schemaInstance.schema.querySelectorAll('start').length).toBe(1);
     });
+
+    it('step_5 collect define', function() {
+        getXML('/base/test/xml/step_2/schema2.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc), fc = schemaInstance.schema.firstElementChild();
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+
+        expect(schemaInstance.schema.querySelectorAll('grammar').length).toBe(1);
+        expect(schemaInstance.schema.querySelectorAll('start').length).toBe(1);
+        expect(fc.lastElementChild().type).toBe('define');
+    });
+
+    it('step_6 merge start', function() {
+        getXML('/base/test/xml/step_2/schema.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc), fc = schemaInstance.querySelector('start'), e1;
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        expect(schemaInstance.schema.querySelectorAll('grammar').length).toBe(1);
+        expect(schemaInstance.schema.querySelectorAll('start').length).toBe(1);
+        expect(fc.hasChildren()).toBe(true);
+        e1 = fc.firstElementChild();
+        expect(e1.type).toBe('choice');
+        expect(e1.childElements().length).toBe(2);
+    });
+
+    it('step_7 remove annotations', function() {
+        getXML('/base/test/xml/step_7/schema.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        expect(schemaInstance.querySelectorAll('element').length).toBe(7);
+        schemaInstance.step_7();
+        expect(schemaInstance.querySelectorAll('grammar').length).toBe(1);
+        expect(schemaInstance.querySelectorAll('start').length).toBe(1);
+        expect(schemaInstance.querySelectorAll('element').length).toBe(3);
+    });
 });
 
 

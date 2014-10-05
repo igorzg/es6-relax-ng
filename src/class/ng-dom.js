@@ -226,9 +226,8 @@ export class NgDOM extends NgClass{
         var doc = this.getDocument(),
             node = this.getInstance(nNode);
 
-        ngCache.remove(node);
-
         if (doc.isDocumentNode() && instanceOf(node, NgDOM)) {
+            node.flushCache(true);
             doc.node.adoptNode(node.node);
             doc.node.importNode(node.node, true);
         } else {

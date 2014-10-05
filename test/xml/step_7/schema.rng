@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:cs="http://igorivanovic.info/relaxng/annotations/1.0">
+    <rng:start>
+        <rng:ref name="id"></rng:ref>
+    </rng:start>
+    <rng:define name="id">
+        <rng:element name="addressBook">
+            <cs:info name="addressBook">
+                <labels>
+                    <label locale="en" value="Adress book"/>
+                    <label locale="de" value="Address book"/>
+                </labels>
+            </cs:info>
+            <rng:zeroOrMore>
+                <rng:element name="card">
+                    <rng:choice>
+                        <rng:element name="name">
+                            <rng:text/>
+                        </rng:element>
+                        <cs:group>
+                            <cs:element name="givenName">
+                                <cs:text/>
+                            </cs:element>
+                            <cs:element name="familyName">
+                                <cs:text/>
+                            </cs:element>
+                        </cs:group>
+                    </rng:choice>
+                    <cs:element name="email">
+                        <cs:text/>
+                    </cs:element>
+                    <cs:optional>
+                        <cs:element name="note">
+                            <cs:text/>
+                        </cs:element>
+                    </cs:optional>
+                </rng:element>
+            </rng:zeroOrMore>
+        </rng:element>
+    </rng:define>
+</rng:grammar>
+
