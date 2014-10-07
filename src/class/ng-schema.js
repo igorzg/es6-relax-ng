@@ -13,8 +13,14 @@ import {
     instanceOf,
     isString,
     isArray,
-    forEach
+    forEach,
+    removeWhiteSpace
 } from "../core";
+/**
+ * Regex
+ * @type {RegExp}
+ */
+const RELAX_NG_NAME_NS_RGX = /^(.*):(.*)/;
 /**
  * @license Mit Licence 2014
  * @since 0.0.1
@@ -54,7 +60,8 @@ export class NgSchema extends NgClass {
          */
         this.config = {
             cloneComplex: true,
-            removeInvalidNodes: true
+            removeInvalidNodes: true,
+            removeWhiteSpace: true
         };
         /**
          * Is object
@@ -336,6 +343,176 @@ export class NgSchema extends NgClass {
     }
     /**
      * @since 0.0.1
+     * @method NgSchema#step_8
+     * @description
+     * Text nodes containing only whitespace are removed, except when found in value and param elements.
+     */
+    step_8() {
+        this.traverseAll(function step_8_remove_whitespace(node) {
+            var value, parent = node.parentNode();
+            if (!this.matchNode(parent, ['value', 'param'])) {
+                value = removeWhiteSpace(node.getValue());
+                if (value) {
+                    node.setValue(value);
+                } else if (this.config.removeWhiteSpace) {
+                    node.remove();
+                    return parent;
+                }
+
+            }
+        }, '#text');
+    }
+
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_9
+     * @description
+     *  Whitespace is normalized in name, type, and combine attributes and in name elements.
+     */
+    step_9() {
+        this.traverse(function step_9_remove_whitespace(node) {
+            removeAttributeWhitespace(node, "name");
+            removeAttributeWhitespace(node, "type");
+            removeAttributeWhitespace(node, "combine");
+        });
+        function removeAttributeWhitespace(node, name) {
+            if (node.hasAttribute(name)) {
+                node.setAttribute(name, removeWhiteSpace(node.getAttribute(name)));
+            }
+        }
+    }
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_10
+     * @description
+     * The characters that are not allowed in the dataType Library attributes are escaped.
+     * The attributes are transferred through inheritance to each data and value pattern.
+     * If type attribute don't have value assign token
+     */
+    step_10() {
+        this.traverse(function step_10_datatypeLibraryInheritance(node) {
+                var datatypeUrl = getInheritedLibray(node);
+                if (datatypeUrl) {
+                    node.setAttribute("datatypeLibrary", datatypeUrl);
+                }
+                if (node.type === "value" && !node.hasAttribute("type")) {
+                    node.setAttribute("type", "token");
+                }
+        }, ['data', 'value']);
+
+        function getInheritedLibray(node) {
+            if (node.isElementNode() && node.hasAttribute("datatypeLibrary")) {
+                return node.getAttribute("datatypeLibrary");
+            } else if (node.parentNode()) {
+                return getInheritedLibray(node.parentNode());
+            }
+            return null;
+        }
+    }
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_11
+     * @description
+     * The name attribute of the element and attribute patterns is replaced by the name element,
+     * a name class that matches only a single name.
+     */
+    step_11() {
+        this.traverse(function step_11_replace_name_attributes(node) {
+            var nameNode = this.createElement("name"), ns, name;
+            if (!node.hasAttribute("name")) {
+                throw new NgError("step_11, node {0} don't have an name attribute", node.toString());
+            }
+            if (node.hasAttribute("ns")) {
+                nameNode.setAttribute("ns", node.getAttribute("ns"));
+            } else {
+                nameNode.setAttribute("ns", "");
+            }
+            nameNode.setValue(node.getAttribute("name"));
+            if (node.hasChildren()) {
+                node.insertBefore(nameNode, node.firstElementChild());
+            } else {
+                node.addChild(nameNode);
+            }
+            node.removeAttribute("name");
+        }, ["element", "attribute"]);
+    }
+
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_12
+     * @description
+     * For any name, nsName or value element that does not have an ns attribute, an ns attribute is added.
+     * The value of the added ns attribute is the value of the ns attribute of the nearest ancestor element
+     * that has an ns attribute, or the empty string if there is no such ancestor.
+     */
+     step_12() {
+        this.traverse(function step_12_inherit_ns_attributes(node) {
+            var ns = getInheritedNs(node);
+            if (ns) {
+                node.setAttribute("ns", ns);
+            } else {
+                node.setAttribute("ns", "");
+            }
+        }, ["name", "nsName", "value"]);
+
+        function getInheritedNs(node) {
+            if (node.isElementNode() && node.hasAttribute("ns")) {
+                return node.getAttribute("ns");
+            } else if (node.parentNode()) {
+                return getInheritedNs(node.parentNode());
+            }
+            return null;
+        }
+    }
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_13
+     * @description
+     * Remove all ns attributes if node is not an ["name", "nsName", "value"].
+     */
+    step_13() {
+        this.traverse(function step_13_remove_invalid_ns_attributes(node) {
+            if (!this.matchNode(node, ["name", "nsName", "value"])) {
+                if (node.hasAttribute("ns")) {
+                    node.removeAttribute("ns");
+                }
+            }
+        });
+    }
+
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_14
+     * @description
+     * For any name element containing a prefix, the prefix is removed and an ns attribute is added
+     * replacing any existing ns attribute. The value of the added ns attribute is the value to which
+     * the namespace map of the context of the name element maps the prefix.
+     * The context must have a mapping for the prefix.
+     */
+    step_14() {
+        this.traverse(function step_14_map_name_prefixes(node) {
+            var value = node.getValue();
+            if (RELAX_NG_NAME_NS_RGX.test(value)) {
+                node.setValue(value.replace(RELAX_NG_NAME_NS_RGX, function step_14_replace_m2(s, m1, m2) {
+                   return m2;
+                }));
+                node.setAttribute("ns", getInheritedNs(node, value.replace(RELAX_NG_NAME_NS_RGX, function step_14_replace_m1(s, m1) {
+                   return m1;
+                })));
+            }
+        }, 'name');
+
+        function getInheritedNs(node, suffix) {
+            if (node.isElementNode() && node.hasAttribute("xmlns:" + suffix)) {
+                return node.getAttribute("xmlns:" + suffix);
+            } else if (node.parentNode()) {
+                return getInheritedNs(node.parentNode(), suffix);
+            }
+            throw new NgError('no valid namespace found in step_14 pattern "{0}"', suffix);
+        }
+    }
+    /**
+     * @since 0.0.1
      * @method NgSchema#simplify
      * @description
      * Simplify schema
@@ -348,6 +525,13 @@ export class NgSchema extends NgClass {
         this.step_5();
         this.step_6();
         this.step_7();
+        this.step_8();
+        this.step_9();
+        this.step_10();
+        this.step_11();
+        this.step_12();
+        this.step_13();
+        this.step_14();
     }
 
     /**
@@ -367,7 +551,7 @@ export class NgSchema extends NgClass {
      */
     matchNode(node, match) {
         if (match && node) {
-            if (!node.isDocumentNode() && this.localName && this.isAnnotation(node)) {
+            if (!node.isDocumentNode() && !node.isTextNode() && this.localName && this.isAnnotation(node)) {
                 return false;
             } else if (isArray(match) && match.indexOf(node.type) === -1) {
                 return false;
@@ -380,9 +564,58 @@ export class NgSchema extends NgClass {
     }
     /**
      * @since 0.0.1
+     * @method NgSchema#traverseAll
+     * @description
+     * Go over tree including all nodes and execute function
+     */
+    traverseAll(callback, match) {
+        var node = this.schema, skip = false;
+        try {
+            while (true) {
+                if (node.firstChild() && !skip) {
+                    node = node.firstChild();
+                    apply.call(this);
+                } else if (node.nextSibling()) {
+                    node = node.nextSibling();
+                    apply.call(this);
+                    skip = false;
+                } else if (node.parentNode()) {
+                    node = node.parentNode();
+                    skip = true;
+                } else {
+                    break;
+                }
+            }
+        } catch (e) {
+            throw new NgError('NgSchema traverse: ' + e.message, callback.toString(), e.stack ? e.stack.toString() : e.toString());
+        }
+
+        function apply() {
+            var result;
+            if (isFunction(callback)) {
+                if (match) {
+                    if (this.matchNode(node, match)) {
+                        result = callback.call(this, node);
+                        if (result && instanceOf(result, NgDOM)) {
+                            node = result;
+                        }
+                    }
+                } else {
+                    result = callback.call(this, node);
+                    if (result && instanceOf(result, NgDOM)) {
+                        node = result;
+                    }
+                }
+            } else {
+                new NgError('callback is not function');
+            }
+        }
+    }
+    /**
+     * @since 0.0.1
      * @method NgSchema#traverse
      * @description
-     * Go over tree and execute function
+     * Go over elements and execute function
      */
     traverse(callback, match) {
         var node = this.schema, skip = false;

@@ -1,5 +1,5 @@
 import {NgSchema} from '../src/class/ng-schema';
-import {getXML, isNode, isNumber,  isMozilla, isDocumentFragmentNode, instanceOf} from '../src/core';
+import {getXML, isNode, isNumber,  isMozilla, isDocumentFragmentNode, instanceOf, removeWhiteSpace} from '../src/core';
 
 describe('NgSchema', function () {
     var xmlDoc, xmlDocRng, xmlDocRngInvalid;
@@ -292,6 +292,213 @@ describe('NgSchema', function () {
         expect(schemaInstance.querySelectorAll('grammar').length).toBe(1);
         expect(schemaInstance.querySelectorAll('start').length).toBe(1);
         expect(schemaInstance.querySelectorAll('element').length).toBe(3);
+    });
+
+    it('step_8 remove whitespace', function() {
+        getXML('/base/test/xml/step_7/schema.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var result = `<?xml version="1.0" encoding="UTF-8" ?><rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:cs="http://igorivanovic.info/relaxng/annotations/1.0"><rng:start><rng:ref name="id"/></rng:start><rng:define name="id"><rng:element name="addressBook"><rng:zeroOrMore><rng:element name="card"><rng:choice><rng:element name="name"><rng:text/></rng:element></rng:choice></rng:element></rng:zeroOrMore></rng:element></rng:define></rng:grammar>`;
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        expect(removeWhiteSpace(schemaInstance.toString())).toBe(removeWhiteSpace(result));
+        expect(schemaInstance.querySelectorAll('grammar').length).toBe(1);
+        expect(schemaInstance.querySelectorAll('start').length).toBe(1);
+        expect(schemaInstance.querySelectorAll('element').length).toBe(3);
+    });
+
+    it('step_9 remove whitespace on attributes', function() {
+        getXML('/base/test/xml/step_9/schema.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+       var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+
+        var all = schemaInstance.querySelectorAll("[name=id]");
+        expect(all.shift().type).toBe("ref");
+        expect(all.shift().type).toBe("define");
+
+        expect(schemaInstance.querySelector("[combine=choice]").type).toBe("define");
+        expect(schemaInstance.querySelector("[name=addressBook]").type).toBe("element");
+        expect(schemaInstance.querySelector("[name=givenName]").type).toBe("element");
+        expect(schemaInstance.querySelector("[name=email]").type).toBe("element");
+        expect(schemaInstance.querySelector("[name=note]").type).toBe("element");
+        expect(schemaInstance.querySelector("[type=ccc1]").type).toBe("element");
+    });
+
+    it('step_10 Inherit datatype', function() {
+        getXML('/base/test/xml/step_10/schema.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var url = "http://www.w3.org/2001/XMLSchema-datatypes";
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+
+        var all = schemaInstance.querySelectorAll("value,data");
+        all.forEach(function(item){
+            expect(item.hasAttribute("datatypeLibrary")).toBe(true);
+            expect(item.getAttribute("datatypeLibrary")).toBe(url);
+        });
+        expect(all.length).toBe(4);
+
+        var all2 = schemaInstance.querySelectorAll("[name=id]");
+        expect(all2.shift().type).toBe("ref");
+        expect(all2.shift().type).toBe("define");
+
+        expect(schemaInstance.querySelector("[combine=interleave]").type).toBe("define");
+        expect(schemaInstance.querySelector("[type=int]").type).toBe("data");
+        expect(schemaInstance.querySelector("[type=int]").firstElementChild().type).toBe("param");
+        expect(schemaInstance.querySelector("[type=int]").firstElementChild().getValue()).toBe(" 123 ");
+
+        var all3 = schemaInstance.querySelectorAll("[name=id]");
+        expect(all3.shift().type).toBe("ref");
+        expect(all3.shift().type).toBe("define");
+    });
+
+    it('step_11 separate name nodes', function() {
+        getXML('/base/test/xml/step_10/schema.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        //schemaInstance.config.removeWhiteSpace = false;
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+
+        var all = schemaInstance.querySelectorAll("name");
+        expect(all.length).toBe(9);
+        next("addressBook");
+        next("attraddressBook");
+        next("card");
+        next("name");
+        next("name");
+        next("givenName");
+        next("familyName");
+        next("email");
+        next("note");
+        function next(value) {
+            var n = all.shift();
+            expect(n.type).toBe("name");
+            expect(n.getValue()).toBe(value);
+        }
+    });
+
+    it('step_12 inherit ns attributes', function() {
+        getXML('/base/test/xml/step_12/schema.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        //schemaInstance.config.removeWhiteSpace = false;
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+
+        var url = "http://relaxng.org/ns/test1";
+        var all = schemaInstance.querySelectorAll('[ns="'+url+'"]');
+        expect(all.length).toBe(2);
+        expect(all.shift().type).toBe('element');
+        var el = all.shift();
+        expect(el.type).toBe('name');
+        expect(el.getValue()).toBe('card');
+    });
+
+    it('step_13 remove ns attributes from different elements', function() {
+        getXML('/base/test/xml/step_12/schema.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        //schemaInstance.config.removeWhiteSpace = false;
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+
+        var url = "http://relaxng.org/ns/test1";
+        var all = schemaInstance.querySelectorAll('[ns="'+url+'"]');
+        expect(all.length).toBe(1);
+        var el = all.shift();
+        expect(el.type).toBe('name');
+        expect(el.getValue()).toBe('card');
+    });
+
+
+    it('step_14 remove namespaced name values and assign valid ns', function() {
+        getXML('/base/test/xml/step_14/schema.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.config.removeWhiteSpace = false;
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+        schemaInstance.step_14();
+
+        var url = "http://igorivanovic.info/cs";
+        var all = schemaInstance.querySelectorAll('[ns="'+url+'"]');
+        expect(all.length).toBe(1);
+        var el = all.shift();
+        expect(el.type).toBe('name');
+        expect(el.getValue()).toBe('card');
     });
 });
 

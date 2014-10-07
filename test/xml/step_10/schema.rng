@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <rng:start>
+        <rng:ref name="id"></rng:ref>
+    </rng:start>
+    <rng:define name=" id "  combine=" interleave "  >
+        <rng:element name=" addressBook ">
+            <rng:attribute name="attraddressBook">
+                <rng:value> asdasd     </rng:value>
+                <rng:data  type="   int ">
+                    <rng:param name="maxLength"> 123 </rng:param>
+                </rng:data>
+            </rng:attribute>
+            <rng:zeroOrMore>
+                <rng:element name="card">
+                    <rng:choice>
+                        <rng:element name="name">
+                            <rng:text/>
+                            <rng:attribute name="name">
+                                <rng:value> bbb     </rng:value>
+                                <rng:data  type="   int ">
+                                    <rng:param name="maxLength"> 5555 </rng:param>
+                                </rng:data>
+                            </rng:attribute>
+                        </rng:element>
+                        <rng:group>
+                            <rng:element name="givenName">
+                                <rng:text/>
+                            </rng:element>
+                            <rng:element name="familyName">
+                                <rng:text/>
+                            </rng:element>
+                        </rng:group>
+                    </rng:choice>
+                    <rng:element name="email">
+                        <rng:text/>
+                    </rng:element>
+                    <rng:optional>
+                        <rng:element name="note">
+                            <rng:text/>
+                        </rng:element>
+                    </rng:optional>
+                </rng:element>
+            </rng:zeroOrMore>
+        </rng:element>
+    </rng:define>
+</rng:grammar>

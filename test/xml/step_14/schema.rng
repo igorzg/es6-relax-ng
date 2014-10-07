@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0"
+             datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" xmlns:cs="http://igorivanovic.info/cs">
+    <rng:start>
+        <rng:ref name="id"></rng:ref>
+    </rng:start>
+    <rng:define name="id">
+        <rng:element name="addressBook" >
+            <rng:attribute name="attrAddressBook">
+                <rng:value>asdasd</rng:value>
+            </rng:attribute>
+            <rng:zeroOrMore>
+                <rng:element name="cs:card" >
+                    <rng:choice>
+                        <rng:element name="name">
+                            <rng:text/>
+                        </rng:element>
+                        <rng:group>
+                            <rng:element name="givenName">
+                                <rng:text/>
+                            </rng:element>
+                            <rng:element name="familyName">
+                                <rng:text/>
+                            </rng:element>
+                        </rng:group>
+                    </rng:choice>
+                    <rng:element name="email">
+                        <rng:text/>
+                    </rng:element>
+                    <rng:optional>
+                        <rng:element name="note">
+                            <rng:text/>
+                        </rng:element>
+                    </rng:optional>
+                </rng:element>
+            </rng:zeroOrMore>
+        </rng:element>
+    </rng:define>
+</rng:grammar>
+
