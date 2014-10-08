@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <rng:start>
+        <rng:ref name="id"/>
+    </rng:start>
+    <rng:define name="id">
+        <rng:element name="addressBook">
+            <rng:attribute name="attrAddressBook">
+                <rng:value>asdasd</rng:value>
+            </rng:attribute>
+            <rng:zeroOrMore>
+                <rng:element name="card">
+                    <rng:choice>
+                        <rng:mixed>
+                            <rng:zeroOrMore>
+                                <rng:element name="fnote1">
+                                    <rng:mixed>
+                                        <rng:zeroOrMore>
+                                            <rng:element name="fnote2">
+                                                <rng:text/>
+                                            </rng:element>
+                                        </rng:zeroOrMore>
+                                    </rng:mixed>
+                                </rng:element>
+                            </rng:zeroOrMore>
+                        </rng:mixed>
+                        <rng:element name="name">
+                            <rng:text/>
+                        </rng:element>
+                        <rng:element name="name2">
+                            <rng:text/>
+                        </rng:element>
+                        <rng:group>
+                            <rng:element name="givenName">
+                                <rng:text/>
+                            </rng:element>
+                            <rng:element name="familyName">
+                                <rng:text/>
+                            </rng:element>
+                        </rng:group>
+                    </rng:choice>
+                    <rng:element name="email">
+                        <rng:text/>
+                    </rng:element>
+                    <rng:optional>
+                        <rng:element name="note">
+                            <rng:text/>
+                        </rng:element>
+                    </rng:optional>
+                </rng:element>
+                <rng:element name="valid3">
+                    <rng:text/>
+                    <rng:attribute type="test"></rng:attribute>
+                </rng:element>
+            </rng:zeroOrMore>
+        </rng:element>
+        <rng:optional>
+            <rng:element name="valid">
+                <rng:text/>
+                <rng:attribute name="validattr">
+
+                </rng:attribute>
+            </rng:element>
+            <rng:element name="valid2">
+                <rng:text/>
+                <rng:choice>
+                    <rng:ref name="foreign-elements" />
+                </rng:choice>
+            </rng:element>
+        </rng:optional>
+    </rng:define>
+    <rng:define name="foreign-elements">
+        <rng:zeroOrMore>
+            <rng:element name="musthave">
+                <rng:attribute>
+                    <rng:anyName>
+                        <rng:except>
+                            <rng:nsName ns=""/>
+                            <rng:nsName ns="http://igorivanovic.info/javascript"/>
+                            <rng:nsName ns="http://igorivanovic.info/ns"/>
+                        </rng:except>
+                    </rng:anyName>
+                </rng:attribute>
+            </rng:element>
+        </rng:zeroOrMore>
+    </rng:define>
+</rng:grammar>
+

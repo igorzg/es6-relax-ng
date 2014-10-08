@@ -60,8 +60,7 @@ export class NgSchema extends NgClass {
          */
         this.config = {
             cloneComplex: true,
-            removeInvalidNodes: true,
-            removeWhiteSpace: true
+            removeInvalidNodes: true
         };
         /**
          * Is object
@@ -354,11 +353,10 @@ export class NgSchema extends NgClass {
                 value = removeWhiteSpace(node.getValue());
                 if (value) {
                     node.setValue(value);
-                } else if (this.config.removeWhiteSpace) {
+                } else {
                     node.remove();
                     return parent;
                 }
-
             }
         }, '#text');
     }
@@ -418,22 +416,24 @@ export class NgSchema extends NgClass {
      */
     step_11() {
         this.traverse(function step_11_replace_name_attributes(node) {
-            var nameNode = this.createElement("name"), ns, name;
-            if (!node.hasAttribute("name")) {
+            var nameNode, ns, name;
+            if (node.hasAttribute("name")) {
+                nameNode = this.createElement("name");
+                if (node.hasAttribute("ns")) {
+                    nameNode.setAttribute("ns", node.getAttribute("ns"));
+                } else {
+                    nameNode.setAttribute("ns", "");
+                }
+                nameNode.setValue(node.getAttribute("name"));
+                if (node.hasChildElements()) {
+                    node.insertBefore(nameNode, node.firstElementChild());
+                } else {
+                    node.addChild(nameNode);
+                }
+                node.removeAttribute("name");
+            } else if (node.type === 'element') {
                 throw new NgError("step_11, node {0} don't have an name attribute", node.toString());
             }
-            if (node.hasAttribute("ns")) {
-                nameNode.setAttribute("ns", node.getAttribute("ns"));
-            } else {
-                nameNode.setAttribute("ns", "");
-            }
-            nameNode.setValue(node.getAttribute("name"));
-            if (node.hasChildren()) {
-                node.insertBefore(nameNode, node.firstElementChild());
-            } else {
-                node.addChild(nameNode);
-            }
-            node.removeAttribute("name");
         }, ["element", "attribute"]);
     }
 
@@ -513,9 +513,177 @@ export class NgSchema extends NgClass {
     }
     /**
      * @since 0.0.1
+     * @method NgSchema#step_15
+     * @description
+     * Each div element is replaced by its children.
+     */
+    step_15() {
+        this.traverse(function step_15_replace_with_children(node) {
+            var parent = node.parentNode();
+            node.unwrap();
+            return parent;
+        }, 'div')
+    }
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_16
+     * @description
+     *  A define, oneOrMore, zeroOrMore, optional, list or mixed element is transformed
+     *  so that it has exactly one child element. If it has more than one child element,
+     *  then its child elements are wrapped in a group element.
+     */
+    step_16() {
+        this.traverse(function step_16_wrap_group(node) {
+            if (node.hasChildElements() && node.getChildElementCount() > 1) {
+                node.wrapChildren(this.createElement('group'));
+            }
+        }, ['define', 'oneOrMore', 'zeroOrMore', 'optional', 'list', 'mixed']);
+    }
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_17
+     * @description
+     *  An element element is transformed so that it has exactly two child elements, the first
+     *  being a name class and the second being a pattern. If it has more than two child elements,
+     *  then the child elements other than the first are wrapped in a group element.
+     */
+    step_17() {
+        this.traverse(function step_17_element(node) {
+            if (node.hasChildElements() && node.getChildElementCount() > 2) {
+                node.wrapChildren(this.createElement('group'), 'name');
+            }
+        }, 'element');
+    }
+
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_18
+     * @description
+     * A except element is transformed so that it has exactly one child element.
+     * If it has more than one child element, then its child elements are wrapped in a choice element.
+     */
+    step_18() {
+        this.traverse(function step_18_except(node) {
+            if (node.hasChildElements() && node.getChildElementCount() > 1) {
+                node.wrapChildren(this.createElement('choice'));
+            }
+        }, 'except');
+    }
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_19
+     * @description
+     * If an attribute element has only one child element (a name class), then a text element is added.
+     * If has no children remove element
+     */
+    step_19() {
+        this.traverse(function step_19_attribute(node) {
+            var parent = node.parentNode();
+            if (node.hasChildElements() && node.getChildElementCount() === 1) {
+                node.addChild(this.createElement('text'));
+            } else if (!node.hasChildElements()) {
+                node.remove();
+                return parent;
+            }
+        }, 'attribute');
+    }
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_20
+     * @description
+     * A choice, group or interleave element is transformed so that it has exactly two child elements.
+     * If it has one child element, then it is replaced by its child element.
+     */
+     step_20() {
+        this.traverse(function step_20_mixed(node) {
+            var parent = node.parentNode();
+            if (node.hasChildElements() && node.getChildElementCount() === 1) {
+                node.unwrap();
+                return parent;
+            }
+        }, ['choice', 'group', 'interleave']);
+    }
+
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_20
+     * @description
+     *  A choice, group or interleave element is transformed so that it has exactly two child elements.
+     *  If it has more than two child elements, then the first two child elements are combined
+     *  into a new element with the same name as the parent element and with the first two child elements as its children.
+     *  For example,
+     *  <choice> p1 p2 p3 </choice>
+     *  is transformed to
+     *
+     *  <choice> <choice> p1 p2 </choice> p3 </choice>
+     *  This reduces the number of child elements by one.
+     *  The transformation is applied repeatedly until there are exactly two child elements.
+     */
+     step_21() {
+        this.traverse(function step_21_wrapInTwoChild(node) {
+            var parent = node.parentNode();
+            if (node.hasChildElements() && node.getChildElementCount() > 2) {
+                if (this.localName) {
+                    node.wrapDeepInTwoChildNs(node.type, this.rngNs, this.localName + ':');
+                } else {
+                    node.wrapDeepInTwoChildNs(node.type);
+                }
+                return parent;
+            }
+        }, ['choice', 'group', 'interleave']);
+    }
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_22
+     * @description
+     *  mixed patterns are transformed into interleave patterns between their unique child pattern and a text pattern.
+     */
+    step_22() {
+        this.traverse(function step_22_mixed(node) {
+            var interleave = this.createElement('interleave');
+            forEach(node.childElements(), (cNode) => { interleave.addChild(cNode.clone()) });
+            interleave.addChild(this.createElement('text'));
+            node.replaceNode(interleave);
+            return interleave;
+        }, 'mixed');
+    }
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_23
+     * @description
+     * optional patterns are transformed into choice patterns between their unique child pattern and an empty pattern.
+     */
+    step_23() {
+        this.traverse(function step_23_optional(node) {
+            var choice = this.createElement('choice');
+            forEach(node.childElements(), (cNode) => { choice.addChild(cNode.clone()) });
+            choice.addChild(this.createElement('empty'));
+            node.replaceNode(choice);
+            return choice;
+        }, 'optional');
+    }
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_24
+     * @description
+     * zeroOrMore patterns are transformed into choice patterns between a oneOrMore pattern including their unique child pattern and an empty pattern.
+     */
+    step_24() {
+        this.traverse(function step_24_zeroOrMore(node) {
+            var choice = this.createElement('choice'),
+                oneOrMore = this.createElement('oneOrMore');
+            forEach(node.childElements(), (cNode) => { oneOrMore.addChild(cNode.clone()) });
+            choice.addChild(oneOrMore);
+            choice.addChild(this.createElement('empty'));
+            node.replaceNode(choice);
+            return choice;
+        }, 'zeroOrMore');
+    }
+    /**
+     * @since 0.0.1
      * @method NgSchema#simplify
      * @description
-     * Simplify schema
+     * Simplify schema, process all steps required for simplification
      */
     simplify() {
         this.step_1();
@@ -532,6 +700,16 @@ export class NgSchema extends NgClass {
         this.step_12();
         this.step_13();
         this.step_14();
+        this.step_15();
+        this.step_16();
+        this.step_17();
+        this.step_18();
+        this.step_19();
+        this.step_20();
+        this.step_21();
+        this.step_22();
+        this.step_23();
+        this.step_24();
     }
 
     /**
@@ -696,16 +874,62 @@ export class NgSchema extends NgClass {
      * @description
      * Convert schema to string
      */
-    toString(complex) {
-        if (this.schema.isDocumentNode()) {
-            if (!!complex) {
-                return toXML(this.complex.node);
-            }
-            return toXML(this.schema.node);
+    toString(prettyPrint, complex) {
+        var schema = this.schema, clone;
+        if (prettyPrint) {
+            clone = this.clone();
+            clone.traverse(function prettifyTraverse(node) {
+                var count = getNodeDeepLevel(node),  parent = node.parentNode(), space;
+                if (!parent.isDocumentNode()) {
+                    space = createWhiteSpace(count);
+                    parent.insertBefore(node.createTextNode("\n"), node);
+                    parent.insertBefore(node.createTextNode(space), node);
+                    if (node.hasChildElements()) {
+                        node.addChild(node.createTextNode("\n"+space), node);
+                    }
+                } else {
+                    node.addChild(node.createTextNode("\n"), node);
+                }
+            });
+            schema = clone.schema;
         }
+        if (schema.isDocumentNode()) {
+            if (!!complex) {
+                return toXML(schema.node);
+            }
+            return toXML(schema.node);
+        }
+        /**
+         * Return false if fail
+         */
         return false;
+        /**
+         * Create whitespace
+         * @param indent
+         * @returns {*}
+         */
+        function createWhiteSpace(indent) {
+            var str = "";
+            while(indent > 0) {
+                str += "\t";
+                --indent;
+            }
+            return str;
+        }
+        /**
+         * Get node deep level
+         * @param node
+         * @param count
+         * @returns {*}
+         */
+        function getNodeDeepLevel(node, count) {
+            var counter = count || 0;
+            if (node && node.parentNode() && !node.isDocumentNode()) {
+                return getNodeDeepLevel(node.parentNode(), ++counter);
+            }
+            return counter;
+        }
     }
-
     /**
      * @since 0.0.1
      * @method NgSchema#destroy

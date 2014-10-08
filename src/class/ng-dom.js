@@ -192,6 +192,19 @@ export class NgDOM extends NgClass{
     }
     /**
      * @since 0.0.1
+     * @method NgDOM#createTextNode
+     * @description
+     * Create an text node
+     */
+    createTextNode(str) {
+        var doc = this.getDocument();
+        if (doc && doc.isDocumentNode()) {
+            return this.getInstance(doc.node.createTextNode(str));
+        }
+        throw new NgError('Element is not attached to document node');
+    }
+    /**
+     * @since 0.0.1
      * @method NgDOM#createElement
      * @description
      * Create element from current document
@@ -659,6 +672,32 @@ export class NgDOM extends NgClass{
             return this.node.hasChildNodes();
         }
        return false;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#hasChildElements
+     * @description
+     * Get information if node have children
+     * @return boolean
+     */
+    hasChildElements() {
+        if (this.node) {
+            return this.node.childElementCount > 0;
+        }
+        return false;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#getChildElementCount
+     * @description
+     * Get information if node have children
+     * @return boolean
+     */
+    getChildElementCount() {
+        if (this.node) {
+            return this.node.childElementCount;
+        }
+        return 0;
     }
     /**
     * @since 0.0.1

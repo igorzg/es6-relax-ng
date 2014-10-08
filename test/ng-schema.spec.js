@@ -477,7 +477,7 @@ describe('NgSchema', function () {
             xmlDoc = data;
         }, false);
         var schemaInstance = clone(xmlDoc);
-        schemaInstance.config.removeWhiteSpace = false;
+       // schemaInstance.config.removeWhiteSpace = false;
         schemaInstance.step_1();
         schemaInstance.step_2();
         schemaInstance.step_3();
@@ -500,6 +500,367 @@ describe('NgSchema', function () {
         expect(el.type).toBe('name');
         expect(el.getValue()).toBe('card');
     });
+
+
+    it('step_15  each div element is replaced by its children.', function() {
+        getXML('/base/test/xml/step_15/schema.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        //schemaInstance.config.removeWhiteSpace = false;
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+        schemaInstance.step_14();
+        schemaInstance.step_15();
+
+        var el = schemaInstance.querySelector('zeroOrMore'), el1, el2, el3, el4;
+        expect(el.type).toBe('zeroOrMore');
+        el1 = el.firstElementChild();
+        expect(el1.type).toBe('element');
+        el1 = el1.firstElementChild();
+        el2 = el1.nextElementSibling();
+        el3 = el2.nextElementSibling();
+        el4 = el3.nextElementSibling();
+        expect(el1.type).toBe('name');
+        expect(el2.type).toBe('choice');
+        expect(el3.type).toBe('element');
+        expect(el4.type).toBe('optional');
+    });
+
+    it('step_16  oneOrMore, zeroOrMore, optional', function() {
+        getXML('/base/test/xml/schema_3.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        //schemaInstance.config.removeWhiteSpace = false;
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+        schemaInstance.step_14();
+        schemaInstance.step_15();
+        schemaInstance.step_16();
+
+        var all = schemaInstance.querySelectorAll(['define', 'oneOrMore', 'zeroOrMore', 'optional', 'list', 'mixed'].join(','));
+        expect(all.length).toBe(10);
+        all.forEach(function(node) {
+           expect(node.getChildElementCount()).toBe(1);
+        });
+    });
+
+
+    it('step_17  element must have exact two child elements first is name and rest', function() {
+        getXML('/base/test/xml/schema_3.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        //schemaInstance.config.removeWhiteSpace = false;
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+        schemaInstance.step_14();
+        schemaInstance.step_15();
+        schemaInstance.step_16();
+        schemaInstance.step_17();
+
+        var all = schemaInstance.querySelectorAll('element');
+        var expectCard = false;
+        expect(all.length).toBe(14);
+        all.forEach(function(node) {
+            var fc = node.firstElementChild();
+            expect(fc.type).toBe('name');
+            if (fc.getValue() === 'card') {
+                expectCard = true;
+                expect(fc.nextElementSibling().type).toBe('group');
+            }
+            expect(node.getChildElementCount()).toBe(2);
+        });
+        expect(expectCard).toBe(true);
+    });
+
+
+    it('step_18 except children wrap with choice if more than 1 child', function() {
+        getXML('/base/test/xml/schema_3.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        //schemaInstance.config.removeWhiteSpace = false;
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+        schemaInstance.step_14();
+        schemaInstance.step_15();
+        schemaInstance.step_16();
+        schemaInstance.step_17();
+        schemaInstance.step_18();
+        var el = schemaInstance.querySelector('except');
+        expect(el.firstElementChild().type).toBe('choice');
+    });
+
+
+    it('step_19 attribute', function() {
+        getXML('/base/test/xml/schema_3.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        ///schemaInstance.config.removeWhiteSpace = false;
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+        schemaInstance.step_14();
+        schemaInstance.step_15();
+        schemaInstance.step_16();
+        schemaInstance.step_17();
+        schemaInstance.step_18();
+        schemaInstance.step_19();
+
+        var all = schemaInstance.querySelectorAll('attribute');
+        expect(all.length).toBe(3);
+        all.forEach(function(node) {
+            expect(node.getChildElementCount()).toBe(2);
+        });
+    });
+
+
+    it('step_20 choice, group or interleave element', function() {
+        getXML('/base/test/xml/schema_3.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        ///schemaInstance.config.removeWhiteSpace = false;
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+        schemaInstance.step_14();
+        schemaInstance.step_15();
+        schemaInstance.step_16();
+        schemaInstance.step_17();
+        schemaInstance.step_18();
+        schemaInstance.step_19();
+        var el = schemaInstance.querySelector('ref[name="foreign-elements"]');
+        expect(el.type).toBe('ref');
+        expect(el.parentNode().type).toBe('choice');
+        schemaInstance.step_20();
+        var all = schemaInstance.querySelectorAll(['choice', 'group', 'interleave'].join(','));
+        expect(all.length).toBe(10);
+        all.forEach(function(node) {
+            expect(node.getChildElementCount() > 1).toBe(true);
+        });
+
+        el = schemaInstance.querySelector('ref[name="foreign-elements"]');
+        expect(el.type).toBe('ref');
+        expect(el.parentNode().type).toBe('group');
+
+
+    });
+
+    it('step_21 choice, group or interleave deep transform', function() {
+        getXML('/base/test/xml/schema_3.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+        schemaInstance.step_14();
+        schemaInstance.step_15();
+        schemaInstance.step_16();
+        schemaInstance.step_17();
+        schemaInstance.step_18();
+        schemaInstance.step_19();
+        schemaInstance.step_20();
+        schemaInstance.step_21();
+
+        var all = schemaInstance.querySelectorAll(['choice', 'group', 'interleave'].join(','));
+        expect(all.length).toBe(14);
+        all.forEach(function(node) {
+            expect(node.getChildElementCount()).toBe(2);
+        });
+
+    });
+
+    it('step_22 mixed patterns are transformed', function() {
+        getXML('/base/test/xml/schema_3.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+        schemaInstance.step_14();
+        schemaInstance.step_15();
+        schemaInstance.step_16();
+        schemaInstance.step_17();
+        schemaInstance.step_18();
+        schemaInstance.step_19();
+        schemaInstance.step_20();
+        schemaInstance.step_21();
+        schemaInstance.step_22();
+        var all = schemaInstance.querySelectorAll('interleave');
+        expect(all.length).toBe(2);
+        all.forEach(function(node) {
+            expect(node.getChildElementCount()).toBe(2);
+        });
+    });
+
+
+
+    it('step_23 optional is transformed to choice', function() {
+        getXML('/base/test/xml/schema_3.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+        schemaInstance.step_14();
+        schemaInstance.step_15();
+        schemaInstance.step_16();
+        schemaInstance.step_17();
+        schemaInstance.step_18();
+        schemaInstance.step_19();
+        schemaInstance.step_20();
+        schemaInstance.step_21();
+        schemaInstance.step_22();
+        var all = schemaInstance.querySelectorAll('optional');
+        expect(all.length).toBe(2);
+        schemaInstance.step_23();
+        all = schemaInstance.querySelectorAll('optional');
+        expect(all.length).toBe(0);
+
+        all = schemaInstance.querySelectorAll('choice');
+        expect(all.length).toBe(7);
+        all.forEach(function(node) {
+            expect(node.getChildElementCount()).toBe(2);
+        });
+    });
+
+
+    it('step_24 optional is transformed to choice', function() {
+        getXML('/base/test/xml/schema_3.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+        schemaInstance.step_14();
+        schemaInstance.step_15();
+        schemaInstance.step_16();
+        schemaInstance.step_17();
+        schemaInstance.step_18();
+        schemaInstance.step_19();
+        schemaInstance.step_20();
+        schemaInstance.step_21();
+        schemaInstance.step_22();
+        schemaInstance.step_23();
+        var all = schemaInstance.querySelectorAll('zeroOrMore');
+        expect(all.length).toBe(4);
+        schemaInstance.step_24();
+        all = schemaInstance.querySelectorAll('zeroOrMore');
+        expect(all.length).toBe(0);
+        all =  schemaInstance.querySelectorAll('oneOrMore');
+        expect(all.length).toBe(4);
+        //console.log(schemaInstance.toString(true));
+    });
 });
-
-
