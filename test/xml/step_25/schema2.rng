@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <rng:start>
+        <rng:ref name="id"/>
+    </rng:start>
+    <rng:define name="id" combine="interleave">
+        <rng:element name="addressBook">
+            <rng:attribute name="attrAddressBook">
+                <rng:value>asdasd</rng:value>
+            </rng:attribute>
+            <rng:zeroOrMore>
+                <rng:element name="card">
+                    <rng:choice>
+                        <rng:mixed>
+                            <rng:zeroOrMore>
+                                <rng:element name="fnote1">
+                                    <rng:mixed>
+                                        <rng:zeroOrMore>
+                                            <rng:element name="fnote4">
+                                                <rng:text/>
+                                            </rng:element>
+                                        </rng:zeroOrMore>
+                                    </rng:mixed>
+                                </rng:element>
+                            </rng:zeroOrMore>
+                        </rng:mixed>
+                        <rng:element name="name">
+                            <rng:text/>
+                        </rng:element>
+                        <rng:element name="name2">
+                            <rng:text/>
+                        </rng:element>
+                        <rng:group>
+                            <rng:element name="givenName">
+                                <rng:text/>
+                            </rng:element>
+                            <rng:element name="familyName">
+                                <rng:text/>
+                            </rng:element>
+                        </rng:group>
+                    </rng:choice>
+                    <rng:element name="email">
+                        <rng:text/>
+                    </rng:element>
+                    <rng:optional>
+                        <rng:element name="note">
+                            <rng:text/>
+                        </rng:element>
+                    </rng:optional>
+                </rng:element>
+                <rng:element name="valid">
+                    <rng:text/>
+                </rng:element>
+                <rng:mixed>
+                    <rng:zeroOrMore>
+                        <rng:element name="fnote2">
+                            <rng:text/>
+                        </rng:element>
+                    </rng:zeroOrMore>
+                </rng:mixed>
+            </rng:zeroOrMore>
+        </rng:element>
+    </rng:define>
+    <rng:define name="id" combine="interleave">
+        <rng:optional>
+            <rng:element name="combine1">
+                <rng:text/>
+            </rng:element>
+            <rng:element name="combine1_1">
+                <rng:text/>
+            </rng:element>
+            <rng:mixed>
+                <rng:zeroOrMore>
+                    <rng:element name="combine1_2">
+                        <rng:text/>
+                    </rng:element>
+                </rng:zeroOrMore>
+            </rng:mixed>
+        </rng:optional>
+    </rng:define>
+    <rng:define name="id" combine="interleave">
+        <rng:optional>
+            <rng:element name="combine2">
+                <rng:text/>
+            </rng:element>
+            <rng:element name="combine2_1">
+                <rng:text/>
+            </rng:element>
+            <rng:mixed>
+                <rng:zeroOrMore>
+                    <rng:element name="combine2_2">
+                        <rng:text/>
+                    </rng:element>
+                </rng:zeroOrMore>
+            </rng:mixed>
+        </rng:optional>
+    </rng:define>
+</rng:grammar>
+

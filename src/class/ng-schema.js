@@ -600,6 +600,9 @@ export class NgSchema extends NgClass {
             if (node.hasChildElements() && node.getChildElementCount() === 1) {
                 node.unwrap();
                 return parent;
+            } else if (!node.hasChildElements()) {
+                node.remove();
+                return parent;
             }
         }, ['choice', 'group', 'interleave']);
     }
@@ -681,9 +684,150 @@ export class NgSchema extends NgClass {
     }
     /**
      * @since 0.0.1
+     * @method NgSchema#step_25
+     * @description
+     * In each grammar, multiple define elements with the same
+     * name are combined as defined by their combine attribute.
+     */
+    step_25() {
+        var nodes = [], allowed = ['interleave', 'choice'], item, node, wrap;
+        /**
+         * Collect nodes which needs to be combined
+         */
+        this.traverse(function step_25_combine(node) {
+            var obj, name, combine;
+            if (node.hasAttribute("combine")) {
+                combine = node.getAttribute("combine");
+                if (allowed.indexOf(combine) === -1) {
+                    throw new NgError('invalid combine value on node: {0}, allowed are "{1}"', node.toString(), allowed.join(','));
+                }
+                name = node.getAttribute("name");
+                obj = query(nodes, name, node.type);
+                if (obj) {
+                    if (obj.combine !== combine) {
+                        throw new NgError('nodes with same name must have same combine attribute: {0}, {1}', node.toString(), obj.node.toString());
+                    }
+                    if (obj.combineWith.indexOf(node) === -1) {
+                        obj.combineWith.push(node);
+                    }
+                } else {
+                    nodes.push({
+                        name: name,
+                        type: node.type,
+                        combine: combine,
+                        node: node,
+                        combineWith : []
+                    });
+                }
+
+            }
+        }, ['define', 'start']);
+
+        /**
+         * Combine nodes loop
+         */
+        while (item = nodes.shift()) {
+            node = item.node;
+            node.removeAttribute('combine');
+            if (item.combineWith.length === 0) {
+                continue;
+            }
+            wrap = this.createElement(item.combine);
+            node.wrapChildren(wrap);
+            item.combineWith.forEach((cNode) => {wrap.addChild(cNode); cNode.unwrap();});
+            clean(item);
+        }
+        /**
+         * Process step 21 and 20 in reverse order
+         */
+        this.step_21();
+        this.step_20();
+        /**
+         * Query
+         * @param obj
+         * @param name
+         * @param type
+         * @returns {*}
+         */
+        function query(obj, name, type) {
+            return obj.filter((item) => { return item.name === name && item.type === type; }).shift();
+        }
+    }
+
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_26
+     * @description
+     * ParentRef elements are replaced by ref elements.
+     */
+    step_26() {
+        this.traverse(function step_26_parentRef(node) {
+            var parent = node.parentNode(),
+                ref = this.createElement('ref');
+            ref.setAttribute('name', node.getAttribute('name'));
+            node.replaceNode(ref);
+            return parent;
+        }, 'parentRef');
+    }
+
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_26
+     * @description
+     * For each element that isn't the unique child of a define element,
+     * a named pattern is created to embed its definition.
+     *
+     * For each named pattern that isn't embedded, a single element pattern is suppressed.
+     * References to this named pattern are replaced by its definition.
+     */
+     step_27() {
+        this.traverse(function step_27_define_replace_ref(node) {
+            var parent = node.parentNode(),
+                fc = node.firstElementChild(),
+                name;
+            if (!this.matchNode(fc, 'element')) {
+                name = node.getAttribute('name');
+                this.traverse(function findRefs(cNode) {
+                    var cName = cNode.getAttribute('name'), clone, cPnode;
+                    if (cName === name) {
+                        cPnode = cNode.parentNode();
+                        clone = node.clone();
+                        cNode.replaceNode(clone);
+                        clone.unwrap();
+                        return cPnode;
+                    }
+                }, 'ref');
+                node.remove();
+                return parent;
+            }
+        }, 'define');
+    }
+
+
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_28
+     * @description
+     * Recursively escalate notAllowed patterns, when they are located where their effect is such that
+     * their parent pattern itself is notAllowed.
+     *
+     * Remove choices that are notAllowed.
+     *
+     * (Note that this simplification doesn't cross element boundaries, so element foo { notAllowed }
+     * isn't transformed into notAllowed.)
+     *
+     * Remove empty elements that have no effect.
+     *
+     * Move useful empty elements so that they are the first child in choice elements.
+     */
+    step_28() {
+
+    }
+    /**
+     * @since 0.0.1
      * @method NgSchema#simplify
      * @description
-     * Simplify schema, process all steps required for simplification
+     * Simplify schema
      */
     simplify() {
         this.step_1();
@@ -710,6 +854,9 @@ export class NgSchema extends NgClass {
         this.step_22();
         this.step_23();
         this.step_24();
+        this.step_25();
+        this.step_26();
+        this.step_27();
     }
 
     /**

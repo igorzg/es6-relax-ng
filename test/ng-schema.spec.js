@@ -863,4 +863,287 @@ describe('NgSchema', function () {
         expect(all.length).toBe(4);
         //console.log(schemaInstance.toString(true));
     });
+
+    it('step_25 combine choice', function() {
+        getXML('/base/test/xml/step_25/schema.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var key = 'choice';
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+        schemaInstance.step_14();
+        schemaInstance.step_15();
+        schemaInstance.step_16();
+        schemaInstance.step_17();
+        schemaInstance.step_18();
+        schemaInstance.step_19();
+        schemaInstance.step_20();
+        schemaInstance.step_21();
+        schemaInstance.step_22();
+        schemaInstance.step_23();
+        schemaInstance.step_24();
+        var all = schemaInstance.querySelectorAll('define');
+        expect(all.length).toBe(3);
+        all.forEach(function(node) {
+            expect(node.getAttribute('combine')).toBe(key);
+        });
+        schemaInstance.step_25();
+        all = schemaInstance.querySelectorAll('define');
+        expect(all.length).toBe(1);
+        var el = schemaInstance.querySelector('define[name=id]');
+        expect(el.type).toBe('define');
+        var fc = el.firstElementChild();
+        expect(fc.type).toBe(key);
+        expect(fc.getChildElementCount()).toBe(2);
+        fc.childElements().forEach(function(item) {
+            expect(item.type).toBe(key);
+        });
+        //console.log(schemaInstance.toString(true));
+    });
+    it('step_25 combine interleave', function() {
+        getXML('/base/test/xml/step_25/schema2.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var key = 'interleave';
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+        schemaInstance.step_14();
+        schemaInstance.step_15();
+        schemaInstance.step_16();
+        schemaInstance.step_17();
+        schemaInstance.step_18();
+        schemaInstance.step_19();
+        schemaInstance.step_20();
+        schemaInstance.step_21();
+        schemaInstance.step_22();
+        schemaInstance.step_23();
+        schemaInstance.step_24();
+        var all = schemaInstance.querySelectorAll('define');
+        expect(all.length).toBe(3);
+        all.forEach(function(node) {
+            expect(node.getAttribute('combine')).toBe(key);
+        });
+        schemaInstance.step_25();
+        all = schemaInstance.querySelectorAll('define');
+        expect(all.length).toBe(1);
+        var el = schemaInstance.querySelector('define[name=id]');
+        expect(el.type).toBe('define');
+        var fc = el.firstElementChild();
+        expect(fc.type).toBe(key);
+        expect(fc.getChildElementCount()).toBe(2);
+        expect(fc.firstElementChild().type).toBe(key);
+        expect(fc.lastElementChild().type).toBe('choice');
+
+        //console.log(schemaInstance.toString(true));
+    });
+
+    it('step_25 combine invalid', function() {
+        getXML('/base/test/xml/step_25/schema_invalid.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var error = false;
+        var key = 'NgSchema traverse: nodes with same name must have same combine attribute: <rng:define xmlns:rng="http://relaxng.org/ns/structure/1.0" name="id" combine="interleave"><rng:choice><rng:group><rng:group><rng:element><rng:name ns="">combine2</rng:name><rng:text/></rng:element><rng:element><rng:name ns="">combine2_1</rng:name><rng:text/></rng:element></rng:group><rng:interleave><rng:choice><rng:oneOrMore><rng:element><rng:name ns="">combine2_2</rng:name><rng:text/></rng:element></rng:oneOrMore><rng:empty/></rng:choice><rng:text/></rng:interleave></rng:group><rng:empty/></rng:choice></rng:define>, <rng:define xmlns:rng="http://relaxng.org/ns/structure/1.0" name="id" combine="choice"><rng:element><rng:name ns="">addressBook</rng:name><rng:group><rng:attribute><rng:name ns="">attrAddressBook</rng:name><rng:value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="token" ns="">asdasd</rng:value></rng:attribute><rng:choice><rng:oneOrMore><rng:group><rng:group><rng:element><rng:name ns="">card</rng:name><rng:group><rng:group><rng:choice><rng:choice><rng:choice><rng:interleave><rng:choice><rng:oneOrMore><rng:element><rng:name ns="">fnote1</rng:name><rng:interleave><rng:choice><rng:oneOrMore><rng:element><rng:name ns="">fnote4</rng:name><rng:text/></rng:element></rng:oneOrMore><rng:empty/></rng:choice><rng:text/></rng:interleave></rng:element></rng:oneOrMore><rng:empty/></rng:choice><rng:text/></rng:interleave><rng:element><rng:name ns="">name</rng:name><rng:text/></rng:element></rng:choice><rng:element><rng:name ns="">name2</rng:name><rng:text/></rng:element></rng:choice><rng:group><rng:element><rng:name ns="">givenName</rng:name><rng:text/></rng:element><rng:element><rng:name ns="">familyName</rng:name><rng:text/></rng:element></rng:group></rng:choice><rng:element><rng:name ns="">email</rng:name><rng:text/></rng:element></rng:group><rng:choice><rng:element><rng:name ns="">note</rng:name><rng:text/></rng:element><rng:empty/></rng:choice></rng:group></rng:element><rng:element><rng:name ns="">valid</rng:name><rng:text/></rng:element></rng:group><rng:interleave><rng:choice><rng:oneOrMore><rng:element><rng:name ns="">fnote2</rng:name><rng:text/></rng:element></rng:oneOrMore><rng:empty/></rng:choice><rng:text/></rng:interleave></rng:group></rng:oneOrMore><rng:empty/></rng:choice></rng:group></rng:element></rng:define>';
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+        schemaInstance.step_14();
+        schemaInstance.step_15();
+        schemaInstance.step_16();
+        schemaInstance.step_17();
+        schemaInstance.step_18();
+        schemaInstance.step_19();
+        schemaInstance.step_20();
+        schemaInstance.step_21();
+        schemaInstance.step_22();
+        schemaInstance.step_23();
+        schemaInstance.step_24();
+        try {
+            schemaInstance.step_25();
+        } catch (e) {
+            error = true;
+            expect(e.message).toBe(key);
+        }
+        expect(error).toBe(true);
+
+
+        //console.log(schemaInstance.toString(true));
+    });
+
+    it('step_25 combine invalid 2', function() {
+        getXML('/base/test/xml/step_25/schema_invalid2.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        var error = false;
+        var key = 'NgSchema traverse: invalid combine value on node: <rng:define xmlns:rng="http://relaxng.org/ns/structure/1.0" name="id" combine="choice2"><rng:element><rng:name ns="">addressBook</rng:name><rng:group><rng:attribute><rng:name ns="">attrAddressBook</rng:name><rng:value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="token" ns="">asdasd</rng:value></rng:attribute><rng:choice><rng:oneOrMore><rng:group><rng:group><rng:element><rng:name ns="">card</rng:name><rng:group><rng:group><rng:choice><rng:choice><rng:choice><rng:interleave><rng:choice><rng:oneOrMore><rng:element><rng:name ns="">fnote1</rng:name><rng:interleave><rng:choice><rng:oneOrMore><rng:element><rng:name ns="">fnote4</rng:name><rng:text/></rng:element></rng:oneOrMore><rng:empty/></rng:choice><rng:text/></rng:interleave></rng:element></rng:oneOrMore><rng:empty/></rng:choice><rng:text/></rng:interleave><rng:element><rng:name ns="">name</rng:name><rng:text/></rng:element></rng:choice><rng:element><rng:name ns="">name2</rng:name><rng:text/></rng:element></rng:choice><rng:group><rng:element><rng:name ns="">givenName</rng:name><rng:text/></rng:element><rng:element><rng:name ns="">familyName</rng:name><rng:text/></rng:element></rng:group></rng:choice><rng:element><rng:name ns="">email</rng:name><rng:text/></rng:element></rng:group><rng:choice><rng:element><rng:name ns="">note</rng:name><rng:text/></rng:element><rng:empty/></rng:choice></rng:group></rng:element><rng:element><rng:name ns="">valid</rng:name><rng:text/></rng:element></rng:group><rng:interleave><rng:choice><rng:oneOrMore><rng:element><rng:name ns="">fnote2</rng:name><rng:text/></rng:element></rng:oneOrMore><rng:empty/></rng:choice><rng:text/></rng:interleave></rng:group></rng:oneOrMore><rng:empty/></rng:choice></rng:group></rng:element></rng:define>, allowed are "interleave,choice"';
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+        schemaInstance.step_14();
+        schemaInstance.step_15();
+        schemaInstance.step_16();
+        schemaInstance.step_17();
+        schemaInstance.step_18();
+        schemaInstance.step_19();
+        schemaInstance.step_20();
+        schemaInstance.step_21();
+        schemaInstance.step_22();
+        schemaInstance.step_23();
+        schemaInstance.step_24();
+        try {
+            schemaInstance.step_25();
+        } catch (e) {
+            error = true;
+            expect(e.message).toBe(key);
+        }
+        expect(error).toBe(true);
+        //console.log(schemaInstance.toString(true));
+    });
+
+    it('step_26 replace parentRef', function() {
+        getXML('/base/test/xml/step_26/schema.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+       var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+        schemaInstance.step_14();
+        schemaInstance.step_15();
+        schemaInstance.step_16();
+        schemaInstance.step_17();
+        schemaInstance.step_18();
+        schemaInstance.step_19();
+        schemaInstance.step_20();
+        schemaInstance.step_21();
+        schemaInstance.step_22();
+        schemaInstance.step_23();
+        schemaInstance.step_24();
+        schemaInstance.step_25();
+        var el = schemaInstance.querySelector('parentRef[name=id2]');
+        expect(el.type).toBe('parentRef');
+        var el2 = schemaInstance.querySelector('ref[name=id2]');
+        expect(el2).toBe(null);
+        schemaInstance.step_26();
+        el = schemaInstance.querySelector('parentRef[name=id2]');
+        expect(el).toBe(null);
+        el2 = schemaInstance.querySelector('ref[name=id2]');
+        expect(el2.type).toBe('ref');
+
+        //console.log(schemaInstance.toString(true));
+    });
+
+    it('step_27 replace refs', function() {
+        var xmlDoc2;
+        getXML('/base/test/xml/step_27/schema.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        getXML('/base/test/xml/step_27/result.rng', function (data) {
+            xmlDoc2 = data;
+        }, false);
+        var schemaInstanceResult = clone(xmlDoc2);
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.step_1();
+        schemaInstance.step_2();
+        schemaInstance.step_3();
+        schemaInstance.step_4();
+        schemaInstance.step_5();
+        schemaInstance.step_6();
+        schemaInstance.step_7();
+        schemaInstance.step_8();
+        schemaInstance.step_9();
+        schemaInstance.step_10();
+        schemaInstance.step_11();
+        schemaInstance.step_12();
+        schemaInstance.step_13();
+        schemaInstance.step_14();
+        schemaInstance.step_15();
+        schemaInstance.step_16();
+        schemaInstance.step_17();
+        schemaInstance.step_18();
+        schemaInstance.step_19();
+        schemaInstance.step_20();
+        schemaInstance.step_21();
+        schemaInstance.step_22();
+        schemaInstance.step_23();
+        schemaInstance.step_24();
+        schemaInstance.step_25();
+        schemaInstance.step_26();
+        var el = schemaInstance.querySelector('ref[name=id2]');
+        expect(el.type).toBe('ref');
+        var el2 = schemaInstance.querySelector('ref[name=id3]');
+        expect(el2.type).toBe('ref');
+        var el3 = schemaInstance.querySelector('ref[name=id4]');
+        expect(el3.type).toBe('ref');
+        var all = schemaInstance.querySelectorAll('define');
+        expect(all.length).toBe(4);
+        schemaInstance.step_27();
+
+        el = schemaInstance.querySelector('ref[name=id2]');
+        expect(el).toBe(null);
+        el2 = schemaInstance.querySelector('ref[name=id3]');
+        expect(el2).toBe(null);
+        el3 = schemaInstance.querySelector('ref[name=id4]');
+        expect(el3.type).toBe('ref');
+        all = schemaInstance.querySelectorAll('define');
+        expect(all.length).toBe(2);
+
+        expect(schemaInstance.toString(true)).toBe(schemaInstance.toString(true));
+        console.log(schemaInstance.toString(true));
+    });
 });

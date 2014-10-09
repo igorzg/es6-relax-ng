@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?><rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <rng:start>
+        <rng:ref name="id"/>
+    </rng:start>
+    <rng:define name="id">
+        <rng:element>
+            <rng:name ns="">addressBook</rng:name>
+            <rng:group>
+                <rng:attribute>
+                    <rng:name ns="">attrAddressBook</rng:name>
+                    <rng:value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="token" ns="">asdasd</rng:value>
+                </rng:attribute>
+                <rng:choice>
+                    <rng:oneOrMore>
+                        <rng:element>
+                            <rng:name ns="">card</rng:name>
+                            <rng:group>
+                                <rng:group>
+                                    <rng:choice>
+                                        <rng:element>
+                                            <rng:name ns="">name</rng:name>
+                                            <rng:text/>
+                                        </rng:element>
+                                        <rng:group>
+                                            <rng:group>
+                                                <rng:element>
+                                                    <rng:name ns="">givenName</rng:name>
+                                                    <rng:text/>
+                                                </rng:element>
+                                                <rng:element>
+                                                    <rng:name ns="">familyName</rng:name>
+                                                    <rng:text/>
+                                                </rng:element>
+                                            </rng:group>
+                                            <rng:choice>
+                                                <rng:group>
+                                                    <rng:group>
+                                                        <rng:element>
+                                                            <rng:name ns="">combine1</rng:name>
+                                                            <rng:text/>
+                                                        </rng:element>
+                                                        <rng:element>
+                                                            <rng:name ns="">combine1_1</rng:name>
+                                                            <rng:text/>
+                                                        </rng:element>
+                                                    </rng:group>
+                                                    <rng:interleave>
+                                                        <rng:choice>
+                                                            <rng:oneOrMore>
+                                                                <rng:element>
+                                                                    <rng:name ns="">combine1_2</rng:name>
+                                                                    <rng:text/>
+                                                                </rng:element>
+                                                            </rng:oneOrMore>
+                                                            <rng:empty/>
+                                                        </rng:choice>
+                                                        <rng:text/>
+                                                    </rng:interleave>
+                                                </rng:group>
+                                                <rng:empty/>
+                                            </rng:choice>
+                                        </rng:group>
+                                    </rng:choice>
+                                    <rng:element>
+                                        <rng:name ns="">email</rng:name>
+                                        <rng:text/>
+                                    </rng:element>
+                                </rng:group>
+                                <rng:choice>
+                                    <rng:group>
+                                        <rng:group>
+                                            <rng:choice>
+                                                <rng:group>
+                                                    <rng:group>
+                                                        <rng:element>
+                                                            <rng:name ns="">combine1</rng:name>
+                                                            <rng:text/>
+                                                        </rng:element>
+                                                        <rng:element>
+                                                            <rng:name ns="">combine1_1</rng:name>
+                                                            <rng:text/>
+                                                        </rng:element>
+                                                    </rng:group>
+                                                    <rng:interleave>
+                                                        <rng:choice>
+                                                            <rng:oneOrMore>
+                                                                <rng:element>
+                                                                    <rng:name ns="">combine1_2</rng:name>
+                                                                    <rng:text/>
+                                                                </rng:element>
+                                                            </rng:oneOrMore>
+                                                            <rng:empty/>
+                                                        </rng:choice>
+                                                        <rng:text/>
+                                                    </rng:interleave>
+                                                </rng:group>
+                                                <rng:empty/>
+                                            </rng:choice>
+                                            <rng:element>
+                                                <rng:name ns="">note</rng:name>
+                                                <rng:text/>
+                                            </rng:element>
+                                        </rng:group>
+                                        <rng:ref name="id4"/>
+                                    </rng:group>
+                                    <rng:empty/>
+                                </rng:choice>
+                            </rng:group>
+                        </rng:element>
+                    </rng:oneOrMore>
+                    <rng:empty/>
+                </rng:choice>
+            </rng:group>
+        </rng:element>
+    </rng:define>
+    <rng:define name="id4">
+        <rng:element>
+            <rng:name ns="">combine1</rng:name>
+            <rng:text/>
+        </rng:element>
+    </rng:define>
+</rng:grammar>
