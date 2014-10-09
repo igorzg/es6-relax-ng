@@ -62,6 +62,6 @@ module.exports = function (config) {
         plugins: [
             'karma-*'
         ],
-        browserNoActivityTimeout: 1000000
+        browserNoActivityTimeout: 100000000
     });
 };

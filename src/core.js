@@ -24,31 +24,6 @@ const NOTATION_NODE = 12;
  * @type {Function}
  */
 var toString = Object.prototype.toString;
-/**
- * Used by next uid
- * @type {string[]}
- */
-var uid = 0;
-
-/**
- * @license  2014
- * @since 0.0.1
- * @author Igor Ivanovic
- * @name nextUid
- * @global
- * @function nextUid
- * @return {string} unique id
- * @description
- * Creates uniqe id
- * @example
- * nextUid();
- */
-export function nextUid() {
-    if (uid > Number.POSITIVE_INFINITY) {
-        uid = 0;
-    }
-    return ++uid;
-}
 
 /**
  * @license  2014

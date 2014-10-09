@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?><rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <rng:start>
+        <rng:group>
+            <rng:element>
+                <rng:name ns="">addressBook</rng:name>
+                <rng:group>
+                    <rng:attribute>
+                        <rng:name ns="">attrAddressBook</rng:name>
+                        <rng:value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="token" ns="">asdasd</rng:value>
+                    </rng:attribute>
+                    <rng:choice>
+                        <rng:oneOrMore>
+                            <rng:group>
+                                <rng:element>
+                                    <rng:name ns="">card</rng:name>
+                                    <rng:group>
+                                        <rng:group>
+                                            <rng:choice>
+                                                <rng:choice>
+                                                    <rng:choice>
+                                                        <rng:interleave>
+                                                            <rng:choice>
+                                                                <rng:oneOrMore>
+                                                                    <rng:element>
+                                                                        <rng:name ns="">fnote1</rng:name>
+                                                                        <rng:interleave>
+                                                                            <rng:choice>
+                                                                                <rng:oneOrMore>
+                                                                                    <rng:element>
+                                                                                        <rng:name ns="">fnote2</rng:name>
+                                                                                        <rng:text/>
+                                                                                    </rng:element>
+                                                                                </rng:oneOrMore>
+                                                                                <rng:empty/>
+                                                                            </rng:choice>
+                                                                            <rng:text/>
+                                                                        </rng:interleave>
+                                                                    </rng:element>
+                                                                </rng:oneOrMore>
+                                                                <rng:empty/>
+                                                            </rng:choice>
+                                                            <rng:text/>
+                                                        </rng:interleave>
+                                                        <rng:element>
+                                                            <rng:name ns="">name</rng:name>
+                                                            <rng:text/>
+                                                        </rng:element>
+                                                    </rng:choice>
+                                                    <rng:element>
+                                                        <rng:name ns="">name2</rng:name>
+                                                        <rng:text/>
+                                                    </rng:element>
+                                                </rng:choice>
+                                                <rng:group>
+                                                    <rng:element>
+                                                        <rng:name ns="">givenName</rng:name>
+                                                        <rng:text/>
+                                                    </rng:element>
+                                                    <rng:element>
+                                                        <rng:name ns="">familyName</rng:name>
+                                                        <rng:text/>
+                                                    </rng:element>
+                                                </rng:group>
+                                            </rng:choice>
+                                            <rng:element>
+                                                <rng:name ns="">email</rng:name>
+                                                <rng:text/>
+                                            </rng:element>
+                                        </rng:group>
+                                        <rng:choice>
+                                            <rng:element>
+                                                <rng:name ns="">note</rng:name>
+                                                <rng:text/>
+                                            </rng:element>
+                                            <rng:empty/>
+                                        </rng:choice>
+                                    </rng:group>
+                                </rng:element>
+                                <rng:element>
+                                    <rng:name ns="">valid3</rng:name>
+                                    <rng:text/>
+                                </rng:element>
+                            </rng:group>
+                        </rng:oneOrMore>
+                        <rng:empty/>
+                    </rng:choice>
+                </rng:group>
+            </rng:element>
+            <rng:choice>
+                <rng:group>
+                    <rng:element>
+                        <rng:name ns="">valid</rng:name>
+                        <rng:group>
+                            <rng:text/>
+                            <rng:attribute>
+                                <rng:name ns="">validattr</rng:name>
+                                <rng:text/>
+                            </rng:attribute>
+                        </rng:group>
+                    </rng:element>
+                    <rng:element>
+                        <rng:name ns="">valid2</rng:name>
+                        <rng:group>
+                            <rng:text/>
+                            <rng:choice>
+                                <rng:oneOrMore>
+                                    <rng:element>
+                                        <rng:name ns="">musthave</rng:name>
+                                        <rng:attribute>
+                                            <rng:anyName>
+                                                <rng:except>
+                                                    <rng:choice>
+                                                        <rng:choice>
+                                                            <rng:nsName ns=""/>
+                                                            <rng:nsName ns="http://igorivanovic.info/javascript"/>
+                                                        </rng:choice>
+                                                        <rng:nsName ns="http://igorivanovic.info/ns"/>
+                                                    </rng:choice>
+                                                </rng:except>
+                                            </rng:anyName>
+                                            <rng:text/>
+                                        </rng:attribute>
+                                    </rng:element>
+                                </rng:oneOrMore>
+                                <rng:empty/>
+                            </rng:choice>
+                        </rng:group>
+                    </rng:element>
+                </rng:group>
+                <rng:empty/>
+            </rng:choice>
+        </rng:group>
+    </rng:start>
+</rng:grammar>

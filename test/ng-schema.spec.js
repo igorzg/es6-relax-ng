@@ -1093,10 +1093,8 @@ describe('NgSchema', function () {
         getXML('/base/test/xml/step_27/schema.rng', function (data) {
             xmlDoc = data;
         }, false);
-        getXML('/base/test/xml/step_27/result.rng', function (data) {
-            xmlDoc2 = data;
-        }, false);
-        var schemaInstanceResult = clone(xmlDoc2);
+
+
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -1143,7 +1141,23 @@ describe('NgSchema', function () {
         all = schemaInstance.querySelectorAll('define');
         expect(all.length).toBe(2);
 
-        expect(schemaInstance.toString(true)).toBe(schemaInstance.toString(true));
-        console.log(schemaInstance.toString(true));
+        ///console.log(schemaInstance.toString(true));
+    });
+
+
+
+    it('step_28 - step_ 30 - cleanup', function() {
+        var xmlDoc2;
+        getXML('/base/test/xml/schema_3.rng', function (data) {
+            xmlDoc = data;
+        }, false);
+        getXML('/base/test/xml/schema_3_result.rng', function (data) {
+            xmlDoc2 = data;
+        }, false);
+        var schemaInstanceResult = clone(xmlDoc2);
+        schemaInstanceResult.step_8();
+        var schemaInstance = clone(xmlDoc);
+        schemaInstance.simplify();
+        expect(schemaInstance.toString(true)).toBe(schemaInstanceResult.toString(true));
     });
 });

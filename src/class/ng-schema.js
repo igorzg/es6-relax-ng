@@ -393,7 +393,7 @@ export class NgSchema extends NgClass {
                 if (datatypeUrl) {
                     node.setAttribute("datatypeLibrary", datatypeUrl);
                 }
-                if (node.type === "value" && !node.hasAttribute("type")) {
+                if (node.is("value", this.localName) && !node.hasAttribute("type")) {
                     node.setAttribute("type", "token");
                 }
         }, ['data', 'value']);
@@ -431,7 +431,7 @@ export class NgSchema extends NgClass {
                     node.addChild(nameNode);
                 }
                 node.removeAttribute("name");
-            } else if (node.type === 'element') {
+            } else if (node.is('element', this.localName)) {
                 throw new NgError("step_11, node {0} don't have an name attribute", node.toString());
             }
         }, ["element", "attribute"]);
@@ -781,26 +781,42 @@ export class NgSchema extends NgClass {
      * References to this named pattern are replaced by its definition.
      */
      step_27() {
+        var nodes = [];
+        /**
+         * Traverse elements
+         */
         this.traverse(function step_27_define_replace_ref(node) {
             var parent = node.parentNode(),
-                fc = node.firstElementChild(),
-                name;
+                fc = node.firstElementChild();
             if (!this.matchNode(fc, 'element')) {
-                name = node.getAttribute('name');
-                this.traverse(function findRefs(cNode) {
-                    var cName = cNode.getAttribute('name'), clone, cPnode;
-                    if (cName === name) {
-                        cPnode = cNode.parentNode();
-                        clone = node.clone();
-                        cNode.replaceNode(clone);
-                        clone.unwrap();
-                        return cPnode;
-                    }
-                }, 'ref');
+                nodes.push(node.clone());
                 node.remove();
                 return parent;
             }
         }, 'define');
+        /**
+         * Traverse refs
+         */
+        this.traverse(function findRefs(cNode) {
+            var cName = cNode.getAttribute('name'), clone, cPnode, found;
+            found = nodes.filter(function filter(iNode) {
+                return iNode.getAttribute("name") === cName;
+            }).shift();
+            if (found) {
+                cPnode = cNode.parentNode();
+                clone = found.clone();
+                cNode.replaceNode(clone);
+                clone.unwrap();
+                return cPnode;
+            }
+        }, 'ref');
+        /**
+         * Destroy clones
+         */
+        nodes.forEach(function destory_clones(node) {
+            node.destroy();
+        });
+        nodes = null;
     }
 
 
@@ -821,7 +837,86 @@ export class NgSchema extends NgClass {
      * Move useful empty elements so that they are the first child in choice elements.
      */
     step_28() {
-
+        this.traverse(function step_28_cleanup(node) {
+            var fc, lc, parent;
+            if (node.getChildElementCount() === 2) {
+                parent = node.parentNode();
+                fc = node.firstElementChild();
+                lc = node.lastElementChild();
+                if (fc.is('empty', this.localName) && lc.is('empty', this.localName)) {
+                    node.replaceNode(this.createElement('empty'));
+                    return parent;
+                }
+            } else {
+                throw new NgError('invalid node number on element type {0} expected 2, number of nodes is: {1}', node.type, node.getChildElementCount());
+            }
+        }, ['group', 'interleave', 'choice']);
+    }
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_29
+     * @description
+     * Recursively escalate notAllowed patterns, when they are located where their effect is such that
+     * their parent pattern itself is notAllowed.
+     *
+     * Remove choices that are notAllowed.
+     *
+     * (Note that this simplification doesn't cross element boundaries, so element foo { notAllowed }
+     * isn't transformed into notAllowed.)
+     *
+     * Remove empty elements that have no effect.
+     *
+     * Move useful empty elements so that they are the first child in choice elements.
+     */
+    step_29() {
+        this.traverse(function step_29_cleanup(node) {
+            var fc,  parent;
+            if (node.getChildElementCount() === 1) {
+                parent = node.parentNode();
+                fc = node.firstElementChild();
+                if (fc.is('empty', this.localName)) {
+                    node.replaceNode(this.createElement('empty'));
+                    return parent;
+                }
+            } else {
+                throw new NgError('invalid node number on element type {0} expected 1, number of nodes is: {1}', node.type, node.getChildElementCount());
+            }
+        }, 'oneOrMore');
+    }
+    /**
+     * @since 0.0.1
+     * @method NgSchema#step_30
+     * @description
+     * Recursively escalate notAllowed patterns, when they are located where their effect is such that
+     * their parent pattern itself is notAllowed.
+     *
+     * Remove choices that are notAllowed.
+     *
+     * (Note that this simplification doesn't cross element boundaries, so element foo { notAllowed }
+     * isn't transformed into notAllowed.)
+     *
+     * Remove empty elements that have no effect.
+     *
+     * Move useful empty elements so that they are the first child in choice elements.
+     */
+    step_30() {
+        this.traverse(function step_28_cleanup(node) {
+            var fc, lc, parent;
+            if (node.getChildElementCount() === 2) {
+                parent = node.parentNode();
+                fc = node.firstElementChild();
+                lc = node.lastElementChild();
+                if (fc.is('empty', this.localName)) {
+                    node.replaceNode(lc.clone());
+                    return parent;
+                } else if(lc.is('empty', this.localName)) {
+                    node.replaceNode(fc.clone());
+                    return parent;
+                }
+            } else {
+                throw new NgError('invalid node number on element type {0} expected 2, number of nodes is: {1}', node.type, node.getChildElementCount());
+            }
+        }, 'group');
     }
     /**
      * @since 0.0.1
@@ -857,6 +952,9 @@ export class NgSchema extends NgClass {
         this.step_25();
         this.step_26();
         this.step_27();
+        this.step_28();
+        this.step_29();
+        this.step_30();
     }
 
     /**
@@ -894,15 +992,47 @@ export class NgSchema extends NgClass {
      * Go over tree including all nodes and execute function
      */
     traverseAll(callback, match) {
-        var node = this.schema, skip = false;
+        var node = this.schema, skip = false, result;
         try {
             while (true) {
                 if (node.firstChild() && !skip) {
                     node = node.firstChild();
-                    apply.call(this);
+                    if (isFunction(callback)) {
+                        if (match) {
+                            if (this.matchNode(node, match)) {
+                                result = callback.call(this, node);
+                                if (result && instanceOf(result, NgDOM)) {
+                                    node = result;
+                                }
+                            }
+                        } else {
+                            result = callback.call(this, node);
+                            if (result && instanceOf(result, NgDOM)) {
+                                node = result;
+                            }
+                        }
+                    } else {
+                        new NgError('callback is not function');
+                    }
                 } else if (node.nextSibling()) {
                     node = node.nextSibling();
-                    apply.call(this);
+                    if (isFunction(callback)) {
+                        if (match) {
+                            if (this.matchNode(node, match)) {
+                                result = callback.call(this, node);
+                                if (result && instanceOf(result, NgDOM)) {
+                                    node = result;
+                                }
+                            }
+                        } else {
+                            result = callback.call(this, node);
+                            if (result && instanceOf(result, NgDOM)) {
+                                node = result;
+                            }
+                        }
+                    } else {
+                        new NgError('callback is not function');
+                    }
                     skip = false;
                 } else if (node.parentNode()) {
                     node = node.parentNode();
@@ -913,27 +1043,6 @@ export class NgSchema extends NgClass {
             }
         } catch (e) {
             throw new NgError('NgSchema traverse: ' + e.message, callback.toString(), e.stack ? e.stack.toString() : e.toString());
-        }
-
-        function apply() {
-            var result;
-            if (isFunction(callback)) {
-                if (match) {
-                    if (this.matchNode(node, match)) {
-                        result = callback.call(this, node);
-                        if (result && instanceOf(result, NgDOM)) {
-                            node = result;
-                        }
-                    }
-                } else {
-                    result = callback.call(this, node);
-                    if (result && instanceOf(result, NgDOM)) {
-                        node = result;
-                    }
-                }
-            } else {
-                new NgError('callback is not function');
-            }
         }
     }
     /**
@@ -943,15 +1052,47 @@ export class NgSchema extends NgClass {
      * Go over elements and execute function
      */
     traverse(callback, match) {
-        var node = this.schema, skip = false;
+        var node = this.schema, skip = false, result;
         try {
             while (true) {
                 if (node.firstElementChild() && !skip) {
                     node = node.firstElementChild();
-                    apply.call(this);
+                    if (isFunction(callback)) {
+                        if (match) {
+                            if (this.matchNode(node, match)) {
+                                result = callback.call(this, node);
+                                if (result) {
+                                    node = result;
+                                }
+                            }
+                        } else {
+                            result = callback.call(this, node);
+                            if (result) {
+                                node = result;
+                            }
+                        }
+                    } else {
+                        throw new NgError('callback is not function');
+                    }
                 } else if (node.nextElementSibling()) {
                     node = node.nextElementSibling();
-                    apply.call(this);
+                    if (isFunction(callback)) {
+                        if (match) {
+                            if (this.matchNode(node, match)) {
+                                result = callback.call(this, node);
+                                if (result) {
+                                    node = result;
+                                }
+                            }
+                        } else {
+                            result = callback.call(this, node);
+                            if (result) {
+                                node = result;
+                            }
+                        }
+                    } else {
+                        throw new NgError('callback is not function');
+                    }
                     skip = false;
                 } else if (node.parentNode()) {
                     node = node.parentNode();
@@ -962,27 +1103,6 @@ export class NgSchema extends NgClass {
             }
         } catch (e) {
             throw new NgError('NgSchema traverse: ' + e.message, callback.toString(), e.stack ? e.stack.toString() : e.toString());
-        }
-
-        function apply() {
-            var result;
-            if (isFunction(callback)) {
-                if (match) {
-                    if (this.matchNode(node, match)) {
-                        result = callback.call(this, node);
-                        if (result && instanceOf(result, NgDOM)) {
-                            node = result;
-                        }
-                    }
-                } else {
-                    result = callback.call(this, node);
-                    if (result && instanceOf(result, NgDOM)) {
-                        node = result;
-                    }
-                }
-            } else {
-                new NgError('callback is not function');
-            }
         }
     }
     /**

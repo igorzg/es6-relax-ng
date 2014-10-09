@@ -1,6 +1,5 @@
 import {NgClass} from './ng-class';
 import {NgError} from './ng-error';
-import {NgCache} from './ng-cache';
 import {
     isNode,
     isArray,
@@ -19,11 +18,7 @@ import {
     parseXML,
     toXML
 } from '../core';
-/**
- * Cache dom
- * @type {Array}
- */
-var ngCache = new NgCache();
+
 /**
  * @license Mit Licence 2014
  * @since 0.0.1
@@ -56,9 +51,6 @@ export class NgDOM extends NgClass{
             this.typePrefix = null;
         }
         this.namespaceURI = this.node.namespaceURI;
-        // used for debugging
-        this.id = nextUid();
-        ngCache.add(this);
     }
     /**
      * @since 0.0.1
@@ -240,7 +232,6 @@ export class NgDOM extends NgClass{
             node = this.getInstance(nNode);
 
         if (doc.isDocumentNode() && instanceOf(node, NgDOM)) {
-            node.flushCache(true);
             doc.node.adoptNode(node.node);
             doc.node.importNode(node.node, true);
         } else {
@@ -311,58 +302,6 @@ export class NgDOM extends NgClass{
     }
     /**
      * @since 0.0.1
-     * @method NgDOM#destroyCache
-     * @description
-     * Clean up all references from cache
-     * @return boolean
-     */
-    flushAllCache() {
-        return ngCache.destroy();
-    }
-    /**
-     * @since 0.0.1
-     * @method NgDOM#getCacheSize
-     * @description
-     * Get cache size is used only for debugging and testing
-     * @return boolean
-     */
-    getCacheSize() {
-        return ngCache.size();
-    }
-    /**
-     * @since 0.0.1
-     * @method NgDOM#isCached
-     * @description
-     * Check if node is cached
-     * @return boolean
-     */
-    getCached(node) {
-        if (!isNode(node)) {
-            throw new NgError('Node param is not valid node at getCached in NgDOM');
-        }
-        return ngCache.filter(find);
-
-        /**
-         * Get it from cache
-         * @param obj
-         * @returns {boolean}
-         */
-        function find(obj) {
-            return obj.node === node;
-        }
-    }
-    /**
-     * @since 0.0.1
-     * @method NgDOM#isCached
-     * @description
-     * Is cached
-     * @return boolean
-     */
-    isCached() {
-        return ngCache.isCached(this);
-    }
-    /**
-     * @since 0.0.1
      * @method NgDOM#clone
      * @description
      * Clone node
@@ -399,42 +338,6 @@ export class NgDOM extends NgClass{
             parent = null;
         }
     }
-    /**
-     * @since 0.0.1
-     * @method NgDOM#flushCache
-     * @description
-     * Clear cache
-     * @return string
-     */
-    flushCache(cleanAllChildren) {
-        var node = this.node.firstChild,
-            stop = this.node,
-            skip = false,
-            obj;
-
-        ngCache.remove(this);
-
-        while (node && node !== stop) {
-            obj = this.getInstance(node, true);
-            if (obj) {
-                ngCache.remove(obj);
-                if (cleanAllChildren) {
-                    clean(obj);
-                }
-            }
-            if (node.firstChild && !skip) {
-                node = node.firstChild;
-            } else if (node.nextSibling) {
-                skip = false;
-                node = node.nextSibling;
-            } else if (node.parentNode) {
-                node = node.parentNode;
-                skip = true;
-            } else {
-                node = null;
-            }
-        }
-    }
 
 
     /**
@@ -445,7 +348,6 @@ export class NgDOM extends NgClass{
      * @return string
      */
     destroy() {
-        this.flushCache(true);
         clean(this);
     }
 
@@ -533,16 +435,13 @@ export class NgDOM extends NgClass{
      * @param {boolean|optional} avoidCreate
      * @return object instance of current class
      */
-    getInstance(node, avoidCreate) {
+    getInstance(node) {
         var doc;
         if (instanceOf(node, NgDOM)) {
             return node;
         } else if (isNode(node)) {
-            doc = this.getCached(node);
-            if (!doc && !avoidCreate) {
-                doc = new NgDOM(node);
-                doc.$document = this.getDocument();
-            }
+            doc = new NgDOM(node);
+            doc.$document = this.getDocument();
         }
         return !!doc ? doc : null;
     }
@@ -558,7 +457,6 @@ export class NgDOM extends NgClass{
             this.node.nodeValue = value;
             return true;
         } else if (this.isElementNode()) {
-            this.flushCache(true);
             if (isSafari() || isIE()) { // safari,IE
                 this.removeChildren();
                 this.addChild(this.parse(value));
