@@ -1,0 +1,1954 @@
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+    <start>
+        <ref name="article"/>
+    </start>
+    <define name="content">
+        <element name="content">
+            <group>
+
+                <optional>
+                    <ref name="title"/>
+                </optional>
+                <optional>
+                    <ref name="subtitle"/>
+                </optional>
+                <optional>
+                    <ref name="text"/>
+                </optional>
+                <optional>
+                    <ref name="reference-defs"/>
+                </optional>
+                <optional>
+                    <ref name="strapline"/>
+                </optional>
+            </group>
+        </element>
+    </define>
+    <define name="app">
+        <element name="app">
+            <group>
+                <optional>
+                    <ref name="teaser"/>
+                </optional>
+                <optional>
+                    <ref name="key-visual"/>
+                </optional>
+                <optional>
+                    <ref name="headline"/>
+                </optional>
+            </group>
+        </element>
+    </define>
+    <define name="website">
+        <element name="website">
+            <group>
+                <optional>
+                    <ref name="teaser"/>
+                </optional>
+                <optional>
+                    <ref name="key-visual"/>
+                </optional>
+            </group>
+        </element>
+    </define>
+    <define name="print">
+        <element name="print">
+            <group>
+                <optional>
+                    <ref name="teaser"/>
+                </optional>
+                <optional>
+                    <ref name="key-visual"/>
+                </optional>
+                <optional>
+                    <ref name="images"/>
+                </optional>
+            </group>
+        </element>
+    </define>
+    <define name="strapline">
+        <element name="strapline">
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="bold"/>
+                    <ref name="italic"/>
+                    <ref name="bold-italic"/>
+                    <ref name="underline"/>
+                    <ref name="sup"/>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="title">
+        <element name="title">
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="bold"/>
+                    <ref name="italic"/>
+                    <ref name="bold-italic"/>
+                    <ref name="underline"/>
+                    <ref name="sup"/>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="subtitle">
+        <element name="subtitle">
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="bold"/>
+                    <ref name="italic"/>
+                    <ref name="bold-italic"/>
+                    <ref name="underline"/>
+                    <ref name="sup"/>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="text">
+        <element name="text">
+            <group>
+                <optional>
+                    <ref name="intro"/>
+                </optional>
+                <zeroOrMore>
+                    <choice>
+                        <ref name="paragraph"/>
+                        <ref name="new-page"/>
+                        <ref name="anchor"/>
+                        <ref name="image-box"/>
+                        <ref name="video-box"/>
+                        <ref name="audio-box"/>
+                        <ref name="slideshow-box"/>
+                        <ref name="image-reveal-box"/>
+                        <ref name="turntable-box"/>
+                        <ref name="interactive-element-box"/>
+                        <ref name="x-external-content-box"/>
+                        <ref name="subheadline-1"/>
+                        <ref name="subheadline-2"/>
+                        <ref name="subheadline-3"/>
+                        <ref name="enumeration"/>
+                        <ref name="bullet-list"/>
+                        <ref name="conversation"/>
+                        <ref name="group"/>
+                        <ref name="callout"/>
+                        <ref name="pre"/>
+                        <ref name="hdivider"/>
+                        <ref name="callout-box"/>
+                        <ref name="table"/>
+                        <ref name="article"/>
+                    </choice>
+                </zeroOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="reference-defs">
+        <element name="reference-defs">
+            <zeroOrMore>
+                <ref name="reference-def"/>
+            </zeroOrMore>
+        </element>
+    </define>
+    <define name="reference-def">
+        <element name="reference-def">
+            <ref name="attlist.reference-def"/>
+            <ref name="reference-description"/>
+        </element>
+    </define>
+    <define name="attlist.reference-def">
+        <optional>
+            <attribute name="key"/>
+        </optional>
+        <optional>
+            <attribute name="type">
+                <choice>
+                    <value>footnote</value>
+                    <value>literature</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="teaser">
+        <element name="teaser">
+            <group>
+
+                <optional>
+                    <ref name="title"/>
+                </optional>
+                <optional>
+                    <ref name="teaser-text"/>
+                </optional>
+                <optional>
+                    <ref name="image"/>
+                </optional>
+                <optional>
+                    <ref name="strapline"/>
+                </optional>
+            </group>
+        </element>
+    </define>
+    <define name="teaser-text">
+        <element name="teaser-text">
+
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="link"/>
+                    <ref name="marker"/>
+                    <ref name="bold"/>
+                    <ref name="italic"/>
+                    <ref name="bold-italic"/>
+                    <ref name="underline"/>
+                    <ref name="sup"/>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="key-visual">
+        <element name="key-visual">
+
+            <ref name="attlist.key-visual"/>
+            <group>
+                <optional>
+                    <choice>
+                        <ref name="image"/>
+                        <ref name="video"/>
+                        <ref name="audio"/>
+                        <ref name="slideshow"/>
+                        <ref name="interactive-element"/>
+                        <ref name="image-reveal"/>
+                        <ref name="turntable"/>
+                        <ref name="image-range"/>
+                        <ref name="layout"/>
+                        <ref name="gallery"/>
+                    </choice>
+                </optional>
+                <optional>
+                    <ref name="poster"/>
+                </optional>
+                <optional>
+                    <ref name="caption"/>
+                </optional>
+                <optional>
+                    <ref name="key-visual-text-options"/>
+                </optional>
+            </group>
+        </element>
+    </define>
+    <define name="attlist.key-visual">
+        <optional>
+            <attribute name="type" >
+                <choice>
+                    <value>none</value>
+                    <value>image</value>
+                    <value>video</value>
+                    <value>audio</value>
+                    <value>slideshow</value>
+                    <value>interactive-element</value>
+                    <value>image-reveal</value>
+                    <value>turntable</value>
+                    <value>image-range</value>
+                    <value>layout</value>
+                    <value>gallery</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="display">
+                <choice>
+                    <value>inline</value>
+                    <value>fullscreen</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="distance-top">
+                <choice>
+                    <value>true</value>
+                    <value>false</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="key-visual-text-options">
+        <element name="key-visual-text-options">
+
+            <ref name="attlist.key-visual-text-options"/>
+        </element>
+    </define>
+    <define name="attlist.key-visual-text-options">
+        <optional>
+            <attribute name="position" >
+                <choice>
+                    <value>none</value>
+                    <value>on-top</value>
+                    <value>hotspot</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="width"/>
+        </optional>
+        <optional>
+            <attribute name="position-origin" >
+                <choice>
+                    <value>top-left</value>
+                    <value>top-right</value>
+                    <value>bottom-left</value>
+                    <value>bottom-right</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="x-position"/>
+        </optional>
+        <optional>
+            <attribute name="y-position"/>
+        </optional>
+        <optional>
+            <attribute name="background-color"/>
+        </optional>
+        <optional>
+            <attribute name="background-opacity"/>
+        </optional>
+        <optional>
+            <attribute name="text-color"/>
+        </optional>
+        <optional>
+            <attribute name="text-opacity"/>
+        </optional>
+    </define>
+    <define name="headline">
+        <element name="headline">
+
+            <ref name="attlist.headline"/>
+        </element>
+    </define>
+    <define name="attlist.headline">
+        <optional>
+            <attribute name="position">
+                <choice>
+                    <value>none</value>
+                    <value>below</value>
+                    <value>above</value>
+                    <value>on-top</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="width"/>
+        </optional>
+        <optional>
+            <attribute name="position-origin">
+                <choice>
+                    <value>top-left</value>
+                    <value>top-right</value>
+                    <value>bottom-left</value>
+                    <value>bottom-right</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="x-position"/>
+        </optional>
+        <optional>
+            <attribute name="y-position"/>
+        </optional>
+        <optional>
+            <attribute name="background-color"/>
+        </optional>
+        <optional>
+            <attribute name="background-opacity"/>
+        </optional>
+        <optional>
+            <attribute name="text-color"/>
+        </optional>
+        <optional>
+            <attribute name="text-opacity"/>
+        </optional>
+    </define>
+    <define name="images">
+        <element name="images">
+
+            <zeroOrMore>
+                <ref name="image-box"/>
+            </zeroOrMore>
+        </element>
+    </define>
+    <define name="paragraph">
+        <element name="paragraph">
+
+            <ref name="attlist.paragraph"/>
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="link"/>
+                    <ref name="marker"/>
+                    <ref name="bold"/>
+                    <ref name="italic"/>
+                    <ref name="bold-italic"/>
+                    <ref name="underline"/>
+                    <ref name="sup"/>
+                    <ref name="sub"/>
+                    <ref name="reference"/>
+                    <ref name="footnote"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="attlist.paragraph">
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                    <value>style-4</value>
+                    <value>style-5</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="subheadline-1">
+        <element name="subheadline-1">
+
+            <ref name="attlist.subheadline-1"/>
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="bold"/>
+                    <ref name="italic"/>
+                    <ref name="bold-italic"/>
+                    <ref name="underline"/>
+                    <ref name="sup"/>
+                    <ref name="sub"/>
+                    <ref name="reference"/>
+                    <ref name="footnote"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="attlist.subheadline-1">
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="subheadline-2">
+        <element name="subheadline-2">
+
+            <ref name="attlist.subheadline-2"/>
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="bold"/>
+                    <ref name="italic"/>
+                    <ref name="bold-italic"/>
+                    <ref name="underline"/>
+                    <ref name="sup"/>
+                    <ref name="sub"/>
+                    <ref name="reference"/>
+                    <ref name="footnote"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="attlist.subheadline-2">
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="subheadline-3">
+        <element name="subheadline-3">
+
+            <ref name="attlist.subheadline-3"/>
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="bold"/>
+                    <ref name="italic"/>
+                    <ref name="bold-italic"/>
+                    <ref name="underline"/>
+                    <ref name="sup"/>
+                    <ref name="sub"/>
+                    <ref name="reference"/>
+                    <ref name="footnote"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="attlist.subheadline-3">
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="bullet-list">
+        <element name="bullet-list">
+
+            <ref name="attlist.bullet-list"/>
+            <oneOrMore>
+                <ref name="item"/>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="attlist.bullet-list">
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="enumeration">
+        <element name="enumeration">
+
+            <ref name="attlist.enumeration"/>
+            <oneOrMore>
+                <ref name="item"/>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="attlist.enumeration">
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="item">
+        <element name="item">
+
+            <oneOrMore>
+                <choice>
+                    <ref name="paragraph"/>
+                    <ref name="anchor"/>
+                    <ref name="image-box"/>
+                    <ref name="enumeration"/>
+                    <ref name="bullet-list"/>
+                    <ref name="pre"/>
+                    <ref name="article"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="pre">
+        <element name="pre">
+
+            <ref name="attlist.pre"/>
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="link"/>
+                    <ref name="marker"/>
+                    <ref name="bold"/>
+                    <ref name="italic"/>
+                    <ref name="bold-italic"/>
+                    <ref name="underline"/>
+                    <ref name="sup"/>
+                    <ref name="sub"/>
+                    <ref name="reference"/>
+                    <ref name="footnote"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="attlist.pre">
+        <attribute name="code-type">
+            <choice>
+                <value>application/javascript</value>
+                <value>application/x-freemarker</value>
+                <value>application/x-java</value>
+                <value>application/x-perl</value>
+                <value>application/x-php</value>
+                <value>application/x-python</value>
+                <value>application/x-ruby</value>
+                <value>application/xhtml+xml</value>
+                <value>application/xslt+xml</value>
+                <value>image/svg+xml</value>
+                <value>text/css</value>
+                <value>text/html</value>
+                <value>text/plain</value>
+                <value>text/x-xpress</value>
+                <value>text/xml</value>
+            </choice>
+        </attribute>
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="group">
+        <element name="group">
+
+            <ref name="attlist.group"/>
+            <oneOrMore>
+                <choice>
+                    <ref name="paragraph"/>
+                    <ref name="image-box"/>
+                    <ref name="video-box"/>
+                    <ref name="audio-box"/>
+                    <ref name="slideshow-box"/>
+                    <ref name="image-reveal-box"/>
+                    <ref name="turntable-box"/>
+                    <ref name="interactive-element-box"/>
+                    <ref name="x-external-content-box"/>
+                    <ref name="subheadline-1"/>
+                    <ref name="subheadline-2"/>
+                    <ref name="subheadline-3"/>
+                    <ref name="enumeration"/>
+                    <ref name="bullet-list"/>
+                    <ref name="conversation"/>
+                    <ref name="hdivider"/>
+                    <ref name="additional-content"/>
+                    <ref name="callout"/>
+                    <ref name="table"/>
+                    <ref name="pre"/>
+                    <ref name="article"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="attlist.group">
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="intro">
+        <element name="intro">
+            <ref name="attlist.intro"/>
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="link"/>
+                    <ref name="marker"/>
+                    <ref name="bold"/>
+                    <ref name="italic"/>
+                    <ref name="bold-italic"/>
+                    <ref name="underline"/>
+                    <ref name="sup"/>
+                    <ref name="sub"/>
+                    <ref name="reference"/>
+                    <ref name="footnote"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="attlist.intro">
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="image-box">
+        <element name="image-box">
+            <ref name="attlist.image-box"/>
+            <group>
+                <ref name="image"/>
+                <optional>
+                    <ref name="caption"/>
+                </optional>
+            </group>
+        </element>
+    </define>
+    <define name="attlist.image-box">
+        <optional>
+            <attribute name="placement-category"/>
+        </optional>
+        <optional>
+            <attribute name="sorting"/>
+        </optional>
+        <optional>
+            <attribute name="zoom">
+                <choice>
+                    <value>true</value>
+                    <value>false</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="link"/>
+        </optional>
+        <optional>
+            <attribute name="align">
+                <choice>
+                    <value>left</value>
+                    <value>right</value>
+                    <value>center</value>
+                    <value>sidebar</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="image">
+        <element name="image">
+            <ref name="attlist.image"/>
+        </element>
+    </define>
+    <define name="attlist.image">
+        <optional>
+            <attribute name="aspect-ratio">
+                <choice>
+                    <value>16-9</value>
+                    <value>4-3</value>
+                    <value>3-4</value>
+                    <value>1-1</value>
+                    <value>flexible</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="alt-text"/>
+        </optional>
+        <optional>
+            <attribute name="seo-title"/>
+        </optional>
+    </define>
+    <define name="video-box">
+        <element name="video-box">
+            <ref name="attlist.video-box"/>
+            <group>
+                <ref name="video"/>
+                <ref name="poster"/>
+                <optional>
+                    <ref name="caption"/>
+                </optional>
+            </group>
+        </element>
+    </define>
+    <define name="attlist.video-box">
+        <optional>
+            <attribute name="display">
+                <choice>
+                    <value>inline</value>
+                    <value>fullscreen</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="align">
+                <choice>
+                    <value>left</value>
+                    <value>right</value>
+                    <value>center</value>
+                    <value>sidebar</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="video">
+        <element name="video">
+            <ref name="attlist.video"/>
+        </element>
+    </define>
+    <define name="attlist.video">
+        <optional>
+            <attribute name="aspect-ratio">
+                <choice>
+                    <value>16-9</value>
+                    <value>4-3</value>
+                    <value>3-4</value>
+                    <value>1-1</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="autoplay">
+                <choice>
+                    <value>true</value>
+                    <value>false</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="offline-available">
+                <choice>
+                    <value>true</value>
+                    <value>false</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="slideshow-box">
+        <element name="slideshow-box">
+            <ref name="attlist.slideshow-box"/>
+            <group>
+                <ref name="slideshow"/>
+                <ref name="poster"/>
+                <optional>
+                    <ref name="caption"/>
+                </optional>
+            </group>
+        </element>
+    </define>
+    <define name="attlist.slideshow-box">
+        <optional>
+            <attribute name="display">
+                <choice>
+                    <value>inline</value>
+                    <value>fullscreen</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="align">
+                <choice>
+                    <value>left</value>
+                    <value>right</value>
+                    <value>center</value>
+                    <value>sidebar</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="slideshow">
+        <element name="slideshow">
+            <ref name="attlist.slideshow"/>
+        </element>
+    </define>
+    <define name="attlist.slideshow">
+        <optional>
+            <attribute name="aspect-ratio" >
+                <choice>
+                    <value>16-9</value>
+                    <value>4-3</value>
+                    <value>3-4</value>
+                    <value>1-1</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="autoplay" >
+                <choice>
+                    <value>true</value>
+                    <value>false</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="start-slide"/>
+        </optional>
+    </define>
+    <define name="interactive-element-box">
+        <element name="interactive-element-box">
+
+            <ref name="attlist.interactive-element-box"/>
+            <group>
+                <ref name="interactive-element"/>
+                <ref name="poster"/>
+                <optional>
+                    <ref name="caption"/>
+                </optional>
+            </group>
+        </element>
+    </define>
+    <define name="attlist.interactive-element-box">
+        <optional>
+            <attribute name="display" >
+                <choice>
+                    <value>inline</value>
+                    <value>fullscreen</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="align" >
+                <choice>
+                    <value>left</value>
+                    <value>right</value>
+                    <value>center</value>
+                    <value>sidebar</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="interactive-element">
+        <element name="interactive-element">
+
+            <empty/>
+        </element>
+    </define>
+    <define name="audio-box">
+        <element name="audio-box">
+
+            <ref name="attlist.audio-box"/>
+            <group>
+                <ref name="audio"/>
+                <ref name="poster"/>
+                <optional>
+                    <ref name="caption"/>
+                </optional>
+            </group>
+        </element>
+    </define>
+    <define name="attlist.audio-box">
+        <optional>
+            <attribute name="align" >
+                <choice>
+                    <value>left</value>
+                    <value>right</value>
+                    <value>center</value>
+                    <value>sidebar</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="audio">
+        <element name="audio">
+
+            <ref name="attlist.audio"/>
+        </element>
+    </define>
+    <define name="attlist.audio">
+        <optional>
+            <attribute name="autoplay" >
+                <choice>
+                    <value>true</value>
+                    <value>false</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="offline-available" >
+                <choice>
+                    <value>true</value>
+                    <value>false</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="x-external-content-box">
+        <element name="x-external-content-box">
+
+            <ref name="attlist.x-external-content-box"/>
+            <zeroOrMore>
+                <choice>
+                    <ref name="paragraph"/>
+                    <ref name="anchor"/>
+                    <ref name="image-box"/>
+                    <ref name="video-box"/>
+                    <ref name="audio-box"/>
+                    <ref name="slideshow-box"/>
+                    <ref name="image-reveal-box"/>
+                    <ref name="turntable-box"/>
+                    <ref name="interactive-element-box"/>
+                    <ref name="subheadline-1"/>
+                    <ref name="subheadline-2"/>
+                    <ref name="subheadline-3"/>
+                    <ref name="enumeration"/>
+                    <ref name="bullet-list"/>
+                    <ref name="hdivider"/>
+                    <ref name="callout"/>
+                    <ref name="table"/>
+                    <ref name="pre"/>
+                    <ref name="article"/>
+                </choice>
+            </zeroOrMore>
+        </element>
+    </define>
+    <define name="attlist.x-external-content-box">
+        <optional>
+            <attribute name="url"/>
+        </optional>
+        <optional>
+            <attribute name="url-fragment"/>
+        </optional>
+        <optional>
+            <attribute name="width"/>
+        </optional>
+        <optional>
+            <attribute name="height"/>
+        </optional>
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="image-range-box">
+        <element name="image-range-box">
+
+            <ref name="attlist.image-range-box"/>
+            <ref name="image-range"/>
+        </element>
+    </define>
+    <define name="attlist.image-range-box">
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="image-range">
+        <element name="image-range">
+            <ref name="attlist.image-range"/>
+        </element>
+    </define>
+    <define name="attlist.image-range">
+        <optional>
+            <attribute name="aspect-ratio" >
+                <choice>
+                    <value>16-9</value>
+                    <value>4-3</value>
+                    <value>3-4</value>
+                    <value>1-1</value>
+                    <value>flexible</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="display-image-captions" >
+                <choice>
+                    <value>false</value>
+                    <value>true</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="link" >
+                <choice>
+                    <value>none</value>
+                    <value>slideshow</value>
+                    <value>related-content</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="style" >
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="image-reveal-box">
+        <element name="image-reveal-box">
+
+            <ref name="attlist.image-reveal-box"/>
+            <group>
+                <ref name="image-reveal"/>
+                <ref name="poster"/>
+                <optional>
+                    <ref name="caption"/>
+                </optional>
+            </group>
+        </element>
+    </define>
+    <define name="attlist.image-reveal-box">
+        <optional>
+            <attribute name="display" >
+                <choice>
+                    <value>inline</value>
+                    <value>fullscreen</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="align" >
+                <choice>
+                    <value>left</value>
+                    <value>right</value>
+                    <value>center</value>
+                    <value>sidebar</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="image-reveal">
+        <element name="image-reveal">
+
+            <ref name="attlist.image-reveal"/>
+        </element>
+    </define>
+    <define name="attlist.image-reveal">
+        <optional>
+            <attribute name="aspect-ratio" >
+                <choice>
+                    <value>16-9</value>
+                    <value>4-3</value>
+                    <value>3-4</value>
+                    <value>1-1</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="turntable-box">
+        <element name="turntable-box">
+
+            <ref name="attlist.turntable-box"/>
+            <group>
+                <ref name="turntable"/>
+                <ref name="poster"/>
+                <optional>
+                    <ref name="caption"/>
+                </optional>
+            </group>
+        </element>
+    </define>
+    <define name="attlist.turntable-box">
+        <optional>
+            <attribute name="display" >
+                <choice>
+                    <value>inline</value>
+                    <value>fullscreen</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="align" >
+                <choice>
+                    <value>left</value>
+                    <value>right</value>
+                    <value>center</value>
+                    <value>sidebar</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="turntable">
+        <element name="turntable">
+            <empty/>
+        </element>
+    </define>
+    <define name="callout-box">
+        <element name="callout-box">
+            <ref name="attlist.callout-box"/>
+            <oneOrMore>
+                <choice>
+                    <ref name="image-box"/>
+                    <ref name="video-box"/>
+                    <ref name="audio-box"/>
+                    <ref name="slideshow-box"/>
+                    <ref name="interactive-element-box"/>
+                    <ref name="image-reveal-box"/>
+                    <ref name="turntable-box"/>
+                    <ref name="image-range-box"/>
+                    <ref name="x-external-content-box"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="attlist.callout-box">
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="layout">
+        <element name="layout">
+            <empty/>
+        </element>
+    </define>
+    <define name="gallery">
+        <element name="gallery">
+            <ref name="attlist.gallery"/>
+        </element>
+    </define>
+    <define name="attlist.gallery">
+        <optional>
+            <attribute name="background-color"/>
+        </optional>
+    </define>
+    <define name="callout">
+        <element name="callout">
+            <ref name="attlist.callout"/>
+            <group>
+                <oneOrMore>
+                    <choice>
+                        <ref name="paragraph"/>
+                        <ref name="article"/>
+                    </choice>
+                </oneOrMore>
+                <optional>
+                    <ref name="caption"/>
+                </optional>
+            </group>
+        </element>
+    </define>
+    <define name="attlist.callout">
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="caption">
+        <element name="caption">
+            <ref name="attlist.caption"/>
+            <group>
+                <optional>
+                    <ref name="title"/>
+                </optional>
+                <zeroOrMore>
+                    <choice>
+                        <ref name="paragraph"/>
+                        <ref name="enumeration"/>
+                        <ref name="bullet-list"/>
+                        <ref name="article"/>
+                    </choice>
+                </zeroOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="attlist.caption">
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="poster">
+        <element name="poster">
+            <ref name="attlist.poster"/>
+        </element>
+    </define>
+    <define name="attlist.poster">
+        <optional>
+            <attribute name="aspect-ratio" >
+                <choice>
+                    <value>16-9</value>
+                    <value>4-3</value>
+                    <value>3-4</value>
+                    <value>1-1</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="alt-text"/>
+        </optional>
+        <optional>
+            <attribute name="seo-title"/>
+        </optional>
+    </define>
+    <define name="table">
+        <element name="table">
+
+            <ref name="attlist.table"/>
+            <group>
+                <optional>
+                    <ref name="table-caption"/>
+                </optional>
+                <ref name="colspec"/>
+                <oneOrMore>
+                    <ref name="row"/>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="attlist.table">
+        <optional>
+            <attribute name="header-row-count"/>
+        </optional>
+        <optional>
+            <attribute name="footer-row-count"/>
+        </optional>
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="colspec">
+        <element name="colspec">
+
+            <oneOrMore>
+                <ref name="col"/>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="col">
+        <element name="col">
+
+            <ref name="attlist.col"/>
+        </element>
+    </define>
+    <define name="attlist.col">
+        <optional>
+            <attribute name="width"/>
+        </optional>
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="row">
+        <element name="row">
+
+            <ref name="attlist.row"/>
+            <oneOrMore>
+                <ref name="cell"/>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="attlist.row">
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="cell">
+        <element name="cell">
+
+            <ref name="attlist.cell"/>
+            <zeroOrMore>
+                <choice>
+                    <ref name="paragraph"/>
+                    <ref name="anchor"/>
+                    <ref name="image-box"/>
+                    <ref name="video-box"/>
+                    <ref name="audio-box"/>
+                    <ref name="slideshow-box"/>
+                    <ref name="image-reveal-box"/>
+                    <ref name="turntable-box"/>
+                    <ref name="interactive-element-box"/>
+                    <ref name="x-external-content-box"/>
+                    <ref name="subheadline-1"/>
+                    <ref name="subheadline-2"/>
+                    <ref name="subheadline-3"/>
+                    <ref name="enumeration"/>
+                    <ref name="bullet-list"/>
+                    <ref name="hdivider"/>
+                    <ref name="callout"/>
+                    <ref name="table"/>
+                    <ref name="pre"/>
+                    <ref name="article"/>
+                </choice>
+            </zeroOrMore>
+        </element>
+    </define>
+    <define name="attlist.cell">
+        <optional>
+            <attribute name="colspan"/>
+        </optional>
+        <optional>
+            <attribute name="rowspan"/>
+        </optional>
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="table-caption">
+        <element name="table-caption">
+            <ref name="attlist.table-caption"/>
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="link"/>
+                    <ref name="marker"/>
+                    <ref name="bold"/>
+                    <ref name="italic"/>
+                    <ref name="bold-italic"/>
+                    <ref name="underline"/>
+                    <ref name="sup"/>
+                    <ref name="sub"/>
+                    <ref name="reference"/>
+                    <ref name="footnote"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="attlist.table-caption">
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="conversation">
+        <element name="conversation">
+            <ref name="attlist.conversation"/>
+            <oneOrMore>
+                <group>
+                    <oneOrMore>
+                        <ref name="conversation-item"/>
+                    </oneOrMore>
+                    <zeroOrMore>
+                        <choice>
+                            <ref name="image-box"/>
+                            <ref name="video-box"/>
+                            <ref name="audio-box"/>
+                            <ref name="slideshow-box"/>
+                            <ref name="interactive-element-box"/>
+                            <ref name="turntable-box"/>
+                            <ref name="image-reveal-box"/>
+                            <ref name="x-external-content-box"/>
+                            <ref name="hdivider"/>
+                            <ref name="callout"/>
+                            <ref name="callout-box"/>
+                            <ref name="new-page"/>
+                            <ref name="anchor"/>
+                        </choice>
+                    </zeroOrMore>
+                </group>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="attlist.conversation">
+        <optional>
+            <attribute name="type" >
+                <choice>
+                    <value>faq</value>
+                    <value>interview</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="conversation-item">
+        <element name="conversation-item">
+
+            <group>
+                <ref name="question"/>
+                <oneOrMore>
+                    <ref name="answer"/>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="question">
+        <element name="question">
+
+            <ref name="attlist.question"/>
+            <group>
+                <optional>
+                    <ref name="person"/>
+                </optional>
+                <oneOrMore>
+                    <ref name="paragraph"/>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="attlist.question">
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="answer">
+        <element name="answer">
+
+            <ref name="attlist.answer"/>
+            <group>
+                <optional>
+                    <ref name="person"/>
+                </optional>
+                <oneOrMore>
+                    <choice>
+                        <ref name="paragraph"/>
+                        <ref name="anchor"/>
+                        <ref name="image-box"/>
+                        <ref name="video-box"/>
+                        <ref name="audio-box"/>
+                        <ref name="slideshow-box"/>
+                        <ref name="image-reveal-box"/>
+                        <ref name="turntable-box"/>
+                        <ref name="interactive-element-box"/>
+                        <ref name="x-external-content-box"/>
+                        <ref name="subheadline-1"/>
+                        <ref name="subheadline-2"/>
+                        <ref name="subheadline-3"/>
+                        <ref name="enumeration"/>
+                        <ref name="bullet-list"/>
+                        <ref name="hdivider"/>
+                        <ref name="callout"/>
+                        <ref name="table"/>
+                        <ref name="pre"/>
+                        <ref name="article"/>
+                    </choice>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="attlist.answer">
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="person">
+        <element name="person">
+
+            <text/>
+        </element>
+    </define>
+    <define name="additional-content">
+        <element name="additional-content">
+
+            <ref name="attlist.additional-content"/>
+            <oneOrMore>
+                <choice>
+                    <ref name="paragraph"/>
+                    <ref name="image-box"/>
+                    <ref name="video-box"/>
+                    <ref name="audio-box"/>
+                    <ref name="slideshow-box"/>
+                    <ref name="interactive-element-box"/>
+                    <ref name="x-external-content-box"/>
+                    <ref name="enumeration"/>
+                    <ref name="bullet-list"/>
+                    <ref name="turntable-box"/>
+                    <ref name="image-reveal-box"/>
+                    <ref name="subheadline-1"/>
+                    <ref name="subheadline-2"/>
+                    <ref name="subheadline-3"/>
+                    <ref name="hdivider"/>
+                    <ref name="callout"/>
+                    <ref name="article"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="attlist.additional-content">
+        <optional>
+            <attribute name="align" >
+                <choice>
+                    <value>left</value>
+                    <value>right</value>
+                    <value>center</value>
+                    <value>sidebar</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="article">
+        <element name="article">
+
+            <group>
+                <optional>
+                    <zeroOrMore>
+                        <ref name="content"/>
+                    </zeroOrMore>
+                </optional>
+                <optional>
+                    <ref name="app"/>
+                </optional>
+                <optional>
+                    <ref name="website"/>
+                </optional>
+                <optional>
+                    <ref name="print"/>
+                </optional>
+            </group>
+        </element>
+    </define>
+    <define name="reference-description">
+        <element name="reference-description">
+
+            <ref name="attlist.reference-description"/>
+            <zeroOrMore>
+                <choice>
+                    <ref name="paragraph"/>
+                    <ref name="enumeration"/>
+                    <ref name="bullet-list"/>
+                </choice>
+            </zeroOrMore>
+        </element>
+    </define>
+    <define name="attlist.reference-description">
+        <optional>
+            <attribute name="label"/>
+        </optional>
+    </define>
+    <define name="bold">
+        <element name="bold">
+
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="underline"/>
+                    <ref name="sup"/>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="italic">
+        <element name="italic">
+
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="underline"/>
+                    <ref name="sup"/>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="bold-italic">
+        <element name="bold-italic">
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="underline"/>
+                    <ref name="sup"/>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="link">
+        <element name="link">
+            <ref name="attlist.link"/>
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="bold"/>
+                    <ref name="italic"/>
+                    <ref name="bold-italic"/>
+                    <ref name="underline"/>
+                    <ref name="sup"/>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="attlist.link">
+        <optional>
+            <attribute name="url"/>
+        </optional>
+        <optional>
+            <attribute name="url-fragment"/>
+        </optional>
+        <optional>
+            <attribute name="target" >
+                <choice>
+                    <value>self</value>
+                    <value>new-window</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="follow" >
+                <choice>
+                    <value>follow</value>
+                    <value>no-follow</value>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="seo-title"/>
+        </optional>
+    </define>
+    <define name="marker">
+        <element name="marker">
+            <ref name="attlist.marker"/>
+            <text/>
+        </element>
+    </define>
+    <define name="attlist.marker">
+        <optional>
+            <attribute name="semantics">
+                <choice>
+                    <value>emphasized</value>
+                    <value>strong</value>
+                    <value>small</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="hdivider">
+        <element name="hdivider">
+            <ref name="attlist.hdivider"/>
+        </element>
+    </define>
+    <define name="attlist.hdivider">
+        <optional>
+            <attribute name="style">
+                <choice>
+                    <value>style-1</value>
+                    <value>style-2</value>
+                    <value>style-3</value>
+                </choice>
+            </attribute>
+        </optional>
+    </define>
+    <define name="anchor">
+        <element name="anchor">
+            <ref name="attlist.anchor"/>
+        </element>
+    </define>
+    <define name="attlist.anchor">
+        <optional>
+            <attribute name="key"/>
+        </optional>
+    </define>
+    <define name="reference">
+        <element name="reference">
+            <ref name="attlist.reference"/>
+        </element>
+    </define>
+    <define name="attlist.reference">
+        <optional>
+            <attribute name="key"/>
+        </optional>
+        <optional>
+            <attribute name="label"/>
+        </optional>
+    </define>
+    <define name="footnote">
+        <element name="footnote">
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="bold"/>
+                    <ref name="italic"/>
+                    <ref name="bold-italic"/>
+                    <ref name="underline"/>
+                    <ref name="sup"/>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="sub">
+        <element name="sub">
+            <text/>
+        </element>
+    </define>
+    <define name="sup">
+        <element name="sup">
+            <text/>
+        </element>
+    </define>
+    <define name="underline">
+        <element name="underline">
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="sup"/>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="new-page">
+        <element name="new-page">
+            <optional>
+                <choice>
+                    <ref name="layout-1"/>
+                    <ref name="layout-2"/>
+                    <ref name="layout-3"/>
+                    <ref name="layout-4"/>
+                </choice>
+            </optional>
+        </element>
+    </define>
+    <define name="layout-1">
+        <element name="layout-1">
+            <empty/>
+        </element>
+    </define>
+    <define name="layout-2">
+        <element name="layout-2">
+
+            <empty/>
+        </element>
+    </define>
+    <define name="layout-3">
+        <element name="layout-3">
+
+            <empty/>
+        </element>
+    </define>
+    <define name="layout-4">
+        <element name="layout-4">
+
+            <empty/>
+        </element>
+    </define>
+</grammar>
+

@@ -2,21 +2,19 @@ import {NgDOM} from '../src/class/ng-dom';
 import {getXML, isNode, isNumber,  isMozilla, isDocumentFragmentNode} from '../src/core';
 
 describe('NgDOM', function () {
-    var xmlDoc, xmlDoc2;
+    var xmlDoc, xmlDoc2, test = false;
 
-    function clone(xmlDoc) {
-        var dom = new NgDOM(xmlDoc);
+    function clone(doc) {
+        var dom = new NgDOM(doc);
         var clone = dom.clone();
         dom.destroy();
         return clone;
     }
     beforeEach(function () {
-        getXML('/base/test/xml/test.xml', function (data) {
-            xmlDoc = data;
-        }, false);
-        getXML('/base/test/xml/test2.xml', function (data) {
-            xmlDoc2 = data;
-        }, false);
+
+        getXML('/base/test/xml/test.xml', false).then(data => {xmlDoc = data});
+        getXML('/base/test/xml/test2.xml', false).then(data => {xmlDoc2 = data});
+       // console.log('xmlDoca a', typeof xmlDoc);
     });
 
     it('Should create an instance', function () {

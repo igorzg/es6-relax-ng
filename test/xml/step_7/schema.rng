@@ -17,6 +17,7 @@
                         <rng:element name="name">
                             <rng:text/>
                         </rng:element>
+
                         <cs:group>
                             <cs:element name="givenName">
                                 <cs:text/>
@@ -36,7 +37,19 @@
                     </cs:optional>
                 </rng:element>
             </rng:zeroOrMore>
+            <rng:ref name="attlist.id" />
         </rng:element>
+    </rng:define>
+    <rng:define name="attlist.id">
+        <rng:optional>
+            <rng:attribute name="style">
+                <rng:choice>
+                    <rng:value> style-1            </rng:value>
+                    <rng:value> style-2</rng:value>
+                    <rng:value>style-3 </rng:value>
+                </rng:choice>
+            </rng:attribute>
+        </rng:optional>
     </rng:define>
 </rng:grammar>
 

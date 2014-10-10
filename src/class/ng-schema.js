@@ -130,17 +130,15 @@ export class NgSchema extends NgClass {
             'zeroOrMore'
         ];
         this.traverse(function step_1_traverse(node) {
-            var parent = node.parentNode(), message, href, replacedNode = null;
+            var parent = node.parentNode(), message, href, replacedNode = null, that = this;
             if (this.matchNode(parent, parents)) {
                 href = node.getAttribute('href');
                 if (href) {
-                    getXML(href, function (data, error, status) {
-                        if (status === 200) {
-                            replacedNode = node.replaceNode(mergeExternal.call(this, data), true);
-                        } else {
-                            throw new NgError("field to load xml file status code: {0}", status);
-                        }
-                    }, false, this); // sync call
+                    getXML(href, false).then((data) => {
+                        replacedNode = node.replaceNode(mergeExternal.call(that, data), true);
+                    }, (xhr) => {
+                        throw new NgError("field to load xml file status code: {0}", xhr.status);
+                    }); // sync call
                 }
             } else {
                 message = 'invalid schema definition in step step_1 externalRef don\'t have provided correct parent current parent is "{0}" but allowed are: "{1}" or node don\'t have correct namespace assigned';
@@ -185,7 +183,7 @@ export class NgSchema extends NgClass {
             children = ['define', 'div', 'start'];
 
         this.traverse(function step_2_traverse(node) {
-            var parent = node.parentNode(), message, href, replacedNode = null;
+            var parent = node.parentNode(), message, href, replacedNode = null, that = this;
             if (this.matchNode(parent, parents)) {
                 forEach(node.childElements(), function (cNode, index) {
                     if (!this.matchNode(cNode, children)) {
@@ -199,13 +197,11 @@ export class NgSchema extends NgClass {
                 }, this);
                 href = node.getAttribute('href');
                 if (href) {
-                    getXML(href, function (data, error, status) {
-                        if (status === 200) {
-                            replacedNode = node.replaceNode(mergeExternal.call(this, data, node), true);
-                        } else {
-                            throw new NgError("field to load xml file status code: {0}", status);
-                        }
-                    }, false, this); // sync call
+                    getXML(href, false).then((data) => {
+                        replacedNode = node.replaceNode(mergeExternal.call(that, data, node), true);
+                    }, (xhr) => {
+                        throw new NgError("field to load xml file status code: {0}", xhr.status);
+                    }); // sync call
                 }
             } else {
                 message = 'invalid schema definition in step step_2 include don\'t have provided correct parent current parent is "{0}" but allowed are: "{1}" or node don\'t have correct namespace assigned';
@@ -992,48 +988,43 @@ export class NgSchema extends NgClass {
      * Go over tree including all nodes and execute function
      */
     traverseAll(callback, match) {
-        var node = this.schema, skip = false, result;
+        var result;
         try {
+            if (!isFunction(callback)) {
+                throw new NgError('callback is not function');
+            }
+            for(let node of gen(this.schema)) {
+                if (match) {
+                    if (this.matchNode(node, match)) {
+                        result = callback.call(this, node);
+                    }
+                } else {
+                    result = callback.call(this, node);
+                }
+
+            }
+        } catch (e) {
+            throw new NgError('NgSchema traverse: ' + e.message, callback.toString(), e.stack ? e.stack.toString() : e.toString());
+        }
+
+        /**
+         * Iterate
+         * @param node
+         */
+        function* gen(node) {
+            var skip = false;
             while (true) {
+                if (result) {
+                    node = result;
+                    result = null;
+                }
                 if (node.firstChild() && !skip) {
                     node = node.firstChild();
-                    if (isFunction(callback)) {
-                        if (match) {
-                            if (this.matchNode(node, match)) {
-                                result = callback.call(this, node);
-                                if (result && instanceOf(result, NgDOM)) {
-                                    node = result;
-                                }
-                            }
-                        } else {
-                            result = callback.call(this, node);
-                            if (result && instanceOf(result, NgDOM)) {
-                                node = result;
-                            }
-                        }
-                    } else {
-                        new NgError('callback is not function');
-                    }
+                    yield node;
                 } else if (node.nextSibling()) {
                     node = node.nextSibling();
-                    if (isFunction(callback)) {
-                        if (match) {
-                            if (this.matchNode(node, match)) {
-                                result = callback.call(this, node);
-                                if (result && instanceOf(result, NgDOM)) {
-                                    node = result;
-                                }
-                            }
-                        } else {
-                            result = callback.call(this, node);
-                            if (result && instanceOf(result, NgDOM)) {
-                                node = result;
-                            }
-                        }
-                    } else {
-                        new NgError('callback is not function');
-                    }
                     skip = false;
+                    yield node;
                 } else if (node.parentNode()) {
                     node = node.parentNode();
                     skip = true;
@@ -1041,8 +1032,6 @@ export class NgSchema extends NgClass {
                     break;
                 }
             }
-        } catch (e) {
-            throw new NgError('NgSchema traverse: ' + e.message, callback.toString(), e.stack ? e.stack.toString() : e.toString());
         }
     }
     /**
@@ -1052,48 +1041,43 @@ export class NgSchema extends NgClass {
      * Go over elements and execute function
      */
     traverse(callback, match) {
-        var node = this.schema, skip = false, result;
+        var result;
         try {
+            if (!isFunction(callback)) {
+                throw new NgError('callback is not function');
+            }
+            for(let node of gen(this.schema)) {
+                if (match) {
+                    if (this.matchNode(node, match)) {
+                        result = callback.call(this, node);
+                    }
+                } else {
+                    result = callback.call(this, node);
+                }
+
+            }
+        } catch (e) {
+            throw new NgError('NgSchema traverse: ' + e.message, callback.toString(), e.stack ? e.stack.toString() : e.toString());
+        }
+
+        /**
+         * Iterate
+         * @param node
+         */
+        function* gen(node) {
+            var skip = false;
             while (true) {
+                if (result) {
+                    node = result;
+                    result = null;
+                }
                 if (node.firstElementChild() && !skip) {
                     node = node.firstElementChild();
-                    if (isFunction(callback)) {
-                        if (match) {
-                            if (this.matchNode(node, match)) {
-                                result = callback.call(this, node);
-                                if (result) {
-                                    node = result;
-                                }
-                            }
-                        } else {
-                            result = callback.call(this, node);
-                            if (result) {
-                                node = result;
-                            }
-                        }
-                    } else {
-                        throw new NgError('callback is not function');
-                    }
+                    yield node;
                 } else if (node.nextElementSibling()) {
                     node = node.nextElementSibling();
-                    if (isFunction(callback)) {
-                        if (match) {
-                            if (this.matchNode(node, match)) {
-                                result = callback.call(this, node);
-                                if (result) {
-                                    node = result;
-                                }
-                            }
-                        } else {
-                            result = callback.call(this, node);
-                            if (result) {
-                                node = result;
-                            }
-                        }
-                    } else {
-                        throw new NgError('callback is not function');
-                    }
                     skip = false;
+                    yield node;
                 } else if (node.parentNode()) {
                     node = node.parentNode();
                     skip = true;
@@ -1101,8 +1085,6 @@ export class NgSchema extends NgClass {
                     break;
                 }
             }
-        } catch (e) {
-            throw new NgError('NgSchema traverse: ' + e.message, callback.toString(), e.stack ? e.stack.toString() : e.toString());
         }
     }
     /**

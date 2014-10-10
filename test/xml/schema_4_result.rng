@@ -1,0 +1,3127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+    <start>
+        <ref name="article"/>
+    </start>
+    <define name="content">
+        <element>
+            <name ns="">content</name>
+            <group>
+                <group>
+                    <group>
+                        <group>
+                            <choice>
+                                <ref name="title"/>
+                                <empty/>
+                            </choice>
+                            <choice>
+                                <ref name="subtitle"/>
+                                <empty/>
+                            </choice>
+                        </group>
+                        <choice>
+                            <ref name="text"/>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <ref name="reference-defs"/>
+                        <empty/>
+                    </choice>
+                </group>
+                <choice>
+                    <ref name="strapline"/>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="app">
+        <element>
+            <name ns="">app</name>
+            <group>
+                <group>
+                    <choice>
+                        <ref name="teaser"/>
+                        <empty/>
+                    </choice>
+                    <choice>
+                        <ref name="key-visual"/>
+                        <empty/>
+                    </choice>
+                </group>
+                <choice>
+                    <ref name="headline"/>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="website">
+        <element>
+            <name ns="">website</name>
+            <group>
+                <choice>
+                    <ref name="teaser"/>
+                    <empty/>
+                </choice>
+                <choice>
+                    <ref name="key-visual"/>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="print">
+        <element>
+            <name ns="">print</name>
+            <group>
+                <group>
+                    <choice>
+                        <ref name="teaser"/>
+                        <empty/>
+                    </choice>
+                    <choice>
+                        <ref name="key-visual"/>
+                        <empty/>
+                    </choice>
+                </group>
+                <choice>
+                    <ref name="images"/>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="strapline">
+        <element>
+            <name ns="">strapline</name>
+            <oneOrMore>
+                <choice>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <text/>
+                                        <ref name="bold"/>
+                                    </choice>
+                                    <ref name="italic"/>
+                                </choice>
+                                <ref name="bold-italic"/>
+                            </choice>
+                            <ref name="underline"/>
+                        </choice>
+                        <ref name="sup"/>
+                    </choice>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="title">
+        <element>
+            <name ns="">title</name>
+            <oneOrMore>
+                <choice>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <text/>
+                                        <ref name="bold"/>
+                                    </choice>
+                                    <ref name="italic"/>
+                                </choice>
+                                <ref name="bold-italic"/>
+                            </choice>
+                            <ref name="underline"/>
+                        </choice>
+                        <ref name="sup"/>
+                    </choice>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="subtitle">
+        <element>
+            <name ns="">subtitle</name>
+            <oneOrMore>
+                <choice>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <text/>
+                                        <ref name="bold"/>
+                                    </choice>
+                                    <ref name="italic"/>
+                                </choice>
+                                <ref name="bold-italic"/>
+                            </choice>
+                            <ref name="underline"/>
+                        </choice>
+                        <ref name="sup"/>
+                    </choice>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="text">
+        <element>
+            <name ns="">text</name>
+            <group>
+                <choice>
+                    <ref name="intro"/>
+                    <empty/>
+                </choice>
+                <choice>
+                    <oneOrMore>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <choice>
+                                                        <choice>
+                                                            <choice>
+                                                                <choice>
+                                                                    <choice>
+                                                                        <choice>
+                                                                            <choice>
+                                                                                <choice>
+                                                                                    <choice>
+                                                                                        <choice>
+                                                                                            <choice>
+                                                                                                <choice>
+                                                                                                    <choice>
+                                                                                                        <choice>
+                                                                                                            <choice>
+                                                                                                                <choice>
+                                                                                                                    <ref name="paragraph"/>
+                                                                                                                    <ref name="new-page"/>
+                                                                                                                </choice>
+                                                                                                                <ref name="anchor"/>
+                                                                                                            </choice>
+                                                                                                            <ref name="image-box"/>
+                                                                                                        </choice>
+                                                                                                        <ref name="video-box"/>
+                                                                                                    </choice>
+                                                                                                    <ref name="audio-box"/>
+                                                                                                </choice>
+                                                                                                <ref name="slideshow-box"/>
+                                                                                            </choice>
+                                                                                            <ref name="image-reveal-box"/>
+                                                                                        </choice>
+                                                                                        <ref name="turntable-box"/>
+                                                                                    </choice>
+                                                                                    <ref name="interactive-element-box"/>
+                                                                                </choice>
+                                                                                <ref name="x-external-content-box"/>
+                                                                            </choice>
+                                                                            <ref name="subheadline-1"/>
+                                                                        </choice>
+                                                                        <ref name="subheadline-2"/>
+                                                                    </choice>
+                                                                    <ref name="subheadline-3"/>
+                                                                </choice>
+                                                                <ref name="enumeration"/>
+                                                            </choice>
+                                                            <ref name="bullet-list"/>
+                                                        </choice>
+                                                        <ref name="conversation"/>
+                                                    </choice>
+                                                    <ref name="group"/>
+                                                </choice>
+                                                <ref name="callout"/>
+                                            </choice>
+                                            <ref name="pre"/>
+                                        </choice>
+                                        <ref name="hdivider"/>
+                                    </choice>
+                                    <ref name="callout-box"/>
+                                </choice>
+                                <ref name="table"/>
+                            </choice>
+                            <ref name="article"/>
+                        </choice>
+                    </oneOrMore>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="reference-defs">
+        <element>
+            <name ns="">reference-defs</name>
+            <choice>
+                <oneOrMore>
+                    <ref name="reference-def"/>
+                </oneOrMore>
+                <empty/>
+            </choice>
+        </element>
+    </define>
+    <define name="reference-def">
+        <element>
+            <name ns="">reference-def</name>
+            <group>
+                <group>
+                    <group>
+                        <choice>
+                            <attribute>
+                                <name ns="">key</name>
+                                <text/>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                        <choice>
+                            <attribute>
+                                <name ns="">type</name>
+                                <choice>
+                                    <value type="token" ns="">footnote</value>
+                                    <value type="token" ns="">literature</value>
+                                </choice>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <attribute>
+                            <name ns="">style</name>
+                            <choice>
+                                <choice>
+                                    <value type="token" ns="">style-1</value>
+                                    <value type="token" ns="">style-2</value>
+                                </choice>
+                                <value type="token" ns="">style-3</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <ref name="reference-description"/>
+            </group>
+        </element>
+    </define>
+    <define name="teaser">
+        <element>
+            <name ns="">teaser</name>
+            <group>
+                <group>
+                    <group>
+                        <choice>
+                            <ref name="title"/>
+                            <empty/>
+                        </choice>
+                        <choice>
+                            <ref name="teaser-text"/>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <ref name="image"/>
+                        <empty/>
+                    </choice>
+                </group>
+                <choice>
+                    <ref name="strapline"/>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="teaser-text">
+        <element>
+            <name ns="">teaser-text</name>
+            <oneOrMore>
+                <choice>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <text/>
+                                                <ref name="link"/>
+                                            </choice>
+                                            <ref name="marker"/>
+                                        </choice>
+                                        <ref name="bold"/>
+                                    </choice>
+                                    <ref name="italic"/>
+                                </choice>
+                                <ref name="bold-italic"/>
+                            </choice>
+                            <ref name="underline"/>
+                        </choice>
+                        <ref name="sup"/>
+                    </choice>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="key-visual">
+        <element>
+            <name ns="">key-visual</name>
+            <group>
+                <group>
+                    <group>
+                        <choice>
+                            <attribute>
+                                <name ns="">type</name>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <choice>
+                                                        <choice>
+                                                            <choice>
+                                                                <choice>
+                                                                    <choice>
+                                                                        <value type="token" ns="">none</value>
+                                                                        <value type="token" ns="">image</value>
+                                                                    </choice>
+                                                                    <value type="token" ns="">video</value>
+                                                                </choice>
+                                                                <value type="token" ns="">audio</value>
+                                                            </choice>
+                                                            <value type="token" ns="">slideshow</value>
+                                                        </choice>
+                                                        <value type="token" ns="">interactive-element</value>
+                                                    </choice>
+                                                    <value type="token" ns="">image-reveal</value>
+                                                </choice>
+                                                <value type="token" ns="">turntable</value>
+                                            </choice>
+                                            <value type="token" ns="">image-range</value>
+                                        </choice>
+                                        <value type="token" ns="">layout</value>
+                                    </choice>
+                                    <value type="token" ns="">gallery</value>
+                                </choice>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                        <choice>
+                            <attribute>
+                                <name ns="">display</name>
+                                <choice>
+                                    <value type="token" ns="">inline</value>
+                                    <value type="token" ns="">fullscreen</value>
+                                </choice>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <attribute>
+                            <name ns="">distance-top</name>
+                            <choice>
+                                <value type="token" ns="">true</value>
+                                <value type="token" ns="">false</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <group>
+                    <group>
+                        <group>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <choice>
+                                                        <choice>
+                                                            <choice>
+                                                                <choice>
+                                                                    <ref name="image"/>
+                                                                    <ref name="video"/>
+                                                                </choice>
+                                                                <ref name="audio"/>
+                                                            </choice>
+                                                            <ref name="slideshow"/>
+                                                        </choice>
+                                                        <ref name="interactive-element"/>
+                                                    </choice>
+                                                    <ref name="image-reveal"/>
+                                                </choice>
+                                                <ref name="turntable"/>
+                                            </choice>
+                                            <ref name="image-range"/>
+                                        </choice>
+                                        <ref name="layout"/>
+                                    </choice>
+                                    <ref name="gallery"/>
+                                </choice>
+                                <empty/>
+                            </choice>
+                            <choice>
+                                <ref name="poster"/>
+                                <empty/>
+                            </choice>
+                        </group>
+                        <choice>
+                            <ref name="caption"/>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <ref name="key-visual-text-options"/>
+                        <empty/>
+                    </choice>
+                </group>
+            </group>
+        </element>
+    </define>
+    <define name="key-visual-text-options">
+        <element>
+            <name ns="">key-visual-text-options</name>
+            <group>
+                <group>
+                    <group>
+                        <group>
+                            <group>
+                                <group>
+                                    <group>
+                                        <group>
+                                            <choice>
+                                                <attribute>
+                                                    <name ns="">position</name>
+                                                    <choice>
+                                                        <choice>
+                                                            <value type="token" ns="">none</value>
+                                                            <value type="token" ns="">on-top</value>
+                                                        </choice>
+                                                        <value type="token" ns="">hotspot</value>
+                                                    </choice>
+                                                </attribute>
+                                                <empty/>
+                                            </choice>
+                                            <choice>
+                                                <attribute>
+                                                    <name ns="">width</name>
+                                                    <text/>
+                                                </attribute>
+                                                <empty/>
+                                            </choice>
+                                        </group>
+                                        <choice>
+                                            <attribute>
+                                                <name ns="">position-origin</name>
+                                                <choice>
+                                                    <choice>
+                                                        <choice>
+                                                            <value type="token" ns="">top-left</value>
+                                                            <value type="token" ns="">top-right</value>
+                                                        </choice>
+                                                        <value type="token" ns="">bottom-left</value>
+                                                    </choice>
+                                                    <value type="token" ns="">bottom-right</value>
+                                                </choice>
+                                            </attribute>
+                                            <empty/>
+                                        </choice>
+                                    </group>
+                                    <choice>
+                                        <attribute>
+                                            <name ns="">x-position</name>
+                                            <text/>
+                                        </attribute>
+                                        <empty/>
+                                    </choice>
+                                </group>
+                                <choice>
+                                    <attribute>
+                                        <name ns="">y-position</name>
+                                        <text/>
+                                    </attribute>
+                                    <empty/>
+                                </choice>
+                            </group>
+                            <choice>
+                                <attribute>
+                                    <name ns="">background-color</name>
+                                    <text/>
+                                </attribute>
+                                <empty/>
+                            </choice>
+                        </group>
+                        <choice>
+                            <attribute>
+                                <name ns="">background-opacity</name>
+                                <text/>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <attribute>
+                            <name ns="">text-color</name>
+                            <text/>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <choice>
+                    <attribute>
+                        <name ns="">text-opacity</name>
+                        <text/>
+                    </attribute>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="headline">
+        <element>
+            <name ns="">headline</name>
+            <group>
+                <group>
+                    <group>
+                        <group>
+                            <group>
+                                <group>
+                                    <group>
+                                        <group>
+                                            <choice>
+                                                <attribute>
+                                                    <name ns="">position</name>
+                                                    <choice>
+                                                        <choice>
+                                                            <choice>
+                                                                <value type="token" ns="">none</value>
+                                                                <value type="token" ns="">below</value>
+                                                            </choice>
+                                                            <value type="token" ns="">above</value>
+                                                        </choice>
+                                                        <value type="token" ns="">on-top</value>
+                                                    </choice>
+                                                </attribute>
+                                                <empty/>
+                                            </choice>
+                                            <choice>
+                                                <attribute>
+                                                    <name ns="">width</name>
+                                                    <text/>
+                                                </attribute>
+                                                <empty/>
+                                            </choice>
+                                        </group>
+                                        <choice>
+                                            <attribute>
+                                                <name ns="">position-origin</name>
+                                                <choice>
+                                                    <choice>
+                                                        <choice>
+                                                            <value type="token" ns="">top-left</value>
+                                                            <value type="token" ns="">top-right</value>
+                                                        </choice>
+                                                        <value type="token" ns="">bottom-left</value>
+                                                    </choice>
+                                                    <value type="token" ns="">bottom-right</value>
+                                                </choice>
+                                            </attribute>
+                                            <empty/>
+                                        </choice>
+                                    </group>
+                                    <choice>
+                                        <attribute>
+                                            <name ns="">x-position</name>
+                                            <text/>
+                                        </attribute>
+                                        <empty/>
+                                    </choice>
+                                </group>
+                                <choice>
+                                    <attribute>
+                                        <name ns="">y-position</name>
+                                        <text/>
+                                    </attribute>
+                                    <empty/>
+                                </choice>
+                            </group>
+                            <choice>
+                                <attribute>
+                                    <name ns="">background-color</name>
+                                    <text/>
+                                </attribute>
+                                <empty/>
+                            </choice>
+                        </group>
+                        <choice>
+                            <attribute>
+                                <name ns="">background-opacity</name>
+                                <text/>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <attribute>
+                            <name ns="">text-color</name>
+                            <text/>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <choice>
+                    <attribute>
+                        <name ns="">text-opacity</name>
+                        <text/>
+                    </attribute>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="images">
+        <element>
+            <name ns="">images</name>
+            <choice>
+                <oneOrMore>
+                    <ref name="image-box"/>
+                </oneOrMore>
+                <empty/>
+            </choice>
+        </element>
+    </define>
+    <define name="paragraph">
+        <element>
+            <name ns="">paragraph</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <value type="token" ns="">style-1</value>
+                                        <value type="token" ns="">style-2</value>
+                                    </choice>
+                                    <value type="token" ns="">style-3</value>
+                                </choice>
+                                <value type="token" ns="">style-4</value>
+                            </choice>
+                            <value type="token" ns="">style-5</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <oneOrMore>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <choice>
+                                                        <choice>
+                                                            <text/>
+                                                            <ref name="link"/>
+                                                        </choice>
+                                                        <ref name="marker"/>
+                                                    </choice>
+                                                    <ref name="bold"/>
+                                                </choice>
+                                                <ref name="italic"/>
+                                            </choice>
+                                            <ref name="bold-italic"/>
+                                        </choice>
+                                        <ref name="underline"/>
+                                    </choice>
+                                    <ref name="sup"/>
+                                </choice>
+                                <ref name="sub"/>
+                            </choice>
+                            <ref name="reference"/>
+                        </choice>
+                        <ref name="footnote"/>
+                    </choice>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="subheadline-1">
+        <element>
+            <name ns="">subheadline-1</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">style-1</value>
+                                <value type="token" ns="">style-2</value>
+                            </choice>
+                            <value type="token" ns="">style-3</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <oneOrMore>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <text/>
+                                                    <ref name="bold"/>
+                                                </choice>
+                                                <ref name="italic"/>
+                                            </choice>
+                                            <ref name="bold-italic"/>
+                                        </choice>
+                                        <ref name="underline"/>
+                                    </choice>
+                                    <ref name="sup"/>
+                                </choice>
+                                <ref name="sub"/>
+                            </choice>
+                            <ref name="reference"/>
+                        </choice>
+                        <ref name="footnote"/>
+                    </choice>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="subheadline-2">
+        <element>
+            <name ns="">subheadline-2</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">style-1</value>
+                                <value type="token" ns="">style-2</value>
+                            </choice>
+                            <value type="token" ns="">style-3</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <oneOrMore>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <text/>
+                                                    <ref name="bold"/>
+                                                </choice>
+                                                <ref name="italic"/>
+                                            </choice>
+                                            <ref name="bold-italic"/>
+                                        </choice>
+                                        <ref name="underline"/>
+                                    </choice>
+                                    <ref name="sup"/>
+                                </choice>
+                                <ref name="sub"/>
+                            </choice>
+                            <ref name="reference"/>
+                        </choice>
+                        <ref name="footnote"/>
+                    </choice>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="subheadline-3">
+        <element>
+            <name ns="">subheadline-3</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">style-1</value>
+                                <value type="token" ns="">style-2</value>
+                            </choice>
+                            <value type="token" ns="">style-3</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <oneOrMore>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <text/>
+                                                    <ref name="bold"/>
+                                                </choice>
+                                                <ref name="italic"/>
+                                            </choice>
+                                            <ref name="bold-italic"/>
+                                        </choice>
+                                        <ref name="underline"/>
+                                    </choice>
+                                    <ref name="sup"/>
+                                </choice>
+                                <ref name="sub"/>
+                            </choice>
+                            <ref name="reference"/>
+                        </choice>
+                        <ref name="footnote"/>
+                    </choice>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="bullet-list">
+        <element>
+            <name ns="">bullet-list</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">style-1</value>
+                                <value type="token" ns="">style-2</value>
+                            </choice>
+                            <value type="token" ns="">style-3</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <oneOrMore>
+                    <ref name="item"/>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="enumeration">
+        <element>
+            <name ns="">enumeration</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">style-1</value>
+                                <value type="token" ns="">style-2</value>
+                            </choice>
+                            <value type="token" ns="">style-3</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <oneOrMore>
+                    <ref name="item"/>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="item">
+        <element>
+            <name ns="">item</name>
+            <oneOrMore>
+                <choice>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <ref name="paragraph"/>
+                                        <ref name="anchor"/>
+                                    </choice>
+                                    <ref name="image-box"/>
+                                </choice>
+                                <ref name="enumeration"/>
+                            </choice>
+                            <ref name="bullet-list"/>
+                        </choice>
+                        <ref name="pre"/>
+                    </choice>
+                    <ref name="article"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="pre">
+        <element>
+            <name ns="">pre</name>
+            <group>
+                <group>
+                    <attribute>
+                        <name ns="">code-type</name>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <choice>
+                                                        <choice>
+                                                            <choice>
+                                                                <choice>
+                                                                    <choice>
+                                                                        <choice>
+                                                                            <choice>
+                                                                                <value type="token" ns="">application/javascript</value>
+                                                                                <value type="token" ns="">application/x-freemarker</value>
+                                                                            </choice>
+                                                                            <value type="token" ns="">application/x-java</value>
+                                                                        </choice>
+                                                                        <value type="token" ns="">application/x-perl</value>
+                                                                    </choice>
+                                                                    <value type="token" ns="">application/x-php</value>
+                                                                </choice>
+                                                                <value type="token" ns="">application/x-python</value>
+                                                            </choice>
+                                                            <value type="token" ns="">application/x-ruby</value>
+                                                        </choice>
+                                                        <value type="token" ns="">application/xhtml+xml</value>
+                                                    </choice>
+                                                    <value type="token" ns="">application/xslt+xml</value>
+                                                </choice>
+                                                <value type="token" ns="">image/svg+xml</value>
+                                            </choice>
+                                            <value type="token" ns="">text/css</value>
+                                        </choice>
+                                        <value type="token" ns="">text/html</value>
+                                    </choice>
+                                    <value type="token" ns="">text/plain</value>
+                                </choice>
+                                <value type="token" ns="">text/x-xpress</value>
+                            </choice>
+                            <value type="token" ns="">text/xml</value>
+                        </choice>
+                    </attribute>
+                    <choice>
+                        <attribute>
+                            <name ns="">style</name>
+                            <choice>
+                                <choice>
+                                    <value type="token" ns="">style-1</value>
+                                    <value type="token" ns="">style-2</value>
+                                </choice>
+                                <value type="token" ns="">style-3</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <oneOrMore>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <choice>
+                                                        <choice>
+                                                            <text/>
+                                                            <ref name="link"/>
+                                                        </choice>
+                                                        <ref name="marker"/>
+                                                    </choice>
+                                                    <ref name="bold"/>
+                                                </choice>
+                                                <ref name="italic"/>
+                                            </choice>
+                                            <ref name="bold-italic"/>
+                                        </choice>
+                                        <ref name="underline"/>
+                                    </choice>
+                                    <ref name="sup"/>
+                                </choice>
+                                <ref name="sub"/>
+                            </choice>
+                            <ref name="reference"/>
+                        </choice>
+                        <ref name="footnote"/>
+                    </choice>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="group">
+        <element>
+            <name ns="">group</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">style-1</value>
+                                <value type="token" ns="">style-2</value>
+                            </choice>
+                            <value type="token" ns="">style-3</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <oneOrMore>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <choice>
+                                                        <choice>
+                                                            <choice>
+                                                                <choice>
+                                                                    <choice>
+                                                                        <choice>
+                                                                            <choice>
+                                                                                <choice>
+                                                                                    <choice>
+                                                                                        <choice>
+                                                                                            <choice>
+                                                                                                <choice>
+                                                                                                    <ref name="paragraph"/>
+                                                                                                    <ref name="image-box"/>
+                                                                                                </choice>
+                                                                                                <ref name="video-box"/>
+                                                                                            </choice>
+                                                                                            <ref name="audio-box"/>
+                                                                                        </choice>
+                                                                                        <ref name="slideshow-box"/>
+                                                                                    </choice>
+                                                                                    <ref name="image-reveal-box"/>
+                                                                                </choice>
+                                                                                <ref name="turntable-box"/>
+                                                                            </choice>
+                                                                            <ref name="interactive-element-box"/>
+                                                                        </choice>
+                                                                        <ref name="x-external-content-box"/>
+                                                                    </choice>
+                                                                    <ref name="subheadline-1"/>
+                                                                </choice>
+                                                                <ref name="subheadline-2"/>
+                                                            </choice>
+                                                            <ref name="subheadline-3"/>
+                                                        </choice>
+                                                        <ref name="enumeration"/>
+                                                    </choice>
+                                                    <ref name="bullet-list"/>
+                                                </choice>
+                                                <ref name="conversation"/>
+                                            </choice>
+                                            <ref name="hdivider"/>
+                                        </choice>
+                                        <ref name="additional-content"/>
+                                    </choice>
+                                    <ref name="callout"/>
+                                </choice>
+                                <ref name="table"/>
+                            </choice>
+                            <ref name="pre"/>
+                        </choice>
+                        <ref name="article"/>
+                    </choice>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="intro">
+        <element>
+            <name ns="">intro</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">style-1</value>
+                                <value type="token" ns="">style-2</value>
+                            </choice>
+                            <value type="token" ns="">style-3</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <oneOrMore>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <choice>
+                                                        <choice>
+                                                            <text/>
+                                                            <ref name="link"/>
+                                                        </choice>
+                                                        <ref name="marker"/>
+                                                    </choice>
+                                                    <ref name="bold"/>
+                                                </choice>
+                                                <ref name="italic"/>
+                                            </choice>
+                                            <ref name="bold-italic"/>
+                                        </choice>
+                                        <ref name="underline"/>
+                                    </choice>
+                                    <ref name="sup"/>
+                                </choice>
+                                <ref name="sub"/>
+                            </choice>
+                            <ref name="reference"/>
+                        </choice>
+                        <ref name="footnote"/>
+                    </choice>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="image-box">
+        <element>
+            <name ns="">image-box</name>
+            <group>
+                <group>
+                    <group>
+                        <group>
+                            <group>
+                                <group>
+                                    <choice>
+                                        <attribute>
+                                            <name ns="">placement-category</name>
+                                            <text/>
+                                        </attribute>
+                                        <empty/>
+                                    </choice>
+                                    <choice>
+                                        <attribute>
+                                            <name ns="">sorting</name>
+                                            <text/>
+                                        </attribute>
+                                        <empty/>
+                                    </choice>
+                                </group>
+                                <choice>
+                                    <attribute>
+                                        <name ns="">zoom</name>
+                                        <choice>
+                                            <value type="token" ns="">true</value>
+                                            <value type="token" ns="">false</value>
+                                        </choice>
+                                    </attribute>
+                                    <empty/>
+                                </choice>
+                            </group>
+                            <choice>
+                                <attribute>
+                                    <name ns="">link</name>
+                                    <text/>
+                                </attribute>
+                                <empty/>
+                            </choice>
+                        </group>
+                        <choice>
+                            <attribute>
+                                <name ns="">align</name>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <value type="token" ns="">left</value>
+                                            <value type="token" ns="">right</value>
+                                        </choice>
+                                        <value type="token" ns="">center</value>
+                                    </choice>
+                                    <value type="token" ns="">sidebar</value>
+                                </choice>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <attribute>
+                            <name ns="">style</name>
+                            <choice>
+                                <choice>
+                                    <value type="token" ns="">style-1</value>
+                                    <value type="token" ns="">style-2</value>
+                                </choice>
+                                <value type="token" ns="">style-3</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <group>
+                    <ref name="image"/>
+                    <choice>
+                        <ref name="caption"/>
+                        <empty/>
+                    </choice>
+                </group>
+            </group>
+        </element>
+    </define>
+    <define name="image">
+        <element>
+            <name ns="">image</name>
+            <group>
+                <group>
+                    <choice>
+                        <attribute>
+                            <name ns="">aspect-ratio</name>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <value type="token" ns="">16-9</value>
+                                            <value type="token" ns="">4-3</value>
+                                        </choice>
+                                        <value type="token" ns="">3-4</value>
+                                    </choice>
+                                    <value type="token" ns="">1-1</value>
+                                </choice>
+                                <value type="token" ns="">flexible</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                    <choice>
+                        <attribute>
+                            <name ns="">alt-text</name>
+                            <text/>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <choice>
+                    <attribute>
+                        <name ns="">seo-title</name>
+                        <text/>
+                    </attribute>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="video-box">
+        <element>
+            <name ns="">video-box</name>
+            <group>
+                <group>
+                    <group>
+                        <choice>
+                            <attribute>
+                                <name ns="">display</name>
+                                <choice>
+                                    <value type="token" ns="">inline</value>
+                                    <value type="token" ns="">fullscreen</value>
+                                </choice>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                        <choice>
+                            <attribute>
+                                <name ns="">align</name>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <value type="token" ns="">left</value>
+                                            <value type="token" ns="">right</value>
+                                        </choice>
+                                        <value type="token" ns="">center</value>
+                                    </choice>
+                                    <value type="token" ns="">sidebar</value>
+                                </choice>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <attribute>
+                            <name ns="">style</name>
+                            <choice>
+                                <choice>
+                                    <value type="token" ns="">style-1</value>
+                                    <value type="token" ns="">style-2</value>
+                                </choice>
+                                <value type="token" ns="">style-3</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <group>
+                    <group>
+                        <ref name="video"/>
+                        <ref name="poster"/>
+                    </group>
+                    <choice>
+                        <ref name="caption"/>
+                        <empty/>
+                    </choice>
+                </group>
+            </group>
+        </element>
+    </define>
+    <define name="video">
+        <element>
+            <name ns="">video</name>
+            <group>
+                <group>
+                    <choice>
+                        <attribute>
+                            <name ns="">aspect-ratio</name>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <value type="token" ns="">16-9</value>
+                                        <value type="token" ns="">4-3</value>
+                                    </choice>
+                                    <value type="token" ns="">3-4</value>
+                                </choice>
+                                <value type="token" ns="">1-1</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                    <choice>
+                        <attribute>
+                            <name ns="">autoplay</name>
+                            <choice>
+                                <value type="token" ns="">true</value>
+                                <value type="token" ns="">false</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <choice>
+                    <attribute>
+                        <name ns="">offline-available</name>
+                        <choice>
+                            <value type="token" ns="">true</value>
+                            <value type="token" ns="">false</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="slideshow-box">
+        <element>
+            <name ns="">slideshow-box</name>
+            <group>
+                <group>
+                    <group>
+                        <choice>
+                            <attribute>
+                                <name ns="">display</name>
+                                <choice>
+                                    <value type="token" ns="">inline</value>
+                                    <value type="token" ns="">fullscreen</value>
+                                </choice>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                        <choice>
+                            <attribute>
+                                <name ns="">align</name>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <value type="token" ns="">left</value>
+                                            <value type="token" ns="">right</value>
+                                        </choice>
+                                        <value type="token" ns="">center</value>
+                                    </choice>
+                                    <value type="token" ns="">sidebar</value>
+                                </choice>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <attribute>
+                            <name ns="">style</name>
+                            <choice>
+                                <choice>
+                                    <value type="token" ns="">style-1</value>
+                                    <value type="token" ns="">style-2</value>
+                                </choice>
+                                <value type="token" ns="">style-3</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <group>
+                    <group>
+                        <ref name="slideshow"/>
+                        <ref name="poster"/>
+                    </group>
+                    <choice>
+                        <ref name="caption"/>
+                        <empty/>
+                    </choice>
+                </group>
+            </group>
+        </element>
+    </define>
+    <define name="slideshow">
+        <element>
+            <name ns="">slideshow</name>
+            <group>
+                <group>
+                    <choice>
+                        <attribute>
+                            <name ns="">aspect-ratio</name>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <value type="token" ns="">16-9</value>
+                                        <value type="token" ns="">4-3</value>
+                                    </choice>
+                                    <value type="token" ns="">3-4</value>
+                                </choice>
+                                <value type="token" ns="">1-1</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                    <choice>
+                        <attribute>
+                            <name ns="">autoplay</name>
+                            <choice>
+                                <value type="token" ns="">true</value>
+                                <value type="token" ns="">false</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <choice>
+                    <attribute>
+                        <name ns="">start-slide</name>
+                        <text/>
+                    </attribute>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="interactive-element-box">
+        <element>
+            <name ns="">interactive-element-box</name>
+            <group>
+                <group>
+                    <group>
+                        <choice>
+                            <attribute>
+                                <name ns="">display</name>
+                                <choice>
+                                    <value type="token" ns="">inline</value>
+                                    <value type="token" ns="">fullscreen</value>
+                                </choice>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                        <choice>
+                            <attribute>
+                                <name ns="">align</name>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <value type="token" ns="">left</value>
+                                            <value type="token" ns="">right</value>
+                                        </choice>
+                                        <value type="token" ns="">center</value>
+                                    </choice>
+                                    <value type="token" ns="">sidebar</value>
+                                </choice>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <attribute>
+                            <name ns="">style</name>
+                            <choice>
+                                <choice>
+                                    <value type="token" ns="">style-1</value>
+                                    <value type="token" ns="">style-2</value>
+                                </choice>
+                                <value type="token" ns="">style-3</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <group>
+                    <group>
+                        <ref name="interactive-element"/>
+                        <ref name="poster"/>
+                    </group>
+                    <choice>
+                        <ref name="caption"/>
+                        <empty/>
+                    </choice>
+                </group>
+            </group>
+        </element>
+    </define>
+    <define name="interactive-element">
+        <element>
+            <name ns="">interactive-element</name>
+            <empty/>
+        </element>
+    </define>
+    <define name="audio-box">
+        <element>
+            <name ns="">audio-box</name>
+            <group>
+                <group>
+                    <choice>
+                        <attribute>
+                            <name ns="">align</name>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <value type="token" ns="">left</value>
+                                        <value type="token" ns="">right</value>
+                                    </choice>
+                                    <value type="token" ns="">center</value>
+                                </choice>
+                                <value type="token" ns="">sidebar</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                    <choice>
+                        <attribute>
+                            <name ns="">style</name>
+                            <choice>
+                                <choice>
+                                    <value type="token" ns="">style-1</value>
+                                    <value type="token" ns="">style-2</value>
+                                </choice>
+                                <value type="token" ns="">style-3</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <group>
+                    <group>
+                        <ref name="audio"/>
+                        <ref name="poster"/>
+                    </group>
+                    <choice>
+                        <ref name="caption"/>
+                        <empty/>
+                    </choice>
+                </group>
+            </group>
+        </element>
+    </define>
+    <define name="audio">
+        <element>
+            <name ns="">audio</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">autoplay</name>
+                        <choice>
+                            <value type="token" ns="">true</value>
+                            <value type="token" ns="">false</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <choice>
+                    <attribute>
+                        <name ns="">offline-available</name>
+                        <choice>
+                            <value type="token" ns="">true</value>
+                            <value type="token" ns="">false</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="x-external-content-box">
+        <element>
+            <name ns="">x-external-content-box</name>
+            <group>
+                <group>
+                    <group>
+                        <group>
+                            <group>
+                                <choice>
+                                    <attribute>
+                                        <name ns="">url</name>
+                                        <text/>
+                                    </attribute>
+                                    <empty/>
+                                </choice>
+                                <choice>
+                                    <attribute>
+                                        <name ns="">url-fragment</name>
+                                        <text/>
+                                    </attribute>
+                                    <empty/>
+                                </choice>
+                            </group>
+                            <choice>
+                                <attribute>
+                                    <name ns="">width</name>
+                                    <text/>
+                                </attribute>
+                                <empty/>
+                            </choice>
+                        </group>
+                        <choice>
+                            <attribute>
+                                <name ns="">height</name>
+                                <text/>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <attribute>
+                            <name ns="">style</name>
+                            <choice>
+                                <choice>
+                                    <value type="token" ns="">style-1</value>
+                                    <value type="token" ns="">style-2</value>
+                                </choice>
+                                <value type="token" ns="">style-3</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <choice>
+                    <oneOrMore>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <choice>
+                                                        <choice>
+                                                            <choice>
+                                                                <choice>
+                                                                    <choice>
+                                                                        <choice>
+                                                                            <choice>
+                                                                                <choice>
+                                                                                    <choice>
+                                                                                        <choice>
+                                                                                            <choice>
+                                                                                                <ref name="paragraph"/>
+                                                                                                <ref name="anchor"/>
+                                                                                            </choice>
+                                                                                            <ref name="image-box"/>
+                                                                                        </choice>
+                                                                                        <ref name="video-box"/>
+                                                                                    </choice>
+                                                                                    <ref name="audio-box"/>
+                                                                                </choice>
+                                                                                <ref name="slideshow-box"/>
+                                                                            </choice>
+                                                                            <ref name="image-reveal-box"/>
+                                                                        </choice>
+                                                                        <ref name="turntable-box"/>
+                                                                    </choice>
+                                                                    <ref name="interactive-element-box"/>
+                                                                </choice>
+                                                                <ref name="subheadline-1"/>
+                                                            </choice>
+                                                            <ref name="subheadline-2"/>
+                                                        </choice>
+                                                        <ref name="subheadline-3"/>
+                                                    </choice>
+                                                    <ref name="enumeration"/>
+                                                </choice>
+                                                <ref name="bullet-list"/>
+                                            </choice>
+                                            <ref name="hdivider"/>
+                                        </choice>
+                                        <ref name="callout"/>
+                                    </choice>
+                                    <ref name="table"/>
+                                </choice>
+                                <ref name="pre"/>
+                            </choice>
+                            <ref name="article"/>
+                        </choice>
+                    </oneOrMore>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="image-range-box">
+        <element>
+            <name ns="">image-range-box</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">style-1</value>
+                                <value type="token" ns="">style-2</value>
+                            </choice>
+                            <value type="token" ns="">style-3</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <ref name="image-range"/>
+            </group>
+        </element>
+    </define>
+    <define name="image-range">
+        <element>
+            <name ns="">image-range</name>
+            <group>
+                <group>
+                    <group>
+                        <choice>
+                            <attribute>
+                                <name ns="">aspect-ratio</name>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <value type="token" ns="">16-9</value>
+                                                <value type="token" ns="">4-3</value>
+                                            </choice>
+                                            <value type="token" ns="">3-4</value>
+                                        </choice>
+                                        <value type="token" ns="">1-1</value>
+                                    </choice>
+                                    <value type="token" ns="">flexible</value>
+                                </choice>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                        <choice>
+                            <attribute>
+                                <name ns="">display-image-captions</name>
+                                <choice>
+                                    <value type="token" ns="">false</value>
+                                    <value type="token" ns="">true</value>
+                                </choice>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <attribute>
+                            <name ns="">link</name>
+                            <choice>
+                                <choice>
+                                    <value type="token" ns="">none</value>
+                                    <value type="token" ns="">slideshow</value>
+                                </choice>
+                                <value type="token" ns="">related-content</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">style-1</value>
+                                <value type="token" ns="">style-2</value>
+                            </choice>
+                            <value type="token" ns="">style-3</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="image-reveal-box">
+        <element>
+            <name ns="">image-reveal-box</name>
+            <group>
+                <group>
+                    <group>
+                        <choice>
+                            <attribute>
+                                <name ns="">display</name>
+                                <choice>
+                                    <value type="token" ns="">inline</value>
+                                    <value type="token" ns="">fullscreen</value>
+                                </choice>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                        <choice>
+                            <attribute>
+                                <name ns="">align</name>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <value type="token" ns="">left</value>
+                                            <value type="token" ns="">right</value>
+                                        </choice>
+                                        <value type="token" ns="">center</value>
+                                    </choice>
+                                    <value type="token" ns="">sidebar</value>
+                                </choice>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <attribute>
+                            <name ns="">style</name>
+                            <choice>
+                                <choice>
+                                    <value type="token" ns="">style-1</value>
+                                    <value type="token" ns="">style-2</value>
+                                </choice>
+                                <value type="token" ns="">style-3</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <group>
+                    <group>
+                        <ref name="image-reveal"/>
+                        <ref name="poster"/>
+                    </group>
+                    <choice>
+                        <ref name="caption"/>
+                        <empty/>
+                    </choice>
+                </group>
+            </group>
+        </element>
+    </define>
+    <define name="image-reveal">
+        <element>
+            <name ns="">image-reveal</name>
+            <choice>
+                <attribute>
+                    <name ns="">aspect-ratio</name>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">16-9</value>
+                                <value type="token" ns="">4-3</value>
+                            </choice>
+                            <value type="token" ns="">3-4</value>
+                        </choice>
+                        <value type="token" ns="">1-1</value>
+                    </choice>
+                </attribute>
+                <empty/>
+            </choice>
+        </element>
+    </define>
+    <define name="turntable-box">
+        <element>
+            <name ns="">turntable-box</name>
+            <group>
+                <group>
+                    <group>
+                        <choice>
+                            <attribute>
+                                <name ns="">display</name>
+                                <choice>
+                                    <value type="token" ns="">inline</value>
+                                    <value type="token" ns="">fullscreen</value>
+                                </choice>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                        <choice>
+                            <attribute>
+                                <name ns="">align</name>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <value type="token" ns="">left</value>
+                                            <value type="token" ns="">right</value>
+                                        </choice>
+                                        <value type="token" ns="">center</value>
+                                    </choice>
+                                    <value type="token" ns="">sidebar</value>
+                                </choice>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <attribute>
+                            <name ns="">style</name>
+                            <choice>
+                                <choice>
+                                    <value type="token" ns="">style-1</value>
+                                    <value type="token" ns="">style-2</value>
+                                </choice>
+                                <value type="token" ns="">style-3</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <group>
+                    <group>
+                        <ref name="turntable"/>
+                        <ref name="poster"/>
+                    </group>
+                    <choice>
+                        <ref name="caption"/>
+                        <empty/>
+                    </choice>
+                </group>
+            </group>
+        </element>
+    </define>
+    <define name="turntable">
+        <element>
+            <name ns="">turntable</name>
+            <empty/>
+        </element>
+    </define>
+    <define name="callout-box">
+        <element>
+            <name ns="">callout-box</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">style-1</value>
+                                <value type="token" ns="">style-2</value>
+                            </choice>
+                            <value type="token" ns="">style-3</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <oneOrMore>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <ref name="image-box"/>
+                                                    <ref name="video-box"/>
+                                                </choice>
+                                                <ref name="audio-box"/>
+                                            </choice>
+                                            <ref name="slideshow-box"/>
+                                        </choice>
+                                        <ref name="interactive-element-box"/>
+                                    </choice>
+                                    <ref name="image-reveal-box"/>
+                                </choice>
+                                <ref name="turntable-box"/>
+                            </choice>
+                            <ref name="image-range-box"/>
+                        </choice>
+                        <ref name="x-external-content-box"/>
+                    </choice>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="layout">
+        <element>
+            <name ns="">layout</name>
+            <empty/>
+        </element>
+    </define>
+    <define name="gallery">
+        <element>
+            <name ns="">gallery</name>
+            <choice>
+                <attribute>
+                    <name ns="">background-color</name>
+                    <text/>
+                </attribute>
+                <empty/>
+            </choice>
+        </element>
+    </define>
+    <define name="callout">
+        <element>
+            <name ns="">callout</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">style-1</value>
+                                <value type="token" ns="">style-2</value>
+                            </choice>
+                            <value type="token" ns="">style-3</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <group>
+                    <oneOrMore>
+                        <choice>
+                            <ref name="paragraph"/>
+                            <ref name="article"/>
+                        </choice>
+                    </oneOrMore>
+                    <choice>
+                        <ref name="caption"/>
+                        <empty/>
+                    </choice>
+                </group>
+            </group>
+        </element>
+    </define>
+    <define name="caption">
+        <element>
+            <name ns="">caption</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">style-1</value>
+                                <value type="token" ns="">style-2</value>
+                            </choice>
+                            <value type="token" ns="">style-3</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <group>
+                    <choice>
+                        <ref name="title"/>
+                        <empty/>
+                    </choice>
+                    <choice>
+                        <oneOrMore>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <ref name="paragraph"/>
+                                        <ref name="enumeration"/>
+                                    </choice>
+                                    <ref name="bullet-list"/>
+                                </choice>
+                                <ref name="article"/>
+                            </choice>
+                        </oneOrMore>
+                        <empty/>
+                    </choice>
+                </group>
+            </group>
+        </element>
+    </define>
+    <define name="poster">
+        <element>
+            <name ns="">poster</name>
+            <group>
+                <group>
+                    <choice>
+                        <attribute>
+                            <name ns="">aspect-ratio</name>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <value type="token" ns="">16-9</value>
+                                        <value type="token" ns="">4-3</value>
+                                    </choice>
+                                    <value type="token" ns="">3-4</value>
+                                </choice>
+                                <value type="token" ns="">1-1</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                    <choice>
+                        <attribute>
+                            <name ns="">alt-text</name>
+                            <text/>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <choice>
+                    <attribute>
+                        <name ns="">seo-title</name>
+                        <text/>
+                    </attribute>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="table">
+        <element>
+            <name ns="">table</name>
+            <group>
+                <group>
+                    <group>
+                        <choice>
+                            <attribute>
+                                <name ns="">header-row-count</name>
+                                <text/>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                        <choice>
+                            <attribute>
+                                <name ns="">footer-row-count</name>
+                                <text/>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <attribute>
+                            <name ns="">style</name>
+                            <choice>
+                                <choice>
+                                    <value type="token" ns="">style-1</value>
+                                    <value type="token" ns="">style-2</value>
+                                </choice>
+                                <value type="token" ns="">style-3</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <group>
+                    <group>
+                        <choice>
+                            <ref name="table-caption"/>
+                            <empty/>
+                        </choice>
+                        <ref name="colspec"/>
+                    </group>
+                    <oneOrMore>
+                        <ref name="row"/>
+                    </oneOrMore>
+                </group>
+            </group>
+        </element>
+    </define>
+    <define name="colspec">
+        <element>
+            <name ns="">colspec</name>
+            <oneOrMore>
+                <ref name="col"/>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="col">
+        <element>
+            <name ns="">col</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">width</name>
+                        <text/>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">style-1</value>
+                                <value type="token" ns="">style-2</value>
+                            </choice>
+                            <value type="token" ns="">style-3</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="row">
+        <element>
+            <name ns="">row</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">style-1</value>
+                                <value type="token" ns="">style-2</value>
+                            </choice>
+                            <value type="token" ns="">style-3</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <oneOrMore>
+                    <ref name="cell"/>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="cell">
+        <element>
+            <name ns="">cell</name>
+            <group>
+                <group>
+                    <group>
+                        <choice>
+                            <attribute>
+                                <name ns="">colspan</name>
+                                <text/>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                        <choice>
+                            <attribute>
+                                <name ns="">rowspan</name>
+                                <text/>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <attribute>
+                            <name ns="">style</name>
+                            <choice>
+                                <choice>
+                                    <value type="token" ns="">style-1</value>
+                                    <value type="token" ns="">style-2</value>
+                                </choice>
+                                <value type="token" ns="">style-3</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <choice>
+                    <oneOrMore>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <choice>
+                                                        <choice>
+                                                            <choice>
+                                                                <choice>
+                                                                    <choice>
+                                                                        <choice>
+                                                                            <choice>
+                                                                                <choice>
+                                                                                    <choice>
+                                                                                        <choice>
+                                                                                            <choice>
+                                                                                                <choice>
+                                                                                                    <ref name="paragraph"/>
+                                                                                                    <ref name="anchor"/>
+                                                                                                </choice>
+                                                                                                <ref name="image-box"/>
+                                                                                            </choice>
+                                                                                            <ref name="video-box"/>
+                                                                                        </choice>
+                                                                                        <ref name="audio-box"/>
+                                                                                    </choice>
+                                                                                    <ref name="slideshow-box"/>
+                                                                                </choice>
+                                                                                <ref name="image-reveal-box"/>
+                                                                            </choice>
+                                                                            <ref name="turntable-box"/>
+                                                                        </choice>
+                                                                        <ref name="interactive-element-box"/>
+                                                                    </choice>
+                                                                    <ref name="x-external-content-box"/>
+                                                                </choice>
+                                                                <ref name="subheadline-1"/>
+                                                            </choice>
+                                                            <ref name="subheadline-2"/>
+                                                        </choice>
+                                                        <ref name="subheadline-3"/>
+                                                    </choice>
+                                                    <ref name="enumeration"/>
+                                                </choice>
+                                                <ref name="bullet-list"/>
+                                            </choice>
+                                            <ref name="hdivider"/>
+                                        </choice>
+                                        <ref name="callout"/>
+                                    </choice>
+                                    <ref name="table"/>
+                                </choice>
+                                <ref name="pre"/>
+                            </choice>
+                            <ref name="article"/>
+                        </choice>
+                    </oneOrMore>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="table-caption">
+        <element>
+            <name ns="">table-caption</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">style-1</value>
+                                <value type="token" ns="">style-2</value>
+                            </choice>
+                            <value type="token" ns="">style-3</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <oneOrMore>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <choice>
+                                                        <choice>
+                                                            <text/>
+                                                            <ref name="link"/>
+                                                        </choice>
+                                                        <ref name="marker"/>
+                                                    </choice>
+                                                    <ref name="bold"/>
+                                                </choice>
+                                                <ref name="italic"/>
+                                            </choice>
+                                            <ref name="bold-italic"/>
+                                        </choice>
+                                        <ref name="underline"/>
+                                    </choice>
+                                    <ref name="sup"/>
+                                </choice>
+                                <ref name="sub"/>
+                            </choice>
+                            <ref name="reference"/>
+                        </choice>
+                        <ref name="footnote"/>
+                    </choice>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="conversation">
+        <element>
+            <name ns="">conversation</name>
+            <group>
+                <group>
+                    <choice>
+                        <attribute>
+                            <name ns="">type</name>
+                            <choice>
+                                <value type="token" ns="">faq</value>
+                                <value type="token" ns="">interview</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                    <choice>
+                        <attribute>
+                            <name ns="">style</name>
+                            <choice>
+                                <choice>
+                                    <value type="token" ns="">style-1</value>
+                                    <value type="token" ns="">style-2</value>
+                                </choice>
+                                <value type="token" ns="">style-3</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <oneOrMore>
+                    <group>
+                        <oneOrMore>
+                            <ref name="conversation-item"/>
+                        </oneOrMore>
+                        <choice>
+                            <oneOrMore>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <choice>
+                                                        <choice>
+                                                            <choice>
+                                                                <choice>
+                                                                    <choice>
+                                                                        <choice>
+                                                                            <choice>
+                                                                                <ref name="image-box"/>
+                                                                                <ref name="video-box"/>
+                                                                            </choice>
+                                                                            <ref name="audio-box"/>
+                                                                        </choice>
+                                                                        <ref name="slideshow-box"/>
+                                                                    </choice>
+                                                                    <ref name="interactive-element-box"/>
+                                                                </choice>
+                                                                <ref name="turntable-box"/>
+                                                            </choice>
+                                                            <ref name="image-reveal-box"/>
+                                                        </choice>
+                                                        <ref name="x-external-content-box"/>
+                                                    </choice>
+                                                    <ref name="hdivider"/>
+                                                </choice>
+                                                <ref name="callout"/>
+                                            </choice>
+                                            <ref name="callout-box"/>
+                                        </choice>
+                                        <ref name="new-page"/>
+                                    </choice>
+                                    <ref name="anchor"/>
+                                </choice>
+                            </oneOrMore>
+                            <empty/>
+                        </choice>
+                    </group>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="conversation-item">
+        <element>
+            <name ns="">conversation-item</name>
+            <group>
+                <ref name="question"/>
+                <oneOrMore>
+                    <ref name="answer"/>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="question">
+        <element>
+            <name ns="">question</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">style-1</value>
+                                <value type="token" ns="">style-2</value>
+                            </choice>
+                            <value type="token" ns="">style-3</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <group>
+                    <choice>
+                        <ref name="person"/>
+                        <empty/>
+                    </choice>
+                    <oneOrMore>
+                        <ref name="paragraph"/>
+                    </oneOrMore>
+                </group>
+            </group>
+        </element>
+    </define>
+    <define name="answer">
+        <element>
+            <name ns="">answer</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">style</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">style-1</value>
+                                <value type="token" ns="">style-2</value>
+                            </choice>
+                            <value type="token" ns="">style-3</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <group>
+                    <choice>
+                        <ref name="person"/>
+                        <empty/>
+                    </choice>
+                    <oneOrMore>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <choice>
+                                                        <choice>
+                                                            <choice>
+                                                                <choice>
+                                                                    <choice>
+                                                                        <choice>
+                                                                            <choice>
+                                                                                <choice>
+                                                                                    <choice>
+                                                                                        <choice>
+                                                                                            <choice>
+                                                                                                <choice>
+                                                                                                    <ref name="paragraph"/>
+                                                                                                    <ref name="anchor"/>
+                                                                                                </choice>
+                                                                                                <ref name="image-box"/>
+                                                                                            </choice>
+                                                                                            <ref name="video-box"/>
+                                                                                        </choice>
+                                                                                        <ref name="audio-box"/>
+                                                                                    </choice>
+                                                                                    <ref name="slideshow-box"/>
+                                                                                </choice>
+                                                                                <ref name="image-reveal-box"/>
+                                                                            </choice>
+                                                                            <ref name="turntable-box"/>
+                                                                        </choice>
+                                                                        <ref name="interactive-element-box"/>
+                                                                    </choice>
+                                                                    <ref name="x-external-content-box"/>
+                                                                </choice>
+                                                                <ref name="subheadline-1"/>
+                                                            </choice>
+                                                            <ref name="subheadline-2"/>
+                                                        </choice>
+                                                        <ref name="subheadline-3"/>
+                                                    </choice>
+                                                    <ref name="enumeration"/>
+                                                </choice>
+                                                <ref name="bullet-list"/>
+                                            </choice>
+                                            <ref name="hdivider"/>
+                                        </choice>
+                                        <ref name="callout"/>
+                                    </choice>
+                                    <ref name="table"/>
+                                </choice>
+                                <ref name="pre"/>
+                            </choice>
+                            <ref name="article"/>
+                        </choice>
+                    </oneOrMore>
+                </group>
+            </group>
+        </element>
+    </define>
+    <define name="person">
+        <element>
+            <name ns="">person</name>
+            <text/>
+        </element>
+    </define>
+    <define name="additional-content">
+        <element>
+            <name ns="">additional-content</name>
+            <group>
+                <group>
+                    <choice>
+                        <attribute>
+                            <name ns="">align</name>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <value type="token" ns="">left</value>
+                                        <value type="token" ns="">right</value>
+                                    </choice>
+                                    <value type="token" ns="">center</value>
+                                </choice>
+                                <value type="token" ns="">sidebar</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                    <choice>
+                        <attribute>
+                            <name ns="">style</name>
+                            <choice>
+                                <choice>
+                                    <value type="token" ns="">style-1</value>
+                                    <value type="token" ns="">style-2</value>
+                                </choice>
+                                <value type="token" ns="">style-3</value>
+                            </choice>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <oneOrMore>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <choice>
+                                                <choice>
+                                                    <choice>
+                                                        <choice>
+                                                            <choice>
+                                                                <choice>
+                                                                    <choice>
+                                                                        <choice>
+                                                                            <choice>
+                                                                                <choice>
+                                                                                    <ref name="paragraph"/>
+                                                                                    <ref name="image-box"/>
+                                                                                </choice>
+                                                                                <ref name="video-box"/>
+                                                                            </choice>
+                                                                            <ref name="audio-box"/>
+                                                                        </choice>
+                                                                        <ref name="slideshow-box"/>
+                                                                    </choice>
+                                                                    <ref name="interactive-element-box"/>
+                                                                </choice>
+                                                                <ref name="x-external-content-box"/>
+                                                            </choice>
+                                                            <ref name="enumeration"/>
+                                                        </choice>
+                                                        <ref name="bullet-list"/>
+                                                    </choice>
+                                                    <ref name="turntable-box"/>
+                                                </choice>
+                                                <ref name="image-reveal-box"/>
+                                            </choice>
+                                            <ref name="subheadline-1"/>
+                                        </choice>
+                                        <ref name="subheadline-2"/>
+                                    </choice>
+                                    <ref name="subheadline-3"/>
+                                </choice>
+                                <ref name="hdivider"/>
+                            </choice>
+                            <ref name="callout"/>
+                        </choice>
+                        <ref name="article"/>
+                    </choice>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="article">
+        <element>
+            <name ns="">article</name>
+            <group>
+                <group>
+                    <group>
+                        <choice>
+                            <choice>
+                                <oneOrMore>
+                                    <ref name="content"/>
+                                </oneOrMore>
+                                <empty/>
+                            </choice>
+                            <empty/>
+                        </choice>
+                        <choice>
+                            <ref name="app"/>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <ref name="website"/>
+                        <empty/>
+                    </choice>
+                </group>
+                <choice>
+                    <ref name="print"/>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="reference-description">
+        <element>
+            <name ns="">reference-description</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">label</name>
+                        <text/>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <choice>
+                    <oneOrMore>
+                        <choice>
+                            <choice>
+                                <ref name="paragraph"/>
+                                <ref name="enumeration"/>
+                            </choice>
+                            <ref name="bullet-list"/>
+                        </choice>
+                    </oneOrMore>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="bold">
+        <element>
+            <name ns="">bold</name>
+            <oneOrMore>
+                <choice>
+                    <choice>
+                        <choice>
+                            <text/>
+                            <ref name="underline"/>
+                        </choice>
+                        <ref name="sup"/>
+                    </choice>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="italic">
+        <element>
+            <name ns="">italic</name>
+            <oneOrMore>
+                <choice>
+                    <choice>
+                        <choice>
+                            <text/>
+                            <ref name="underline"/>
+                        </choice>
+                        <ref name="sup"/>
+                    </choice>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="bold-italic">
+        <element>
+            <name ns="">bold-italic</name>
+            <oneOrMore>
+                <choice>
+                    <choice>
+                        <choice>
+                            <text/>
+                            <ref name="underline"/>
+                        </choice>
+                        <ref name="sup"/>
+                    </choice>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="link">
+        <element>
+            <name ns="">link</name>
+            <group>
+                <group>
+                    <group>
+                        <group>
+                            <group>
+                                <choice>
+                                    <attribute>
+                                        <name ns="">url</name>
+                                        <text/>
+                                    </attribute>
+                                    <empty/>
+                                </choice>
+                                <choice>
+                                    <attribute>
+                                        <name ns="">url-fragment</name>
+                                        <text/>
+                                    </attribute>
+                                    <empty/>
+                                </choice>
+                            </group>
+                            <choice>
+                                <attribute>
+                                    <name ns="">target</name>
+                                    <choice>
+                                        <value type="token" ns="">self</value>
+                                        <value type="token" ns="">new-window</value>
+                                    </choice>
+                                </attribute>
+                                <empty/>
+                            </choice>
+                        </group>
+                        <choice>
+                            <attribute>
+                                <name ns="">follow</name>
+                                <choice>
+                                    <value type="token" ns="">follow</value>
+                                    <value type="token" ns="">no-follow</value>
+                                </choice>
+                            </attribute>
+                            <empty/>
+                        </choice>
+                    </group>
+                    <choice>
+                        <attribute>
+                            <name ns="">seo-title</name>
+                            <text/>
+                        </attribute>
+                        <empty/>
+                    </choice>
+                </group>
+                <oneOrMore>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <choice>
+                                            <text/>
+                                            <ref name="bold"/>
+                                        </choice>
+                                        <ref name="italic"/>
+                                    </choice>
+                                    <ref name="bold-italic"/>
+                                </choice>
+                                <ref name="underline"/>
+                            </choice>
+                            <ref name="sup"/>
+                        </choice>
+                        <ref name="sub"/>
+                    </choice>
+                </oneOrMore>
+            </group>
+        </element>
+    </define>
+    <define name="marker">
+        <element>
+            <name ns="">marker</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">semantics</name>
+                        <choice>
+                            <choice>
+                                <value type="token" ns="">emphasized</value>
+                                <value type="token" ns="">strong</value>
+                            </choice>
+                            <value type="token" ns="">small</value>
+                        </choice>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <text/>
+            </group>
+        </element>
+    </define>
+    <define name="hdivider">
+        <element>
+            <name ns="">hdivider</name>
+            <choice>
+                <attribute>
+                    <name ns="">style</name>
+                    <choice>
+                        <choice>
+                            <value type="token" ns="">style-1</value>
+                            <value type="token" ns="">style-2</value>
+                        </choice>
+                        <value type="token" ns="">style-3</value>
+                    </choice>
+                </attribute>
+                <empty/>
+            </choice>
+        </element>
+    </define>
+    <define name="anchor">
+        <element>
+            <name ns="">anchor</name>
+            <choice>
+                <attribute>
+                    <name ns="">key</name>
+                    <text/>
+                </attribute>
+                <empty/>
+            </choice>
+        </element>
+    </define>
+    <define name="reference">
+        <element>
+            <name ns="">reference</name>
+            <group>
+                <choice>
+                    <attribute>
+                        <name ns="">key</name>
+                        <text/>
+                    </attribute>
+                    <empty/>
+                </choice>
+                <choice>
+                    <attribute>
+                        <name ns="">label</name>
+                        <text/>
+                    </attribute>
+                    <empty/>
+                </choice>
+            </group>
+        </element>
+    </define>
+    <define name="footnote">
+        <element>
+            <name ns="">footnote</name>
+            <oneOrMore>
+                <choice>
+                    <choice>
+                        <choice>
+                            <choice>
+                                <choice>
+                                    <choice>
+                                        <text/>
+                                        <ref name="bold"/>
+                                    </choice>
+                                    <ref name="italic"/>
+                                </choice>
+                                <ref name="bold-italic"/>
+                            </choice>
+                            <ref name="underline"/>
+                        </choice>
+                        <ref name="sup"/>
+                    </choice>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="sub">
+        <element>
+            <name ns="">sub</name>
+            <text/>
+        </element>
+    </define>
+    <define name="sup">
+        <element>
+            <name ns="">sup</name>
+            <text/>
+        </element>
+    </define>
+    <define name="underline">
+        <element>
+            <name ns="">underline</name>
+            <oneOrMore>
+                <choice>
+                    <choice>
+                        <text/>
+                        <ref name="sup"/>
+                    </choice>
+                    <ref name="sub"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="new-page">
+        <element>
+            <name ns="">new-page</name>
+            <choice>
+                <choice>
+                    <choice>
+                        <choice>
+                            <ref name="layout-1"/>
+                            <ref name="layout-2"/>
+                        </choice>
+                        <ref name="layout-3"/>
+                    </choice>
+                    <ref name="layout-4"/>
+                </choice>
+                <empty/>
+            </choice>
+        </element>
+    </define>
+    <define name="layout-1">
+        <element>
+            <name ns="">layout-1</name>
+            <empty/>
+        </element>
+    </define>
+    <define name="layout-2">
+        <element>
+            <name ns="">layout-2</name>
+            <empty/>
+        </element>
+    </define>
+    <define name="layout-3">
+        <element>
+            <name ns="">layout-3</name>
+            <empty/>
+        </element>
+    </define>
+    <define name="layout-4">
+        <element>
+            <name ns="">layout-4</name>
+            <empty/>
+        </element>
+    </define>
+</grammar> 

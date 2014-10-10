@@ -795,50 +795,43 @@ export function handleError(message, attrs) {
  *      console.log(file) //
  * }); //
  */
-export function getXML(url, callback, async, ctx) {
-    var xhr = new XMLHttpRequest(),
-        async = isDefined(async) && isBoolean(async) ? async : true,
-        context;
+export function getXML(url, async = true) {
+    var xhr = new XMLHttpRequest(), ob;
     if (isFunction(xhr.overrideMimeType)) {
         xhr.overrideMimeType('text/xml');
     }
     xhr.open('GET', url, async);
-    // pass the context to callback
-    if (!ctx) {
-        context = {};
-    } else {
-        context = ctx;
-    }
-
-    if (async) {
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
-                    if (isFunction(callback)) {
-                        callback.call(context, xhr.responseXML, false, xhr.status);
+    if (!async) {
+        xhr.send(null);
+        ob = {
+            then: (resolve, reject) => {
+                if(xhr.readyState == 4 && xhr.status == 200) {
+                    if (isFunction(resolve)) {
+                        resolve(xhr.responseXML);
                     }
                 } else {
-                    if (isFunction(callback)) {
-                        callback.call(context, null, true, xhr.status);
+                    if (isFunction(reject)) {
+                        reject(xhr);
                     }
                 }
+                return ob;
             }
         };
+        return ob;
+    }
+
+    return new Promise(function(resolve, reject) {
+        xhr.onreadystatechange = () => handler;
         xhr.send(null);
-    } else {
-        xhr.send(null);
-        if (xhr.readyState == 4) {
-            if (xhr.status == 200) {
-                if (isFunction(callback)) {
-                    callback.call(context, xhr.responseXML, false, xhr.status);
-                }
+        function handler() {
+            if(xhr.readyState == 4 && xhr.status == 200) {
+                resolve(xhr.responseXML);
             } else {
-                if (isFunction(callback)) {
-                    callback.call(context, null, true, xhr.status);
-                }
+                reject(xhr);
             }
         }
-    }
+    });
+
 }
 /**
  * @license  2014

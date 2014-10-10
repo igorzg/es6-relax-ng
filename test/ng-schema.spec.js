@@ -12,15 +12,9 @@ describe('NgSchema', function () {
     }
 
     beforeEach(function () {
-        getXML('/base/test/xml/schema_1.rng', function (data) {
-            xmlDoc = data;
-        }, false);
-        getXML('/base/test/xml/schema_2.rng', function (data) {
-            xmlDocRng = data;
-        }, false);
-        getXML('/base/test/xml/schema_invalid.rng', function (data) {
-            xmlDocRngInvalid = data;
-        }, false);
+        getXML('/base/test/xml/schema_1.rng', false).then(data => {xmlDoc = data;});
+        getXML('/base/test/xml/schema_2.rng', false).then(data => {xmlDocRng = data;});
+        getXML('/base/test/xml/schema_invalid.rng', false).then(data => {xmlDocRngInvalid = data;});
     });
     it('should be invalid', function() {
         try {
@@ -83,9 +77,7 @@ describe('NgSchema', function () {
 
 
     it('step_1', function() {
-        getXML('/base/test/xml/step_1/schema.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_1/schema.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
         expect(schemaInstance.schema.querySelectorAll('grammar').length).toBe(2);
@@ -94,9 +86,7 @@ describe('NgSchema', function () {
 
     it('step_1 fail', function() {
         var message = 'NgSchema traverse: invalid schema definition in step step_1 externalRef don\'t have provided correct parent current parent is "div" but allowed are: "attribute,choice,define,element,except,group,interleave,list,mixed,oneOrMore,optional,start,zeroOrMore" or node don\'t have correct namespace assigned';
-        getXML('/base/test/xml/step_1/schema2.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_1/schema2.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         try {
             schemaInstance.step_1();
@@ -108,9 +98,7 @@ describe('NgSchema', function () {
 
     it('step_1 fail 2', function() {
         var message = 'NgSchema traverse: external file don\'t have correct namespace external: "brb", don\'t match "rng" . Exchange external or internal to do correct schema merge.';
-        getXML('/base/test/xml/step_1/schema3.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_1/schema3.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         try {
             schemaInstance.step_1();
@@ -122,9 +110,7 @@ describe('NgSchema', function () {
 
 
     it('step_2', function() {
-        getXML('/base/test/xml/step_2/schema.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_2/schema.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -134,9 +120,7 @@ describe('NgSchema', function () {
 
 
     it('step_2 fail', function() {
-        getXML('/base/test/xml/step_2/schema_invalid_children.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_2/schema_invalid_children.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
         try {
@@ -147,9 +131,7 @@ describe('NgSchema', function () {
     });
 
     it('step_2 fail 2', function() {
-        getXML('/base/test/xml/step_2/schema_invalid_parent.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_2/schema_invalid_parent.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
         try {
@@ -160,9 +142,7 @@ describe('NgSchema', function () {
     });
 
     it('step_2 children no replace', function() {
-        getXML('/base/test/xml/step_2/schema_valid_children_no_replace.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_2/schema_valid_children_no_replace.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc), e1;
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -174,9 +154,7 @@ describe('NgSchema', function () {
     });
 
     it('step_2 children replace', function() {
-        getXML('/base/test/xml/step_2/schema_valid_children_no_replace_2.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_2/schema_valid_children_no_replace_2.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc), e1;
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -188,9 +166,7 @@ describe('NgSchema', function () {
     });
 
     it('step_2 children replace', function() {
-        getXML('/base/test/xml/step_2/schema_valid_children_with_replace.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_2/schema_valid_children_with_replace.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc), e1;
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -204,9 +180,7 @@ describe('NgSchema', function () {
 
 
     it('step_3 merge grammars', function() {
-        getXML('/base/test/xml/step_2/schema_valid_children_with_replace.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_2/schema_valid_children_with_replace.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -216,9 +190,7 @@ describe('NgSchema', function () {
     });
 
     it('step_4 merge starts no change', function() {
-        getXML('/base/test/xml/step_2/schema_valid_children_with_replace.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_2/schema_valid_children_with_replace.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -229,9 +201,7 @@ describe('NgSchema', function () {
     });
 
     it('step_4 merge starts unwrap', function() {
-        getXML('/base/test/xml/step_2/schema2.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_2/schema2.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -242,9 +212,7 @@ describe('NgSchema', function () {
     });
 
     it('step_5 collect define', function() {
-        getXML('/base/test/xml/step_2/schema2.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_2/schema2.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc), fc = schemaInstance.schema.firstElementChild();
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -258,9 +226,7 @@ describe('NgSchema', function () {
     });
 
     it('step_6 merge start', function() {
-        getXML('/base/test/xml/step_2/schema.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_2/schema.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc), fc = schemaInstance.querySelector('start'), e1;
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -277,9 +243,7 @@ describe('NgSchema', function () {
     });
 
     it('step_7 remove annotations', function() {
-        getXML('/base/test/xml/step_7/schema.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_7/schema.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -295,10 +259,8 @@ describe('NgSchema', function () {
     });
 
     it('step_8 remove whitespace', function() {
-        getXML('/base/test/xml/step_7/schema.rng', function (data) {
-            xmlDoc = data;
-        }, false);
-        var result = `<?xml version="1.0" encoding="UTF-8" ?><rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:cs="http://igorivanovic.info/relaxng/annotations/1.0"><rng:start><rng:ref name="id"/></rng:start><rng:define name="id"><rng:element name="addressBook"><rng:zeroOrMore><rng:element name="card"><rng:choice><rng:element name="name"><rng:text/></rng:element></rng:choice></rng:element></rng:zeroOrMore></rng:element></rng:define></rng:grammar>`;
+        getXML('/base/test/xml/step_7/schema.rng', false).then(data => {xmlDoc = data;});
+        var result = `<?xml version="1.0" encoding="UTF-8" ?><rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:cs="http://igorivanovic.info/relaxng/annotations/1.0"><rng:start><rng:ref name="id"/></rng:start><rng:define name="id"><rng:element name="addressBook"><rng:zeroOrMore><rng:element name="card"><rng:choice><rng:element name="name"><rng:text/></rng:element></rng:choice></rng:element></rng:zeroOrMore><rng:ref name="attlist.id"/></rng:element></rng:define><rng:define name="attlist.id"><rng:optional><rng:attribute name="style"><rng:choice><rng:value> style-1            </rng:value><rng:value> style-2</rng:value><rng:value>style-3 </rng:value></rng:choice></rng:attribute></rng:optional></rng:define></rng:grammar>`;
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -315,9 +277,7 @@ describe('NgSchema', function () {
     });
 
     it('step_9 remove whitespace on attributes', function() {
-        getXML('/base/test/xml/step_9/schema.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_9/schema.rng', false).then(data => {xmlDoc = data;});
        var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -342,9 +302,7 @@ describe('NgSchema', function () {
     });
 
     it('step_10 Inherit datatype', function() {
-        getXML('/base/test/xml/step_10/schema.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_10/schema.rng', false).then(data => {xmlDoc = data;});
         var url = "http://www.w3.org/2001/XMLSchema-datatypes";
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
@@ -380,9 +338,7 @@ describe('NgSchema', function () {
     });
 
     it('step_11 separate name nodes', function() {
-        getXML('/base/test/xml/step_10/schema.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_10/schema.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         //schemaInstance.config.removeWhiteSpace = false;
         schemaInstance.step_1();
@@ -416,9 +372,7 @@ describe('NgSchema', function () {
     });
 
     it('step_12 inherit ns attributes', function() {
-        getXML('/base/test/xml/step_12/schema.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_12/schema.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         //schemaInstance.config.removeWhiteSpace = false;
         schemaInstance.step_1();
@@ -444,9 +398,7 @@ describe('NgSchema', function () {
     });
 
     it('step_13 remove ns attributes from different elements', function() {
-        getXML('/base/test/xml/step_12/schema.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_12/schema.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         //schemaInstance.config.removeWhiteSpace = false;
         schemaInstance.step_1();
@@ -473,9 +425,7 @@ describe('NgSchema', function () {
 
 
     it('step_14 remove namespaced name values and assign valid ns', function() {
-        getXML('/base/test/xml/step_14/schema.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_14/schema.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
        // schemaInstance.config.removeWhiteSpace = false;
         schemaInstance.step_1();
@@ -503,9 +453,7 @@ describe('NgSchema', function () {
 
 
     it('step_15  each div element is replaced by its children.', function() {
-        getXML('/base/test/xml/step_15/schema.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_15/schema.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         //schemaInstance.config.removeWhiteSpace = false;
         schemaInstance.step_1();
@@ -539,9 +487,7 @@ describe('NgSchema', function () {
     });
 
     it('step_16  oneOrMore, zeroOrMore, optional', function() {
-        getXML('/base/test/xml/schema_3.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/schema_3.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         //schemaInstance.config.removeWhiteSpace = false;
         schemaInstance.step_1();
@@ -570,9 +516,7 @@ describe('NgSchema', function () {
 
 
     it('step_17  element must have exact two child elements first is name and rest', function() {
-        getXML('/base/test/xml/schema_3.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/schema_3.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         //schemaInstance.config.removeWhiteSpace = false;
         schemaInstance.step_1();
@@ -610,9 +554,7 @@ describe('NgSchema', function () {
 
 
     it('step_18 except children wrap with choice if more than 1 child', function() {
-        getXML('/base/test/xml/schema_3.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/schema_3.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         //schemaInstance.config.removeWhiteSpace = false;
         schemaInstance.step_1();
@@ -639,9 +581,7 @@ describe('NgSchema', function () {
 
 
     it('step_19 attribute', function() {
-        getXML('/base/test/xml/schema_3.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/schema_3.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         ///schemaInstance.config.removeWhiteSpace = false;
         schemaInstance.step_1();
@@ -673,9 +613,7 @@ describe('NgSchema', function () {
 
 
     it('step_20 choice, group or interleave element', function() {
-        getXML('/base/test/xml/schema_3.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/schema_3.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         ///schemaInstance.config.removeWhiteSpace = false;
         schemaInstance.step_1();
@@ -715,9 +653,7 @@ describe('NgSchema', function () {
     });
 
     it('step_21 choice, group or interleave deep transform', function() {
-        getXML('/base/test/xml/schema_3.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/schema_3.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -750,9 +686,7 @@ describe('NgSchema', function () {
     });
 
     it('step_22 mixed patterns are transformed', function() {
-        getXML('/base/test/xml/schema_3.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/schema_3.rng',  false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -786,9 +720,7 @@ describe('NgSchema', function () {
 
 
     it('step_23 optional is transformed to choice', function() {
-        getXML('/base/test/xml/schema_3.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/schema_3.rng',  false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -827,9 +759,7 @@ describe('NgSchema', function () {
 
 
     it('step_24 optional is transformed to choice', function() {
-        getXML('/base/test/xml/schema_3.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/schema_3.rng', false).then(data => {xmlDoc = data;});
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -865,9 +795,7 @@ describe('NgSchema', function () {
     });
 
     it('step_25 combine choice', function() {
-        getXML('/base/test/xml/step_25/schema.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_25/schema.rng', false).then(data => {xmlDoc = data;});
         var key = 'choice';
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
@@ -913,9 +841,7 @@ describe('NgSchema', function () {
         //console.log(schemaInstance.toString(true));
     });
     it('step_25 combine interleave', function() {
-        getXML('/base/test/xml/step_25/schema2.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_25/schema2.rng',  false).then(data => {xmlDoc = data;});
         var key = 'interleave';
         var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
@@ -962,9 +888,7 @@ describe('NgSchema', function () {
     });
 
     it('step_25 combine invalid', function() {
-        getXML('/base/test/xml/step_25/schema_invalid.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_25/schema_invalid.rng', false).then(data => {xmlDoc = data;});
         var error = false;
         var key = 'NgSchema traverse: nodes with same name must have same combine attribute: <rng:define xmlns:rng="http://relaxng.org/ns/structure/1.0" name="id" combine="interleave"><rng:choice><rng:group><rng:group><rng:element><rng:name ns="">combine2</rng:name><rng:text/></rng:element><rng:element><rng:name ns="">combine2_1</rng:name><rng:text/></rng:element></rng:group><rng:interleave><rng:choice><rng:oneOrMore><rng:element><rng:name ns="">combine2_2</rng:name><rng:text/></rng:element></rng:oneOrMore><rng:empty/></rng:choice><rng:text/></rng:interleave></rng:group><rng:empty/></rng:choice></rng:define>, <rng:define xmlns:rng="http://relaxng.org/ns/structure/1.0" name="id" combine="choice"><rng:element><rng:name ns="">addressBook</rng:name><rng:group><rng:attribute><rng:name ns="">attrAddressBook</rng:name><rng:value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="token" ns="">asdasd</rng:value></rng:attribute><rng:choice><rng:oneOrMore><rng:group><rng:group><rng:element><rng:name ns="">card</rng:name><rng:group><rng:group><rng:choice><rng:choice><rng:choice><rng:interleave><rng:choice><rng:oneOrMore><rng:element><rng:name ns="">fnote1</rng:name><rng:interleave><rng:choice><rng:oneOrMore><rng:element><rng:name ns="">fnote4</rng:name><rng:text/></rng:element></rng:oneOrMore><rng:empty/></rng:choice><rng:text/></rng:interleave></rng:element></rng:oneOrMore><rng:empty/></rng:choice><rng:text/></rng:interleave><rng:element><rng:name ns="">name</rng:name><rng:text/></rng:element></rng:choice><rng:element><rng:name ns="">name2</rng:name><rng:text/></rng:element></rng:choice><rng:group><rng:element><rng:name ns="">givenName</rng:name><rng:text/></rng:element><rng:element><rng:name ns="">familyName</rng:name><rng:text/></rng:element></rng:group></rng:choice><rng:element><rng:name ns="">email</rng:name><rng:text/></rng:element></rng:group><rng:choice><rng:element><rng:name ns="">note</rng:name><rng:text/></rng:element><rng:empty/></rng:choice></rng:group></rng:element><rng:element><rng:name ns="">valid</rng:name><rng:text/></rng:element></rng:group><rng:interleave><rng:choice><rng:oneOrMore><rng:element><rng:name ns="">fnote2</rng:name><rng:text/></rng:element></rng:oneOrMore><rng:empty/></rng:choice><rng:text/></rng:interleave></rng:group></rng:oneOrMore><rng:empty/></rng:choice></rng:group></rng:element></rng:define>';
         var schemaInstance = clone(xmlDoc);
@@ -1005,9 +929,7 @@ describe('NgSchema', function () {
     });
 
     it('step_25 combine invalid 2', function() {
-        getXML('/base/test/xml/step_25/schema_invalid2.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_25/schema_invalid2.rng', false).then(data => {xmlDoc = data;});
         var error = false;
         var key = 'NgSchema traverse: invalid combine value on node: <rng:define xmlns:rng="http://relaxng.org/ns/structure/1.0" name="id" combine="choice2"><rng:element><rng:name ns="">addressBook</rng:name><rng:group><rng:attribute><rng:name ns="">attrAddressBook</rng:name><rng:value datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" type="token" ns="">asdasd</rng:value></rng:attribute><rng:choice><rng:oneOrMore><rng:group><rng:group><rng:element><rng:name ns="">card</rng:name><rng:group><rng:group><rng:choice><rng:choice><rng:choice><rng:interleave><rng:choice><rng:oneOrMore><rng:element><rng:name ns="">fnote1</rng:name><rng:interleave><rng:choice><rng:oneOrMore><rng:element><rng:name ns="">fnote4</rng:name><rng:text/></rng:element></rng:oneOrMore><rng:empty/></rng:choice><rng:text/></rng:interleave></rng:element></rng:oneOrMore><rng:empty/></rng:choice><rng:text/></rng:interleave><rng:element><rng:name ns="">name</rng:name><rng:text/></rng:element></rng:choice><rng:element><rng:name ns="">name2</rng:name><rng:text/></rng:element></rng:choice><rng:group><rng:element><rng:name ns="">givenName</rng:name><rng:text/></rng:element><rng:element><rng:name ns="">familyName</rng:name><rng:text/></rng:element></rng:group></rng:choice><rng:element><rng:name ns="">email</rng:name><rng:text/></rng:element></rng:group><rng:choice><rng:element><rng:name ns="">note</rng:name><rng:text/></rng:element><rng:empty/></rng:choice></rng:group></rng:element><rng:element><rng:name ns="">valid</rng:name><rng:text/></rng:element></rng:group><rng:interleave><rng:choice><rng:oneOrMore><rng:element><rng:name ns="">fnote2</rng:name><rng:text/></rng:element></rng:oneOrMore><rng:empty/></rng:choice><rng:text/></rng:interleave></rng:group></rng:oneOrMore><rng:empty/></rng:choice></rng:group></rng:element></rng:define>, allowed are "interleave,choice"';
         var schemaInstance = clone(xmlDoc);
@@ -1046,9 +968,7 @@ describe('NgSchema', function () {
     });
 
     it('step_26 replace parentRef', function() {
-        getXML('/base/test/xml/step_26/schema.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_26/schema.rng', false).then(data => {xmlDoc = data;});
        var schemaInstance = clone(xmlDoc);
         schemaInstance.step_1();
         schemaInstance.step_2();
@@ -1090,9 +1010,7 @@ describe('NgSchema', function () {
 
     it('step_27 replace refs', function() {
         var xmlDoc2;
-        getXML('/base/test/xml/step_27/schema.rng', function (data) {
-            xmlDoc = data;
-        }, false);
+        getXML('/base/test/xml/step_27/schema.rng', false).then(data => {xmlDoc = data;});
 
 
         var schemaInstance = clone(xmlDoc);
@@ -1146,18 +1064,30 @@ describe('NgSchema', function () {
 
 
 
-    it('step_28 - step_ 30 - cleanup', function() {
+    it('Schema simplify', function() {
         var xmlDoc2;
-        getXML('/base/test/xml/schema_3.rng', function (data) {
-            xmlDoc = data;
-        }, false);
-        getXML('/base/test/xml/schema_3_result.rng', function (data) {
-            xmlDoc2 = data;
-        }, false);
+        getXML('/base/test/xml/schema_3.rng', false).then(data => {xmlDoc = data;});
+        getXML('/base/test/xml/schema_3_result.rng', false).then(data => {xmlDoc2 = data;});
         var schemaInstanceResult = clone(xmlDoc2);
         schemaInstanceResult.step_8();
         var schemaInstance = clone(xmlDoc);
         schemaInstance.simplify();
         expect(schemaInstance.toString(true)).toBe(schemaInstanceResult.toString(true));
     });
+
+
+    it('Schema simplify2', function() {
+        var xmlDoc2;
+        getXML('/base/test/xml/schema_4.rng',  false).then(data => {xmlDoc = data;});
+
+        getXML('/base/test/xml/schema_4_result.rng',  false).then(data => {xmlDoc2 = data;});
+        var schemaInstanceResult = clone(xmlDoc2);
+        schemaInstanceResult.step_8();
+
+        var schemaInstance = new NgSchema(xmlDoc);
+        schemaInstance.simplify();
+        expect(schemaInstance.toString(true)).toBe(schemaInstanceResult.toString(true));
+
+    });
+
 });
