@@ -2,7 +2,6 @@ import {NgClass} from './ng-class';
 import {NgDOM} from "./ng-dom";
 import {NgError} from './ng-error';
 import {
-    extend,
     isNode,
     removeComments,
     toXML,
@@ -38,7 +37,7 @@ export class NgSchema extends NgClass {
      * @param schema
      * @param config
      */
-     constructor(schema, config) {
+     constructor(schema, config = {cloneComplex: true, removeInvalidNodes: true}) {
         var fc, ns;
         super(NgSchema);
         /**
@@ -58,15 +57,12 @@ export class NgSchema extends NgClass {
          * Config
          * @type {{cloneComplex: boolean}}
          */
-        this.config = {
-            cloneComplex: true,
-            removeInvalidNodes: true
-        };
+        this.config = {};
         /**
          * Is object
          */
         if (isObject(config)) {
-            extend(this.config, config);
+            Object.assign(this.config, config);
         }
         /**
          * Create instance of schema dom
@@ -1123,10 +1119,14 @@ export class NgSchema extends NgClass {
      * @description
      * Convert schema to string
      */
-    toString(prettyPrint, complex) {
+    toString(prettyPrint, complex = false) {
         var schema = this.schema, clone;
+        if (complex) {
+            schema = this.complex;
+        }
         if (prettyPrint) {
-            clone = this.clone();
+            clone = new NgSchema(removeWhiteSpace(schema.clone().node));
+            clone.step_8();
             clone.traverse(function prettifyTraverse(node) {
                 var count = getNodeDeepLevel(node),  parent = node.parentNode(), space;
                 if (!parent.isDocumentNode()) {
@@ -1143,9 +1143,6 @@ export class NgSchema extends NgClass {
             schema = clone.schema;
         }
         if (schema.isDocumentNode()) {
-            if (!!complex) {
-                return toXML(schema.node);
-            }
             return toXML(schema.node);
         }
         /**

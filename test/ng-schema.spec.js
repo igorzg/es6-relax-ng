@@ -1085,7 +1085,10 @@ describe('NgSchema', function () {
         schemaInstanceResult.step_8();
 
         var schemaInstance = new NgSchema(xmlDoc);
+        var t1 = (new Date).getTime();
         schemaInstance.simplify();
+        var t2 = (new Date).getTime();
+        console.log('SIMPLIFY TIME', t2 - t1);
         expect(schemaInstance.toString(true)).toBe(schemaInstanceResult.toString(true));
 
     });

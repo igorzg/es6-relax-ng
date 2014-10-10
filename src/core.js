@@ -328,80 +328,6 @@ export function isPlainObject(obj) {
  * @license  2014
  * @since 0.0.1
  * @author Igor Ivanovic
- * @name extend
- * @global
- * @function extend
- * @param {object} extend object
- * @return {object}
- * @description
- * Extend object from a to b
- * @example
- * extend({a:1}, {a:2, b:1}); // -> {a:1, b:1}
- */
-export function extend(obj) {
-    var options, name, src, copy, copyIsArray, clone,
-        target = arguments[0] || {},
-        i = 1,
-        length = arguments.length,
-        deep = false;
-    // Handle a deep copy situation
-    if (isBoolean(target)) {
-        deep = target;
-        target = arguments[i] || {};
-        i += 1;
-    }
-
-    // Handle case when target is a string or something (possible in deep copy)
-    if (!isObject(target) && !isFunction(target)) {
-        target = {};
-    }
-
-    // extend jQuery itself if only one argument is passed
-    if (i === length) {
-        target = this;
-        i -= 1;
-    }
-
-    for (; i < length; i += 1) {
-        // Only deal with non-null/undefined values
-        if ((options = arguments[i]) != null) {
-            // Extend the base object
-            for (name in options) {
-                src = target[name];
-                copy = options[name];
-                // Prevent never-ending loop
-                if (target === copy) {
-                    continue;
-                }
-                // Recurse if we're merging plain objects or arrays
-                if (
-                    deep &&
-                    copy &&
-                    (
-                        isPlainObject(copy) ||
-                        (copyIsArray = isArray(copy))
-                        )
-                    ) {
-                    if (copyIsArray) {
-                        copyIsArray = false;
-                        clone = src && isArray(src) ? src : [];
-                    } else {
-                        clone = src && isPlainObject(src) ? src : {};
-                    }
-                    target[name] = extend(deep, clone, copy);
-                } else if (isDefined(copy)) {
-                    target[name] = copy;
-                }
-            }
-        }
-    }
-    return target;
-}
-
-/**
- * @license  2014
- * @since 0.0.1
- * @author Igor Ivanovic
  * @name copy
  * @global
  * @function copy
@@ -821,13 +747,16 @@ export function getXML(url, async = true) {
     }
 
     return new Promise(function(resolve, reject) {
-        xhr.onreadystatechange = () => handler;
+        xhr.onreadystatechange = handle;
         xhr.send(null);
-        function handler() {
-            if(xhr.readyState == 4 && xhr.status == 200) {
-                resolve(xhr.responseXML);
-            } else {
-                reject(xhr);
+
+        function handle() {
+            if(xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    resolve(xhr.responseXML);
+                } else {
+                    reject(xhr);
+                }
             }
         }
     });
@@ -876,44 +805,48 @@ export function parseXML(str) {
  * removeComments(node);
  */
 export function removeComments(node) {
-    var skip = false, nLoop = node, cache;
+    var result;
     try {
-        while (true) {
 
-            if (nLoop.firstChild && !skip) {
-                nLoop = nLoop.firstChild;
-                if (isCommentNode(nLoop)) {
-                    if (nLoop.nextSibling) {
-                        cache = nLoop.nextSibling;
-                    } else {
-                        cache = nLoop.parentNode;
-                        skip = true;
-                    }
-                    nLoop.parentNode.removeChild(nLoop);
-                    nLoop = cache;
+        for(let iNode of gen(node)) {
+            if (isCommentNode(iNode)) {
+                if (iNode.nextSibling) {
+                    result = iNode.nextSibling;
+                } else {
+                    result = iNode.parentNode;
                 }
-            } else if (nLoop.nextSibling) {
+                iNode.parentNode.removeChild(iNode);
+            }
+
+        }
+    } catch (e) {
+        throw new NgError('removeComments: to many iterations');
+    }
+    /**
+     * Iterate
+     * @param node
+     */
+    function* gen(node) {
+        var skip = false;
+        while (true) {
+            if (result) {
+                node = result;
+                result = null;
+            }
+            if (node.firstChild && !skip) {
+                node = node.firstChild;
+                yield node;
+            } else if (node.nextSibling) {
+                node = node.nextSibling;
                 skip = false;
-                nLoop = nLoop.nextSibling;
-                if (isCommentNode(nLoop)) {
-                    if (nLoop.nextSibling) {
-                        cache = nLoop.nextSibling;
-                    } else {
-                        cache = nLoop.parentNode;
-                        skip = true;
-                    }
-                    nLoop.parentNode.removeChild(nLoop);
-                    nLoop = cache;
-                }
-            } else if (nLoop.parentNode) {
-                nLoop = nLoop.parentNode;
+                yield node;
+            } else if (node.parentNode) {
+                node = node.parentNode;
                 skip = true;
             } else {
                 break;
             }
         }
-    } catch (e) {
-        throw new NgError('to many iterations', [e, e.stack]);
     }
     return node;
 }
