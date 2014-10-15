@@ -1,5 +1,7 @@
 import {NgClass} from './ng-class';
 import {NgError} from './ng-error';
+import {NgContext} from './ng-context';
+import {NgSchema} from './ng-schema';
 /**
  * @license Mit Licence 2014
  * @since 0.0.1
@@ -11,9 +13,15 @@ import {NgError} from './ng-error';
  *
  * NgPattern class is creating pattern ot of schema for validation algorithm
  */
-class NgPattern extends NgClass{
+export class NgPattern extends NgClass{
 
-    constructor() {
+    constructor(schema) {
         super(NgPattern);
+        this.context = new NgContext();
+        if (schema instanceof NgSchema) {
+            this.schemaInstance = schema;
+        } else {
+            throw new NgError('schema object is not valid schema instance it must be NgSchema')
+        }
     }
 }
