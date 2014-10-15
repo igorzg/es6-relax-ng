@@ -41,8 +41,7 @@ export class NgElement extends NgClass {
      *
      */
     startTagOpenDeriv(pattern, qName, node) {
-        var contains = this.contains(pattern.nameClass, qName);
-        if (contains) {
+        if (this.contains(pattern.nameClass, qName)) {
             return this.after(pattern.pattern, new NgEmpty());
         }
         return new NgElementError(node, pattern, qName);

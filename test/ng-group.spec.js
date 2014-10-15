@@ -130,7 +130,7 @@ describe('NgGroup', function() {
             },
             choice: function(a, b) {
                 expect(a).toBe(1);
-                expect(b).toBe(1);
+                expect(b).toBe(2);
                 return 'choice';
             },
             nullable: function() {

@@ -92,15 +92,15 @@ export class NgGroup extends NgClass {
      * @returns {object} The newly created pattern.
      */
     textDeriv(context, pattern, str, node) {
-        var p1, c1, n, p2;
+        var p1, p, p2;
         p1 = this.textDeriv(context, pattern.pattern1, str, node);
-        c1 = this.group(p1, pattern.pattern2);
-        n = this.nullable(c1);
-        if (n) {
-            p2 = this.textDeriv(context, pattern.pattern1, str, node);
-            return this.choice(c1, p2);
+        p = this.group(p1, pattern.pattern2);
+
+        if (this.nullable(p)) {
+            p2 = this.textDeriv(context, pattern.pattern2, str, node);
+            return this.choice(p, p2);
         } else {
-            return c1;
+            return p;
         }
     }
 }
