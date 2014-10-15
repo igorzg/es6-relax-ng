@@ -297,37 +297,6 @@ export function css(element, name, value) {
  * @license  2014
  * @since 0.0.1
  * @author Igor Ivanovic
- * @name isPlainObject
- * @global
- * @function isPlainObject
- * @param {object} obj object to be checked
- * @return {boolean}
- * @description
- * Check if obj is plain object
- * @example
- * isPlainObject({a:1}); // true
- */
-export function isPlainObject(obj) {
-    /**
-     * Is object
-     */
-    if (!isObject(obj) || obj.nodeType || isWindow(obj)) {
-        return false;
-    }
-    /**
-     * Constructor
-     */
-    if (obj.constructor && !Object.prototype.hasOwnProperty.call(obj.constructor.prototype, "isPrototypeOf")) {
-        return false;
-    }
-
-    return true;
-}
-
-/**
- * @license  2014
- * @since 0.0.1
- * @author Igor Ivanovic
  * @name copy
  * @global
  * @function copy
@@ -376,33 +345,6 @@ export function copy(source, destination) {
     }
     return destination;
 }
-/**
- * @license  2014
- * @since 0.0.1
- * @author Igor Ivanovic
- * @name isArrayLike
- * @global
- * @function isArrayLike
- * @param {object} obj object
- * @return {boolean} Returns true if `obj` is an array or array-like object (NodeList, Arguments, String ...)
- * @description
- * Check if object is arraylike type
- * @example
- * isArrayLike({a:1, b:2}); // true;
- */
-export function isArrayLike(obj) {
-    if (obj == null || isWindow(obj)) {
-        return false;
-    }
-
-    var length = obj.length;
-
-    if (obj.nodeType === 1 && length) {
-        return true;
-    }
-
-    return isString(obj) || isArray(obj) || length === 0 || typeof length === 'number' && length > 0 && (length - 1) in obj;
-}
 
 /**
  * @license  2014
@@ -422,27 +364,17 @@ export function isArrayLike(obj) {
  *      console.log(value, key); // 1 , a
  * });;
  */
-export function forEach(obj, iterator, context) {
+export function forEach(obj, iterator, context = null) {
     var key;
     if (obj) {
-        if (isFunction(obj)) {
-            for (key in obj) {
-                if (key != 'prototype' && key != 'length' && key != 'name' && (!obj.hasOwnProperty || obj.hasOwnProperty(key))) {
-                    iterator.call(context, obj[key], key);
-                }
-            }
-        } else if (obj.forEach && obj.forEach !== forEach) {
+        if (isArray(obj)) {
             obj.forEach(iterator, context);
-        } else if (isArrayLike(obj)) {
-            for (key = 0; key < obj.length; key++) {
-                iterator.call(context, obj[key], key);
-            }
-        } else {
-            for (key in obj) {
-                if (obj.hasOwnProperty(key)) {
-                    iterator.call(context, obj[key], key);
+        } else if(isObject(obj)) {
+            Object.keys(obj).forEach(function(item) {
+                if (item !== 'length') {
+                    iterator.call(context, obj[item], item);
                 }
-            }
+            });
         }
     }
     return obj;

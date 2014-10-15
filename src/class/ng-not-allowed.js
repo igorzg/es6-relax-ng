@@ -19,14 +19,14 @@ export class NgNotAllowed extends NgClass{
      * @description
      * NgNotAllowed constructor method
      * @param {string} message
-     * @param {object} tree
+     * @param {object} node
      * @param {object} pattern
      *
      */
-    constructor(message, tree, pattern) {
+    constructor(message, node, pattern) {
         super(NgNotAllowed);
         this.message = message;
-        this.tree = tree;
+        this.node = node;
         this.pattern = pattern;
     }
 }

@@ -4,7 +4,6 @@ import {
     isNode,
     isArray,
     isString,
-    nextUid,
     forEach,
     instanceOf,
     isDocumentNode,

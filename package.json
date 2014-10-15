@@ -30,7 +30,7 @@
         "karma-requirejs": "0.2.2",
         "karma-sauce-launcher": "~0.2.5",
         "karma-script-launcher": "git://github.com/igorzg/karma-traceur-preprocessor.git#master",
-        "traceur": "~0.0.65"
+        "traceur": "~0.0.67"
     },
     "scripts": {
         "test": "karma start karma.conf.js"

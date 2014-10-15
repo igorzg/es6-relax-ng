@@ -15,7 +15,7 @@ import {NgError} from './ng-error';
 export class NgClass {
 
     constructor(Class) {
-        this.instanceOf(Class)
+        this.instanceOf(Class);
     }
     /**
      * @since 0.0.1
@@ -25,8 +25,10 @@ export class NgClass {
      *
      */
     instanceOf(Class) {
+        var message;
         if (!(this instanceof Class)) {
-            throw new NgError('Class {0} is not instantiated', [Class]);
+            message = Class.toString();
+            throw new NgError(`Class ${message} is not instantiated`);
         }
     }
 }
