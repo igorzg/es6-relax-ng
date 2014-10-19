@@ -26,6 +26,7 @@ export class NgDataExcept extends NgClass {
         this.datatype = datatype;
         this.paramList = paramList;
         this.pattern = pattern;
+        this.className = 'NgDataExcept';
     }
     /**
      * @since 0.0.1

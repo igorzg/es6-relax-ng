@@ -18,7 +18,7 @@ describe('NgAttributeError', function() {
         is not allowed on this element`;
         expect(ob.pattern  instanceof NgEmpty).toBe(true);
         expect(ob.message).toBe(message);
-        expect(ob.type).toBe('NgAttributeError');
+        expect(ob.className).toBe('NgAttributeError');
     });
 });
 

@@ -25,6 +25,6 @@ export class NgDataError extends NgNotAllowed {
             this.dataType = ngNotAllowed.node;
             this.dataTypePattern = ngNotAllowed.pattern;
         }
-        this.type = 'NgDataError';
+        this.className = 'NgDataError';
      }
 }

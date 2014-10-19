@@ -1,6 +1,6 @@
 import {NgInterLeave} from '../src/class/ng-interleave';
 import {ApplyFlip} from '../src/class/apply-flip';
-describe('NgGroup', function() {
+describe('NgInterLeave', function() {
     var o;
     beforeEach(function() {
       o = new NgInterLeave(1, 2);
@@ -10,6 +10,7 @@ describe('NgGroup', function() {
       expect(o instanceof NgInterLeave).toBe(true);
       expect(o.pattern1).toBe(1);
       expect(o.pattern2).toBe(2);
+      expect(o.className).toBe('NgInterLeave');
     });
 
     it('attDeriv', function() {

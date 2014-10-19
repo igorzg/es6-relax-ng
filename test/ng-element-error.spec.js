@@ -16,8 +16,8 @@ describe('NgElementError', function() {
       expect(o.message).toBe(message);
       expect(o.pattern).toBe(pattern);
       expect(o.node).toBe(node);
-      expect(o.type).toBe('NgElementError');
       expect(o.qName).toBe(qName);
+      expect(o.className).toBe('NgElementError');
     });
 });
 

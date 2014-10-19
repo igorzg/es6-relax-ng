@@ -14,6 +14,7 @@ describe('NgAnyNameExcept', function() {
       spyOn(ctx, 'contains');
       expect(o.contains.call(ctx, {nameClass: 1}, 'name')).toBe(true);
       expect(ctx.contains).toHaveBeenCalled();
+      expect(o.className).toBe('NgAnyNameExcept');
     });
 });
 

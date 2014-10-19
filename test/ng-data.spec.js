@@ -8,6 +8,7 @@ describe('NgData', function() {
         expect(ob instanceof NgData).toBe(true);
         expect(ob.datatype).toBe(1);
         expect(ob.paramList).toBe(2);
+        expect(ob.className).toBe('NgData');
     });
 
     it('textDeriv', function() {

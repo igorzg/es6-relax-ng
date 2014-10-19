@@ -10,6 +10,7 @@ describe('NgGroup', function() {
       expect(o instanceof NgGroup).toBe(true);
       expect(o.pattern1).toBe(1);
       expect(o.pattern2).toBe(2);
+      expect(o.className).toBe('NgGroup');
     });
 
     it('attDeriv', function() {

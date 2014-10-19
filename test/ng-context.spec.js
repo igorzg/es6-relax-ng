@@ -9,6 +9,7 @@ describe('NgContext', function() {
       expect(ob instanceof NgContext).toBe(true);
       expect(ob.uri).toBe(str);
       expect(ob.map).toBe(map);
+      expect(ob.className).toBe('NgContext');
   });
 });
 

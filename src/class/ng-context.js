@@ -24,6 +24,7 @@ export class NgContext extends NgClass {
         super(NgContext);
         this.uri = uri;
         this.map = map;
+        this.className = 'NgContext';
     }
 
 }

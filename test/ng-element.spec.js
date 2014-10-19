@@ -8,6 +8,7 @@ describe('NgElement', function() {
         expect(ob instanceof NgElement).toBe(true);
         expect(ob.nameClass).toBe(1);
         expect(ob.pattern).toBe(2);
+        expect(ob.className).toBe('NgElement');
     });
 
     it('startTagOpenDeriv', function() {
@@ -55,7 +56,7 @@ describe('NgElement', function() {
         expect(r instanceof NgElementError).toBe(true);
         expect(ctx.contains).toHaveBeenCalled();
         expect(r.qName).toBe(qName);
-        expect(r.type).toBe('NgElementError');
+        expect(r.className).toBe('NgElementError');
         var message = `invalid tag name: '1' or uri: '2',
         expected tag name is: '1' and uri: '2'`;
         expect(r.message).toBe(message);

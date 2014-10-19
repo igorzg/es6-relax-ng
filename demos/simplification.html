@@ -3,45 +3,92 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/languages/xml.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/languages/json.min.js"></script>
     <script src="../node_modules/traceur/bin/traceur-runtime.js"></script>
     <script src="../node_modules/requirejs/require.js"></script>
     <script>
         requirejs.config({
-            baseUrl: '../dist/',
-            paths: {
-                "class": 'class'
-            }
+            baseUrl: '../dist/'
         });
-        require(['class/ng-schema','core'], function(sch, core) {
-            core.getXML('../test/xml/schema_4.rng').then(function (xml) {
-                console.log('xml', xml, sch);
-                var schema = new sch.NgSchema(xml);
-                console.time('SCHEMA_SIMPLIFY');
-                schema.simplify();
-                console.timeEnd('SCHEMA_SIMPLIFY');
+        require(['class/ng-schema', 'class/ng-pattern','core'], function(sch, patt, core) {
+            core.getXML('../test/xml/schema_3.rng').then(function (xml) {
+
+                try {
 
 
-                var el = document.getElementById("sch2");
-                el.innerHTML = schema.toString(true);
-                var el2 = document.getElementById("sch1");
-                el2.innerHTML = schema.toString(true, true);
+                    var schema = new sch.NgSchema(xml);
+                    console.time('SCHEMA_SIMPLIFY');
+                    schema.simplify();
+                    console.timeEnd('SCHEMA_SIMPLIFY');
+
+
+                    var el = document.getElementById("sch2");
+                    el.appendChild(document.createTextNode(schema.toXML(true)));
+                    var el2 = document.getElementById("sch1");
+                    el2.appendChild(document.createTextNode(schema.toXML(true, true)));
+                    console.time('CREATE_PATTERN');
+
+                    var pattern = new patt.NgPattern(schema);
+                    var el3 = document.getElementById("pattern");
+                    el3.appendChild(document.createTextNode(JSON.stringify(pattern.pattern, null, "\t")));
+                    console.timeEnd('CREATE_PATTERN');
+                } catch (e) {
+                    console.log(e);
+                }
+
             }, function(xhr) {
                 console.log('error', xhr);
             });
         });
     </script>
     <style>
+        .schemas ul li{
+            float: left;
+            width: 45%;
+            margin-right: 20px;
+            list-style: none;
+        }
         .schema{
+            border: 1px solid #000;
+            font-family: Georgia;
             width: 100%;
-            min-height: 200px;
-            color: red;
+            height: 400px;
+            overflow: scroll;
+
+            color: #000;
+        }
+        .clearfix:before,
+        .clearfix:after {
+            content: " "; /* 1 */
+            display: table; /* 2 */
+        }
+        .clearfix:after {
+            clear: both;
         }
     </style>
 </head>
 <body>
-    <h1>Relax ng:</h1>
-    <textarea class="schema" id="sch1"></textarea>
-    <h1>Simplified</h1>
-    <textarea class="schema" id="sch2"></textarea>
+<div class="schemas">
+    <h1>RelaxNG</h1>
+    <ul class="clearfix">
+        <li>
+            <h1>Complex:</h1>
+            <pre class="schema xml" id="sch1"></pre>
+        </li>
+        <li>
+            <h1>Simplified</h1>
+            <pre class="schema xml" id="sch2"></pre>
+        </li>
+    </ul>
+    <ul class="clearfix">
+        <li>
+            <h1>Pattern:</h1>
+            <pre class="schema json" id="pattern"></pre>
+        </li>
+    </ul>
+</div>
+
 </body>
 </html>

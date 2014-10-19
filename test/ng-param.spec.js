@@ -6,6 +6,7 @@ describe('NgParam', function() {
       expect(obj instanceof NgParam).toBe(true);
       expect(obj.localName).toBe(1);
       expect(obj.string).toBe(2);
+      expect(obj.className).toBe('NgParam');
     });
 
 

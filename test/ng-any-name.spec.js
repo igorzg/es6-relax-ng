@@ -5,6 +5,7 @@ describe('NgAnyName', function() {
       var o = new NgAnyName();
       expect(o instanceof NgAnyName).toBe(true);
       expect(o.contains()).toBe(true);
+      expect(o.className).toBe('NgAnyName');
     });
 });
 

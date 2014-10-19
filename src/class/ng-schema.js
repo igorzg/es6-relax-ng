@@ -84,7 +84,7 @@ export class NgSchema extends NgClass {
         try {
             fc = this.schema.firstElementChild();
             ns = fc.getNamespace(this.rngNs);
-            if (ns && ns.localName) {
+            if (ns) {
                 if (ns.localName !== 'xmlns') {
                     this.localName = ns.localName;
                 }
@@ -111,6 +111,7 @@ export class NgSchema extends NgClass {
          * @type {Array}
          */
         this.annotations = [];
+        this.className = 'NgSchema';
     }
     /**
      * @since 0.0.1
@@ -424,7 +425,7 @@ export class NgSchema extends NgClass {
                 }
                 node.removeAttribute("name");
             } else if (node.is('element', this.localName)) {
-                throw new NgError("step_11, node {0} don't have an name attribute", node.toString());
+                throw new NgError("step_11, node {0} don't have an name attribute", node.toXML());
             }
         }, ["element", "attribute"]);
     }
@@ -691,13 +692,13 @@ export class NgSchema extends NgClass {
             if (node.hasAttribute("combine")) {
                 combine = node.getAttribute("combine");
                 if (allowed.indexOf(combine) === -1) {
-                    throw new NgError('invalid combine value on node: {0}, allowed are "{1}"', node.toString(), allowed.join(','));
+                    throw new NgError('invalid combine value on node: {0}, allowed are "{1}"', node.toXML(), allowed.join(','));
                 }
                 name = node.getAttribute("name");
                 obj = query(nodes, name, node.type);
                 if (obj) {
                     if (obj.combine !== combine) {
-                        throw new NgError('nodes with same name must have same combine attribute: {0}, {1}', node.toString(), obj.node.toString());
+                        throw new NgError('nodes with same name must have same combine attribute: {0}, {1}', node.toXML(), obj.node.toXML());
                     }
                     if (obj.combineWith.indexOf(node) === -1) {
                         obj.combineWith.push(node);
@@ -1085,7 +1086,7 @@ export class NgSchema extends NgClass {
     }
     /**
      * @since 0.0.1
-     * @method NgSchema#toString
+     * @method NgSchema#createElement
      * @description
      * Convert schema to string
      */
@@ -1102,6 +1103,9 @@ export class NgSchema extends NgClass {
      * Map to query selector
      */
     querySelectorAll(selector) {
+        if (this.localName) {
+            return this.schema.querySelectorAll(selector).filter((item) => {return item.typePrefix === this.localName;});
+        }
         return this.schema.querySelectorAll(selector);
     }
     /**
@@ -1111,15 +1115,21 @@ export class NgSchema extends NgClass {
      * Map to query selector
      */
     querySelector(selector) {
-        return this.schema.querySelector(selector);
+        var node = this.schema.querySelector(selector);
+        if (this.localName && node) {
+            if (node.typePrefix !== this.localName) {
+                return null;
+            }
+        }
+        return node;
     }
     /**
      * @since 0.0.1
-     * @method NgSchema#toString
+     * @method NgSchema#toXML
      * @description
      * Convert schema to string
      */
-    toString(prettyPrint, complex = false) {
+    toXML(prettyPrint, complex = false) {
         var schema = this.schema, clone;
         if (complex) {
             schema = this.complex;
@@ -1131,13 +1141,13 @@ export class NgSchema extends NgClass {
                 var count = getNodeDeepLevel(node),  parent = node.parentNode(), space;
                 if (!parent.isDocumentNode()) {
                     space = createWhiteSpace(count);
-                    parent.insertBefore(node.createTextNode("\n"), node);
+                    parent.insertBefore(node.createTextNode("\u000A"), node);
                     parent.insertBefore(node.createTextNode(space), node);
                     if (node.hasChildElements()) {
-                        node.addChild(node.createTextNode("\n"+space), node);
+                        node.addChild(node.createTextNode("\u000A" + space), node);
                     }
                 } else {
-                    node.addChild(node.createTextNode("\n"), node);
+                    node.addChild(node.createTextNode("\u000A"), node);
                 }
             });
             schema = clone.schema;
@@ -1157,7 +1167,7 @@ export class NgSchema extends NgClass {
         function createWhiteSpace(indent) {
             var str = "";
             while(indent > 0) {
-                str += "\t";
+                str += "\u0009";
                 --indent;
             }
             return str;

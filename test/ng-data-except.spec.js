@@ -10,6 +10,7 @@ describe('NgDataExcept', function() {
         expect(ob.datatype).toBe(1);
         expect(ob.paramList).toBe(2);
         expect(ob.pattern).toBe(3);
+        expect(ob.className).toBe('NgDataExcept');
     });
 
     it('textDeriv NgEmpty', function() {

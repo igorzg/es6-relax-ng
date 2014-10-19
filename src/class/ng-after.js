@@ -24,6 +24,7 @@ export class NgAfter extends NgClass {
         super(NgAfter);
         this.pattern1 = pattern1;
         this.pattern2 = pattern2;
+        this.className = 'NgAfter';
     }
     /**
      * @since 0.0.1

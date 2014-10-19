@@ -7,6 +7,7 @@ describe('NgNsNameExcept', function() {
       expect(ob instanceof NgNsNameExcept).toBe(true);
       expect(ob.contains(ob, new NgNsNameExcept(1,2))).toBe(true);
       expect(ob.contains(ob, new NgNsNameExcept(2, 1))).toBe(false);
+      expect(ob.className).toBe('NgNsNameExcept');
   });
 });
 

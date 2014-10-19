@@ -1,18 +1,19 @@
 import {NgList} from '../src/class/ng-list';
 import {NgListError} from '../src/class/ng-list-error';
 import {NgEmpty} from '../src/class/ng-empty';
-describe('NgData', function() {
+describe('NgList', function() {
 
 
     it('Construct', function() {
         var ob = new NgList(1);
         expect(ob instanceof NgList).toBe(true);
         expect(ob.pattern).toBe(1);
+        expect(ob.className).toBe('NgList');
     });
 
     it('textDeriv', function() {
         var str = 'name a';
-        var node = 'node';
+        var node = {node: 'node', toXML() { return 'node'}};
         var context = [];
         var nullable = true;
         var ctx = {

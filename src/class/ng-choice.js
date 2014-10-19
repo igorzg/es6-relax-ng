@@ -21,6 +21,7 @@ export class NgChoice extends NgClass{
         super(NgChoice);
         this.pattern1 = pattern1;
         this.pattern2 = pattern2;
+        this.className = 'NgChoice';
      }
     /**
      * @since 0.0.1

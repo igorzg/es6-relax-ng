@@ -18,5 +18,6 @@ export class NgQName extends NgClass{
         super(NgQName);
         this.uri = uri;
         this.localName = localName;
+        this.className = 'NgQName';
     }
 }

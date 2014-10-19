@@ -6,6 +6,7 @@ describe('NgSchema', function () {
 
     function clone(xmlDoc) {
         var dom = new NgSchema(xmlDoc);
+        expect(dom.className).toBe('NgSchema');
         var clone = dom.clone();
         dom.destroy();
         return clone;
@@ -36,15 +37,15 @@ describe('NgSchema', function () {
         expect(schema.localName).toBe('rng');
     });
 
-    it('toString', function() {
+    it('toXML', function() {
         var schema = clone(xmlDoc), cloned = schema.clone();
-        expect(schema.toString()).toBe(cloned.toString());
+        expect(schema.toXML()).toBe(cloned.toXML());
         expect(schema === cloned).toBe(false);
     });
 
-    it('toString 2', function() {
+    it('toXML 2', function() {
         var schema = clone(xmlDocRng), cloned = schema.clone();
-        expect(schema.toString()).toBe(cloned.toString());
+        expect(schema.toXML()).toBe(cloned.toXML());
         expect(schema === cloned).toBe(false);
     });
 
@@ -251,7 +252,7 @@ describe('NgSchema', function () {
         schemaInstance.step_4();
         schemaInstance.step_5();
         schemaInstance.step_6();
-        expect(schemaInstance.querySelectorAll('element').length).toBe(7);
+        expect(schemaInstance.schema.querySelectorAll('element').length).toBe(7);
         schemaInstance.step_7();
         expect(schemaInstance.querySelectorAll('grammar').length).toBe(1);
         expect(schemaInstance.querySelectorAll('start').length).toBe(1);
@@ -270,7 +271,7 @@ describe('NgSchema', function () {
         schemaInstance.step_6();
         schemaInstance.step_7();
         schemaInstance.step_8();
-        expect(removeWhiteSpace(schemaInstance.toString())).toBe(removeWhiteSpace(result));
+        expect(removeWhiteSpace(schemaInstance.toXML())).toBe(removeWhiteSpace(result));
         expect(schemaInstance.querySelectorAll('grammar').length).toBe(1);
         expect(schemaInstance.querySelectorAll('start').length).toBe(1);
         expect(schemaInstance.querySelectorAll('element').length).toBe(3);
@@ -791,7 +792,7 @@ describe('NgSchema', function () {
         expect(all.length).toBe(0);
         all =  schemaInstance.querySelectorAll('oneOrMore');
         expect(all.length).toBe(4);
-        //console.log(schemaInstance.toString(true));
+        //console.log(schemaInstance.toXML(true));
     });
 
     it('step_25 combine choice', function() {
@@ -838,7 +839,7 @@ describe('NgSchema', function () {
         fc.childElements().forEach(function(item) {
             expect(item.type).toBe(key);
         });
-        //console.log(schemaInstance.toString(true));
+        //console.log(schemaInstance.toXML(true));
     });
     it('step_25 combine interleave', function() {
         getXML('/base/test/xml/step_25/schema2.rng',  false).then(data => {xmlDoc = data;});
@@ -884,7 +885,7 @@ describe('NgSchema', function () {
         expect(fc.firstElementChild().type).toBe(key);
         expect(fc.lastElementChild().type).toBe('choice');
 
-        //console.log(schemaInstance.toString(true));
+        //console.log(schemaInstance.toXML(true));
     });
 
     it('step_25 combine invalid', function() {
@@ -925,7 +926,7 @@ describe('NgSchema', function () {
         expect(error).toBe(true);
 
 
-        //console.log(schemaInstance.toString(true));
+        //console.log(schemaInstance.toXML(true));
     });
 
     it('step_25 combine invalid 2', function() {
@@ -964,7 +965,7 @@ describe('NgSchema', function () {
             expect(e.message).toBe(key);
         }
         expect(error).toBe(true);
-        //console.log(schemaInstance.toString(true));
+        //console.log(schemaInstance.toXML(true));
     });
 
     it('step_26 replace parentRef', function() {
@@ -1005,7 +1006,7 @@ describe('NgSchema', function () {
         el2 = schemaInstance.querySelector('ref[name=id2]');
         expect(el2.type).toBe('ref');
 
-        //console.log(schemaInstance.toString(true));
+        //console.log(schemaInstance.toXML(true));
     });
 
     it('step_27 replace refs', function() {
@@ -1059,7 +1060,7 @@ describe('NgSchema', function () {
         all = schemaInstance.querySelectorAll('define');
         expect(all.length).toBe(2);
 
-        ///console.log(schemaInstance.toString(true));
+        ///console.log(schemaInstance.toXML(true));
     });
 
 
@@ -1072,7 +1073,7 @@ describe('NgSchema', function () {
         schemaInstanceResult.step_8();
         var schemaInstance = clone(xmlDoc);
         schemaInstance.simplify();
-        expect(schemaInstance.toString(true)).toBe(schemaInstanceResult.toString(true));
+        expect(schemaInstance.toXML(true)).toBe(schemaInstanceResult.toXML(true));
     });
 
 
@@ -1089,7 +1090,7 @@ describe('NgSchema', function () {
         schemaInstance.simplify();
         var t2 = (new Date).getTime();
         console.log('SIMPLIFY TIME', t2 - t1);
-        expect(schemaInstance.toString(true)).toBe(schemaInstanceResult.toString(true));
+        expect(schemaInstance.toXML(true)).toBe(schemaInstanceResult.toXML(true));
 
     });
 

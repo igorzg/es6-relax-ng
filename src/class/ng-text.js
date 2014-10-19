@@ -14,6 +14,7 @@ import {NgClass} from './ng-class';
 export class NgText extends NgClass {
     constructor() {
         super(NgText);
+        this.className = 'NgText';
     }
     /**
      * @license  2014

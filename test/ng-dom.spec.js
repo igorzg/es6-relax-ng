@@ -40,9 +40,9 @@ describe('NgDOM', function () {
 
     it('Should serialize to string', function() {
         var dom = clone(xmlDoc), cl = clone(xmlDoc);
-        var str = dom.toString();
+        var str = dom.toXML();
 
-        expect(str).toBe(cl.toString());
+        expect(str).toBe(cl.toXML());
         cl.destroy();
         dom.destroy();
     });
@@ -143,7 +143,7 @@ describe('NgDOM', function () {
     it('Testing importNode|clone|addChild', function() {
         var dom = clone(xmlDoc), dom2 = clone(xmlDoc);
 
-        expect(dom.toString()).toBe(dom2.toString());
+        expect(dom.toXML()).toBe(dom2.toXML());
         expect(dom === dom2).toBe(false);
         var fc = dom.firstChild();
         var ne = dom2.createElement('import');
@@ -163,7 +163,7 @@ describe('NgDOM', function () {
 
     it('Testing remove|importNode', function() {
         var dom = clone(xmlDoc), dom2 = clone(xmlDoc);
-        expect(dom.toString()).toBe(dom2.toString());
+        expect(dom.toXML()).toBe(dom2.toXML());
         var fc = dom.firstChild();
         var ne = dom2.createElement('import');
         ne.addChild(dom2.createElement('import2'));
@@ -172,7 +172,7 @@ describe('NgDOM', function () {
         var sb = fc.lastElementChild(), sbfc = sb.firstChild();
         expect(sb.type).toBe('import');
         expect(sbfc.type).toBe('import2');
-        expect(sb.toString()).toBe('<import><import2/></import>');
+        expect(sb.toXML()).toBe('<import><import2/></import>');
         sb.remove();
 
         var sb2 = fc.lastElementChild();
@@ -183,7 +183,7 @@ describe('NgDOM', function () {
 
     it('Testing replaceNode', function() {
         var dom = clone(xmlDoc), dom2 = clone(xmlDoc);
-        expect(dom.toString()).toBe(dom2.toString());
+        expect(dom.toXML()).toBe(dom2.toXML());
 
         var nn = dom.createElement('test');
         var fc = dom.firstChild();
@@ -194,7 +194,7 @@ describe('NgDOM', function () {
         var sb = fc.lastElementChild(), sbfc = sb.firstChild();
         expect(sb.type).toBe('import');
         expect(sbfc.type).toBe('import2');
-        expect(sb.toString()).toBe('<import><import2/></import>');
+        expect(sb.toXML()).toBe('<import><import2/></import>');
 
 
         sb.replaceNode(nn);
@@ -209,7 +209,7 @@ describe('NgDOM', function () {
 
     it('Testing insertBefore', function() {
         var dom = clone(xmlDoc), dom2 = clone(xmlDoc);
-        expect(dom.toString()).toBe(dom2.toString());
+        expect(dom.toXML()).toBe(dom2.toXML());
 
         var nn = dom.createElement('test');
         var fc = dom.firstChild();
@@ -346,7 +346,7 @@ describe('NgDOM', function () {
         var html = "<first><second>aaaa</second></first>";
         var dom = clone(xmlDoc);
         var fc = dom.parse(html);
-        expect(fc.toString()).toBe(html);
+        expect(fc.toXML()).toBe(html);
         var e1 = fc.firstElementChild();
         var e2 = e1.firstElementChild();
 
@@ -392,7 +392,7 @@ describe('NgDOM', function () {
         expect(fc2.type).toBe('article');
         fcc.setValue('a');
         expect(fcc.getValue()).toBe('a');
-        expect(dom.toString()).toBe('<wrap>a</wrap>');
+        expect(dom.toXML()).toBe('<wrap>a</wrap>');
         dom.destroy();
     });
 
@@ -409,13 +409,13 @@ describe('NgDOM', function () {
         var fc2 = fcc.firstElementChild();
         expect(fc2.type).toBe('title');
 
-        expect(fc1.firstElementChild().toString()).toBe('<wrap><title>HTML enhanced for web apps!</title></wrap>');
+        expect(fc1.firstElementChild().toXML()).toBe('<wrap><title>HTML enhanced for web apps!</title></wrap>');
 
         fcc.unwrap();
 
         var fc3 = fc1.firstElementChild();
         expect(fc3.type).toBe('title');
-        expect(fc3.toString()).toBe('<title>HTML enhanced for web apps!</title>');
+        expect(fc3.toXML()).toBe('<title>HTML enhanced for web apps!</title>');
 
         dom.destroy();
     });

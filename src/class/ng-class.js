@@ -1,4 +1,5 @@
 import {NgError} from './ng-error';
+import {isIE, getFunctionName} from '../core';
 /**
  * @license Mit Licence 2014
  * @since 0.0.1

@@ -24,6 +24,6 @@ export class NgAttributeError extends NgNotAllowed {
         attribute: "${node.qName.localName}", ns "${node.qName.uri}",
         is not allowed on this element`;
         super(message, node, pattern);
-        this.type = 'NgAttributeError';
+        this.className = 'NgAttributeError';
     }
 }

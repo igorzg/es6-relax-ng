@@ -7,6 +7,7 @@ describe('NgOneOrMore', function() {
       var ob = new NgOneOrMore(1);
       expect(ob instanceof NgOneOrMore).toBe(true);
       expect(ob.pattern).toBe(1);
+      expect(ob.className).toBe('NgOneOrMore');
     });
 
 

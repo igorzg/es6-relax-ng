@@ -28,6 +28,7 @@ export class NgNotAllowed extends NgClass{
         this.message = message;
         this.node = node;
         this.pattern = pattern;
+        this.className = 'NgNotAllowed';
     }
 }
 

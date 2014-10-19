@@ -21,6 +21,7 @@ export class NgName extends NgClass{
         super(NgName);
         this.uri = uri;
         this.localName = localName;
+        this.className = 'NgName';
     }
     /**
      * @since 0.0.1

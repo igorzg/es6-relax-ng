@@ -17,5 +17,6 @@ export class NgEmpty extends NgClass {
      */
     constructor() {
         super(NgEmpty);
+        this.className = 'NgEmpty';
     }
 }

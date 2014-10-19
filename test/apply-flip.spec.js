@@ -18,11 +18,12 @@ describe('ApplyFlip', function() {
       var ob = new ApplyFlip('noop', 2, ctx, false);
       expect(ob instanceof ApplyFlip).toBe(true);
       ob.invoke(1);
-
+      expect(ob.className).toBe('ApplyFlip');
       var ob2 = new ApplyFlip('noopr', 2, ctx, true);
       expect(ob2 instanceof ApplyFlip).toBe(true);
       ob2.invoke(1);
 
+      expect(ob2.className).toBe('ApplyFlip');
   });
 });
 

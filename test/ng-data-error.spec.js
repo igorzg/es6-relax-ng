@@ -16,7 +16,7 @@ describe('NgDataError', function() {
       expect(o.message).toBe('Helloworld');
       expect(o.pattern).toBe(pattern);
       expect(o.node).toBe(node);
-      expect(o.type).toBe('NgDataError');
+      expect(o.className).toBe('NgDataError');
       expect(o.dataType).toBe(dtType);
       expect(o.dataTypePattern).toBe(pattern);
     });

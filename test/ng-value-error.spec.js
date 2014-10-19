@@ -16,7 +16,7 @@ describe('NgValueError', function() {
       expect(o.message).toBe('Helloworld');
       expect(o.pattern).toBe(pattern);
       expect(o.node).toBe(node);
-      expect(o.type).toBe('NgValueError');
+      expect(o.className).toBe('NgValueError');
       expect(o.dataType).toBe(dtType);
       expect(o.dataTypePattern).toBe(pattern);
     });

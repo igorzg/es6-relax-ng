@@ -26,5 +26,6 @@ export class NgAttributeNode extends NgClass{
         this.qName = new NgQName(attr.namespaceURI ? attr.namespaceURI : "", attr.localName);
         this.string = attr.value;
         this.node = node;
+        this.className = 'NgAttributeNode';
      }
 }

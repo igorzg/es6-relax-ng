@@ -20,6 +20,7 @@ export class NgNsName extends NgClass{
     constructor(uri) {
         super(NgNsName);
         this.uri = uri;
+        this.className = 'NgNsName';
     }
     /**
      * @since 0.0.1

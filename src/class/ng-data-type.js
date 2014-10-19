@@ -22,5 +22,6 @@ export class NgDataType extends NgClass {
         super(NgDataType);
         this.uri = uri;
         this.localName = localName;
+        this.className = 'NgDataType';
      }
 }

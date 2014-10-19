@@ -9,6 +9,7 @@ describe('NgValue', function() {
         expect(ob.datatype).toBe(1);
         expect(ob.string).toBe(2);
         expect(ob.context).toBe(3);
+        expect(ob.className).toBe('NgValue');
     });
 
     it('textDeriv', function() {

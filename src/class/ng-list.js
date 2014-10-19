@@ -18,6 +18,7 @@ export class NgList extends NgClass {
     constructor(pattern) {
         super(NgList);
         this.pattern = pattern;
+        this.className = 'NgList';
     }
     /**
      * @since 0.0.1

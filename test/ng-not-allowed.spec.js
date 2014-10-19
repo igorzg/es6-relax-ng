@@ -8,6 +8,7 @@ describe('NgNotAllowed', function() {
       expect(ob.message).toBe(1);
       expect(ob.node).toBe(2);
       expect(ob.pattern).toBe(3);
+      expect(ob.className).toBe('NgNotAllowed');
   });
 });
 

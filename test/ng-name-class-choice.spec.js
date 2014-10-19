@@ -14,6 +14,7 @@ describe('NgNameClassChoice', function() {
       spyOn(ctx, 'contains').andCallThrough();
       expect(ob.contains.call(ctx, ob, qName)).toBe(true);
       expect(ctx.contains).toHaveBeenCalled();
+      expect(ob.className).toBe('NgNameClassChoice');
   });
 });
 

@@ -9,6 +9,8 @@ describe('NgName', function() {
       expect(ob.contains(ob, qName)).toBe(true);
       qName = new NgName(2, 1);
       expect(ob.contains(ob, qName)).toBe(false);
+      expect(ob.className).toBe('NgName');
+      expect(qName.className).toBe('NgName');
   });
 });
 

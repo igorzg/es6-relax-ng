@@ -30,6 +30,8 @@ export class ApplyFlip extends NgClass {
         this.arg2 = arg2;
         this.context = context;
         this.reverse = !!reverse;
+        this.className = 'ApplyFlip';
+
     }
 
     /**

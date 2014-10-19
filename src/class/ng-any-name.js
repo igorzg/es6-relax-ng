@@ -17,6 +17,7 @@ export class NgAnyName extends NgClass{
      */
     constructor() {
         super(NgAnyName);
+        this.className = 'NgAnyName';
     }
     /**
      * @since 0.0.1

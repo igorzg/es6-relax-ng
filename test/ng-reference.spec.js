@@ -9,6 +9,7 @@ describe('NgReference', function() {
       expect(obj instanceof NgReference).toBe(true);
       expect(obj.name).toBe('node');
       expect(obj.func).toBe(noop);
+      expect(obj.className).toBe('NgReference');
     });
 
     it('textDeriv', function() {

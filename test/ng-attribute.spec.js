@@ -9,6 +9,7 @@ describe('NgAttribute', function() {
       expect(obj instanceof NgAttribute).toBe(true);
       expect(obj.nameClass).toBe('name');
       expect(obj.pattern).toBe('pattern');
+      expect(obj.className).toBe('NgAttribute');
     });
 
     it('attDeriv', function() {

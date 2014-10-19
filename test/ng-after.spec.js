@@ -11,6 +11,7 @@ describe('NgAfter', function() {
       expect(o instanceof NgAfter).toBe(true);
       expect(o.pattern1).toBe(1);
       expect(o.pattern2).toBe(2);
+      expect(o.className).toBe('NgAfter');
     });
 
     it('attDeriv', function() {
@@ -103,7 +104,7 @@ describe('NgAfter', function() {
 
     it('endTagDeriv', function() {
 
-        var node = 'node';
+        var node = {'node': 'node', toXML() { return 'node'; }};
 
         var ctx = {
             nullable: function(a) {

@@ -4,14 +4,15 @@ describe('NgAfterError', function() {
     it('Construct', function() {
       var pattern = {};
       var node = {
-          toString(){return 1;}
+          toXML(){return 1;}
       };
       var o = new NgAfterError(node, pattern);
       expect(o instanceof NgAfterError).toBe(true);
       expect(o.message).toBe('Missing content at node: 1');
       expect(o.pattern).toBe(pattern);
       expect(o.node).toBe(node);
-      expect(o.type).toBe('NgAfterError');
+      expect(o.className).toBe('NgAfterError');
+
     });
 });
 

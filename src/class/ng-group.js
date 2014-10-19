@@ -19,6 +19,7 @@ export class NgGroup extends NgClass {
         super(NgGroup);
         this.pattern1 = pattern1;
         this.pattern2 = pattern2;
+        this.className = 'NgGroup';
     }
     /**
      * @since 0.0.1

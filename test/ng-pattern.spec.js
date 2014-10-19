@@ -14,6 +14,7 @@ describe('NgPattern', function () {
     it('construct', function() {
         //console.log(schemaInstance.toString(true));
         var pattern = new NgPattern(schemaInstance), message;
+        expect(pattern.className).toBe('NgPattern');
         expect(pattern.schemaInstance).toBe(schemaInstance);
 
         try {

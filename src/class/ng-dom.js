@@ -50,6 +50,7 @@ export class NgDOM extends NgClass{
             this.typePrefix = null;
         }
         this.namespaceURI = this.node.namespaceURI;
+        this.className = 'NgDOM';
     }
     /**
      * @since 0.0.1
@@ -58,11 +59,15 @@ export class NgDOM extends NgClass{
      * Is correct type and prefix
      * @return boolean
      */
-    is(type, prefix) {
+    is(type, prefix = false) {
+       var typePrefix = true;
        if (prefix) {
-           return this.type === type && this.typePrefix === prefix;
+           typePrefix = this.typePrefix === prefix;
        }
-       return this.type === type;
+       if (isArray(type)) {
+           return type.indexOf(this.type) > -1 && !!typePrefix;
+       }
+       return this.type === type && !!typePrefix;
     }
     /**
      * @since 0.0.1
@@ -352,12 +357,12 @@ export class NgDOM extends NgClass{
 
     /**
      * @since 0.0.1
-     * @method NgDOM#toString
+     * @method NgDOM#toXML
      * @description
      * Get serialized string from current node
      * @return string
      */
-    toString() {
+    toXML() {
         return (new XMLSerializer()).serializeToString(this.node);
     }
     /**
@@ -482,7 +487,7 @@ export class NgDOM extends NgClass{
                     if (cNode.isTextNode()) {
                         str += cNode.getValue();
                     } else {
-                        str += cNode.toString();
+                        str += cNode.toXML();
                     }
                 });
                 return str;
@@ -831,6 +836,15 @@ export class NgDOM extends NgClass{
      */
     getNamespace(namespace) {
         return this.getNamespaces().filter((item) => { return item.value === namespace; }).shift();
+    }
+    /**
+     * @since 0.0.1
+     * @method NgDOM#textContent
+     * @description
+     * Get textContent
+     */
+    textContent() {
+        return this.node.textContent;
     }
     /**
      * @since 0.0.1

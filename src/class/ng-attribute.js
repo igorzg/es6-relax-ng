@@ -25,6 +25,7 @@ export class NgAttribute extends NgClass{
         super(NgAttribute);
         this.nameClass = nameClass;
         this.pattern = pattern;
+        this.className = 'NgAttribute';
     }
     /**
      * @since 0.0.1

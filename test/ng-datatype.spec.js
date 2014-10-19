@@ -7,6 +7,7 @@ describe('NgDataType', function() {
       expect(ob instanceof NgDataType).toBe(true);
       expect(ob.uri).toBe(1);
       expect(ob.localName).toBe(2);
+      expect(ob.className).toBe('NgDataType');
   });
 });
 

@@ -9,6 +9,7 @@ describe('NgChoice', function() {
       expect(o instanceof NgChoice).toBe(true);
       expect(o.pattern1).toBe(1);
       expect(o.pattern2).toBe(2);
+      expect(o.className).toBe('NgChoice');
     });
 
     it('attDeriv', function() {

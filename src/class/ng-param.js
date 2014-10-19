@@ -16,5 +16,6 @@ export class NgParam extends NgClass {
         super(NgParam);
         this.localName = localName;
         this.string = string;
+        this.className = 'NgParam';
     }
 }
