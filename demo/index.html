@@ -30,9 +30,9 @@
                     var pattern = new patt.NgPattern(schema);
                     var el3 = document.getElementById("pattern");
                     el3.appendChild(document.createTextNode(JSON.stringify(pattern.pattern, null, "\t")));
+                    console.log(pattern.getPattern());
                     console.timeEnd('CREATE_PATTERN');
 
-                    console.log(pattern.pattern);
                 } catch (e) {
                     console.log(e);
                 }

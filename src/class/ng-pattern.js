@@ -58,7 +58,30 @@ export class NgPattern extends NgClass{
             this.pattern = this.getDefinition(element, this.context);
         }
     }
-
+    /**
+     * @since 0.0.1
+     * @method NgPattern#getPattern
+     * @description
+     * Get created pattern
+     * @return copy of pattern;
+     */
+    getPattern() {
+        return this.clone().pattern;
+    }
+    /**
+     * @since 0.0.1
+     * @method NgPattern#clone
+     * @description
+     * Create copy of NgPattern
+     */
+    clone() {
+        var clone = new NgPattern(this.schemaInstance, false);
+        if (!clone.pattern && this.pattern) {
+            clone.pattern = {};
+            Object.assign(clone.pattern, this.pattern);
+        }
+        return clone;
+    }
     /**
      * @since 0.0.1
      * @method NgPattern#ref

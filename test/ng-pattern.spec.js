@@ -885,6 +885,31 @@ describe('NgPattern', function () {
 
 
     });
+
+
+    it('copy', function() {
+        var paternInstance = new NgPattern(schemaInstance2);
+        var clone = paternInstance.clone();
+
+        expect(paternInstance === clone).toBe(false);
+        expect(paternInstance.pattern === clone.pattern).toBe(false);
+        expect(JSON.stringify(paternInstance.pattern)).toBe(JSON.stringify(clone.pattern));
+        expect(JSON.stringify(paternInstance.pattern) == JSON.stringify(clone.pattern)).toBe(true);
+        clone.pattern.pattern = {
+            pattern1: 1,
+            pattern2: 2
+        };
+        expect(JSON.stringify(paternInstance.pattern) == JSON.stringify(clone.pattern)).toBe(false);
+    });
+
+
+
+    it('getPattern', function() {
+        var paternInstance = new NgPattern(schemaInstance2);
+        expect(JSON.stringify(paternInstance.getPattern())).toBe(JSON.stringify(paternInstance.pattern));
+
+    });
+
 });
 
 
