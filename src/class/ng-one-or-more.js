@@ -18,8 +18,8 @@ export class NgOneOrMore extends NgClass {
 
     constructor(pattern) {
         super(NgOneOrMore);
-        this.pattern = pattern;
         this.className = 'NgOneOrMore';
+        this.pattern = pattern;
     }
     /**
      * @since 0.0.1

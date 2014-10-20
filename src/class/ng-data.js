@@ -24,9 +24,9 @@ export class NgData extends NgClass {
      */
     constructor(datatype, paramList) {
         super(NgData);
+        this.className = 'NgData';
         this.datatype = datatype;
         this.paramList = paramList;
-        this.className = 'NgData';
     }
     /**
      * @since 0.0.1

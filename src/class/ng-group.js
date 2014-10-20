@@ -17,9 +17,9 @@ import {ApplyFlip} from './apply-flip';
 export class NgGroup extends NgClass {
     constructor(pattern1, pattern2) {
         super(NgGroup);
+        this.className = 'NgGroup';
         this.pattern1 = pattern1;
         this.pattern2 = pattern2;
-        this.className = 'NgGroup';
     }
     /**
      * @since 0.0.1

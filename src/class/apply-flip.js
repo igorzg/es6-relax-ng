@@ -26,12 +26,11 @@ export class ApplyFlip extends NgClass {
      */
     constructor(func, arg2, context, reverse) {
         super(ApplyFlip);
+        this.className = 'ApplyFlip';
         this.func = func;
         this.arg2 = arg2;
         this.context = context;
         this.reverse = !!reverse;
-        this.className = 'ApplyFlip';
-
     }
 
     /**

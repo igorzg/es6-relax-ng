@@ -21,10 +21,10 @@ export class NgValue extends NgClass {
      */
     constructor(datatype, string, context) {
         super(NgValue);
+        this.className = 'NgValue';
         this.datatype = datatype;
         this.string = string;
         this.context = context;
-        this.className = 'NgValue';
     }
     /**
      * @since 0.0.1

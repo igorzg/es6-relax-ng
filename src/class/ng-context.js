@@ -22,9 +22,10 @@ export class NgContext extends NgClass {
      */
     constructor(uri = "", map = []) {
         super(NgContext);
+        this.className = 'NgContext';
         this.uri = uri;
         this.map = map;
-        this.className = 'NgContext';
+
     }
 
 }

@@ -16,9 +16,9 @@ export class NgInterLeave extends NgClass {
 
     constructor(pattern1, pattern2) {
         super(NgInterLeave);
+        this.className = 'NgInterLeave';
         this.pattern1 = pattern1;
         this.pattern2 = pattern2;
-        this.className = 'NgInterLeave';
     }
 
     /**

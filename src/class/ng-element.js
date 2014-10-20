@@ -24,9 +24,9 @@ export class NgElement extends NgClass {
      */
     constructor(nameClass, pattern) {
         super(NgElement);
+        this.className = 'NgElement';
         this.nameClass = nameClass;
         this.pattern = pattern;
-        this.className = 'NgElement';
     }
 
     /**

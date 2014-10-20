@@ -20,8 +20,8 @@ export class NgDataType extends NgClass {
      */
      constructor(uri, localName) {
         super(NgDataType);
+        this.className = 'NgDataType';
         this.uri = uri;
         this.localName = localName;
-        this.className = 'NgDataType';
      }
 }

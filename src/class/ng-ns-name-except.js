@@ -16,9 +16,9 @@ export class NgNsNameExcept extends NgClass{
      */
     constructor(uri, nameClass) {
         super(NgNsNameExcept);
+        this.className = 'NgNsNameExcept';
         this.uri = uri;
         this.nameClass = nameClass;
-        this.className = 'NgNsNameExcept';
     }
     /**
      * @since 0.0.1

@@ -14,8 +14,8 @@ import {NgClass} from './ng-class';
 export class NgParam extends NgClass {
     constructor(localName, string) {
         super(NgParam);
+        this.className = 'NgParam';
         this.localName = localName;
         this.string = string;
-        this.className = 'NgParam';
     }
 }

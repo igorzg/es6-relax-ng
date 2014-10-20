@@ -19,9 +19,9 @@ export class NgNameClassChoice extends NgClass{
      */
     constructor(nameClass1, nameClass2) {
         super(NgNameClassChoice);
+        this.className = 'NgNameClassChoice';
         this.nameClass1 = nameClass1;
         this.nameClass2 = nameClass2;
-        this.className = 'NgNameClassChoice';
     }
     /**
      * @since 0.0.1

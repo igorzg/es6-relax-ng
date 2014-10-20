@@ -16,8 +16,8 @@ import {NgClass} from './ng-class';
 export class NgQName extends NgClass{
     constructor(uri, localName) {
         super(NgQName);
+        this.className = 'NgQName';
         this.uri = uri;
         this.localName = localName;
-        this.className = 'NgQName';
     }
 }

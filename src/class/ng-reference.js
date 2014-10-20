@@ -12,9 +12,9 @@ import {NgClass} from './ng-class';
 export class NgReference extends NgClass {
     constructor(name, callback) {
         super(NgReference);
+        this.className = 'NgReference';
         this.name = name;
         this.func = callback;
-        this.className = 'NgReference';
     }
     /**
      * @since 0.0.1
