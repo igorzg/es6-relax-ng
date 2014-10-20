@@ -37,9 +37,10 @@ import {NgValue} from './ng-value';
  */
 export class NgPattern extends NgClass{
 
-    constructor(schema) {
+    constructor(schema, createPattern = true) {
         var element;
         super(NgPattern);
+        this.className = 'NgPattern';
         this.context = new NgContext();
         this.schemaInstance = null;
         this.pattern = null;
@@ -53,8 +54,9 @@ export class NgPattern extends NgClass{
         if (!element) {
             throw new NgError('No valid start element provided');
         }
-        this.pattern = this.getDefinition(element, this.context);
-        this.className = 'NgPattern';
+        if (createPattern) {
+            this.pattern = this.getDefinition(element, this.context);
+        }
     }
 
     /**
@@ -135,7 +137,7 @@ export class NgPattern extends NgClass{
                 return pattern;
                 break;
         }
-        throw new NgError('except is not valid pattern {0}', node.toXML());
+        throw new NgError('excepted valid pattern at node "{0}"', node.toXML());
     }
     /**
      * @since 0.0.1
@@ -186,15 +188,42 @@ export class NgPattern extends NgClass{
      * Create choice pattern
      */
     choice(node, context) {
-        var fc, si, p1, p2, parent = node.parentNode();
+        var fc, si, p1, p2;
         fc = node.firstElementChild();
         p1 = this.getDefinition(fc, context);
         si = fc.nextElementSibling();
         p2 = this.getDefinition(si, context);
-        if (parent.is(['anyName', 'nsName', 'name'])) {
+        if (this.isNameClassChoice(node)) {
             return new NgNameClassChoice(p1, p2);
         }
         return new NgChoice(p1, p2);
+    }
+    /**
+     * @since 0.0.1
+     * @method NgPattern#isNameClassChoice
+     * @description
+     * Check if node is name class choice pattern
+     */
+    isNameClassChoice(node) {
+
+        for(let parent of gen(node.parentNode())) {
+            if (parent.is(['anyName', 'nsName', 'name'])) {
+                return true;
+            } else if (parent.is(['element', 'attribute'])) {
+                return false;
+            }
+        }
+
+        function* gen(node) {
+            while(node) {
+                if (node.isDocumentNode()) {
+                    break;
+                } else {
+                    yield node;
+                }
+                node = node.parentNode();
+            }
+        }
     }
     /**
      * @since 0.0.1
@@ -295,22 +324,29 @@ export class NgPattern extends NgClass{
      * Gets data pattern
      */
     data(node, context) {
-        var paramList = [], except, cNode;
+        var paramList = [], except;
 
-        cNode = node.firstElementChild();
-        while (cNode) {
+        for(let cNode of gen(node.firstElementChild())) {
             if (cNode.is('except')) {
                 except = this.getDefinition(cNode, context);
             } else {
                 paramList.push(this.getDefinition(cNode, context));
             }
-            cNode = cNode.nextElementSibling();
         }
 
         if (except) {
             return new NgDataExcept(this.datatype(node), paramList, except);
         }
+
         return new NgData(this.datatype(node), paramList);
+
+
+        function* gen(node) {
+            while(node) {
+                yield node;
+                node = node.nextElementSibling();
+            }
+        }
     }
 
     /**
@@ -357,7 +393,7 @@ export class NgPattern extends NgClass{
             case 'text':
                 return new NgText();
             case 'notAllowed':
-                return new NgText();
+                return new NgNotAllowed();
             case 'empty':
                 return new NgEmpty();
         }

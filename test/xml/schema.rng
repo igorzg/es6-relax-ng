@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <rng:start>
+        <rng:ref name="article"/>
+    </rng:start>
+    <rng:define name="article">
+        <rng:element name="addressBook">
+            <rng:zeroOrMore>
+                <rng:element name="card">
+                    <rng:choice>
+                        <rng:mixed>
+                            <rng:zeroOrMore>
+                                <rng:element name="list">
+                                    <rng:mixed>
+                                        <rng:zeroOrMore>
+                                            <rng:element name="item">
+                                                <rng:data type="string">
+                                                    <rng:param name="minLength">10</rng:param>
+                                                    <rng:param name="maxLength">25</rng:param>
+                                                </rng:data>
+                                            </rng:element>
+                                        </rng:zeroOrMore>
+                                    </rng:mixed>
+                                </rng:element>
+                            </rng:zeroOrMore>
+                        </rng:mixed>
+                        <rng:element name="name">
+                            <rng:data type="token" />
+                        </rng:element>
+                        <rng:group>
+                            <rng:element name="givenName">
+                                <rng:text/>
+                            </rng:element>
+                            <rng:element name="familyName">
+                                <rng:text/>
+                            </rng:element>
+                        </rng:group>
+                    </rng:choice>
+                    <rng:element name="email">
+                        <rng:data type="token">
+                            <rng:param name="pattern">\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}</rng:param>
+                            <rng:param name="minLength">10</rng:param>
+                            <rng:param name="maxLength">25</rng:param>
+                            <rng:except>
+                                <rng:value>info@relaxng.org</rng:value>
+                            </rng:except>
+                        </rng:data>
+                    </rng:element>
+                    <rng:optional>
+                        <rng:element name="note">
+                            <rng:text/>
+                        </rng:element>
+                    </rng:optional>
+                </rng:element>
+                <rng:ref name="foreign-elements" />
+            </rng:zeroOrMore>
+        </rng:element>
+    </rng:define>
+    <rng:define name="foreign-elements">
+        <rng:zeroOrMore>
+            <rng:element name="footer">
+                <rng:attribute>
+                    <rng:anyName>
+                        <rng:except>
+                            <rng:nsName ns=""/>
+                            <rng:nsName ns="http://igorivanovic.info/javascript"/>
+                            <rng:nsName ns="http://igorivanovic.info/ns"/>
+                        </rng:except>
+                    </rng:anyName>
+                </rng:attribute>
+            </rng:element>
+        </rng:zeroOrMore>
+    </rng:define>
+</rng:grammar>
+

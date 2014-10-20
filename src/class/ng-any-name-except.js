@@ -15,9 +15,10 @@ export class NgAnyNameExcept extends NgClass{
      * @method NgAnyNameExcept#constructor
      *
      */
-    constructor() {
+    constructor(nameClass) {
         super(NgAnyNameExcept);
         this.className = 'NgAnyNameExcept';
+        this.nameClass = nameClass;
     }
     /**
      * @since 0.0.1
