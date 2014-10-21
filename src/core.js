@@ -203,8 +203,6 @@ export function isArray(value) {
 export function isFunction(value) {
     return typeof value === 'function';
 }
-
-
 /**
  * @license  2014
  * @since 0.0.1
@@ -222,27 +220,43 @@ export function isFunction(value) {
 export function isRegExp(value) {
     return toString.call(value) === '[object RegExp]';
 }
-
-
 /**
  * @license  2014
  * @since 0.0.1
  * @author Igor Ivanovic
- * @name isWindow
+ * @name isConstructor
  * @global
- * @function isWindow
- * @param {object} obj object to be checked
+ * @function isConstructor
  * @return {boolean}
- * @description
- * Check if value is window object
- * @example
- * isWindow(window); // true
  */
-export function isWindow(obj) {
-    if (obj && isObject(obj) && obj.document && obj.location && obj.alert && obj.setInterval) {
-        return true;
+export function isConstructor(obj) {
+    if (isObject(obj)) {
+        return Object.getPrototypeOf(obj).hasOwnProperty("constructor");
     }
     return false;
+}
+/**
+ * @license  2014
+ * @since 0.0.1
+ * @author Igor Ivanovic
+ * @name copy
+ * @global
+ * @function copy
+ */
+export function copy(source) {
+    var destination;
+    if (isDate(source)) {
+        return new Date(source.getTime());
+    } else if (isRegExp(source)) {
+        return new RegExp(source.source);
+    } else if (isConstructor(source)) {
+        destination = new source.constructor;
+        Object.keys(source).forEach((key) => {
+            destination[key] = copy(source[key]);
+        });
+        return destination;
+    }
+    return source;
 }
 /**
  * @license  2014
@@ -293,58 +307,7 @@ export function css(element, name, value) {
     }
     return false;
 }
-/**
- * @license  2014
- * @since 0.0.1
- * @author Igor Ivanovic
- * @name copy
- * @global
- * @function copy
- * @param {object} source object
- * @param {object} destination object
- * @return {object} destination object
- * @description
- * Extend object from a to b
- * @example
- * copy({a:1}); // -> {a:1}
- */
-export function copy(source, destination) {
-    if (isWindow(source)) {
-        throw new NgError("Can't copy! Making copies of Window  instances is not supported.");
-    }
-    if (!destination) {
-        destination = source;
-        if (source) {
-            if (isArray(source)) {
-                destination = copy(source, []);
-            } else if (isDate(source)) {
-                destination = new Date(source.getTime());
-            } else if (isRegExp(source)) {
-                destination = new RegExp(source.source);
-            } else if (isObject(source)) {
-                destination = copy(source, {});
-            }
-        }
-    } else {
-        if (source === destination) {
-            throw new NgError("Can't copy! Source and destination are identical.");
-        }
-        if (isArray(source)) {
-            destination.length = 0;
-            for (var i = 0; i < source.length; i++) {
-                destination.push(copy(source[i]));
-            }
-        } else {
-            forEach(destination, function (value, key) {
-                delete destination[key];
-            });
-            for (var key in source) {
-                destination[key] = copy(source[key]);
-            }
-        }
-    }
-    return destination;
-}
+
 
 /**
  * @license  2014

@@ -24,6 +24,7 @@ import {NgData} from './ng-data';
 import {NgDataExcept} from './ng-data-except';
 import {NgDataType} from './ng-data-type';
 import {NgValue} from './ng-value';
+import {isObject, isArray, isConstructor, copy} from '../core';
 /**
  * @license Mit Licence 2014
  * @since 0.0.1
@@ -77,8 +78,7 @@ export class NgPattern extends NgClass{
     clone() {
         var clone = new NgPattern(this.schemaInstance, false);
         if (!clone.pattern && this.pattern) {
-            clone.pattern = {};
-            Object.assign(clone.pattern, this.pattern);
+            clone.pattern = copy(this.pattern);
         }
         return clone;
     }

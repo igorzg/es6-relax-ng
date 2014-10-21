@@ -895,10 +895,13 @@ describe('NgPattern', function () {
         expect(paternInstance.pattern === clone.pattern).toBe(false);
         expect(JSON.stringify(paternInstance.pattern)).toBe(JSON.stringify(clone.pattern));
         expect(JSON.stringify(paternInstance.pattern) == JSON.stringify(clone.pattern)).toBe(true);
-        clone.pattern.pattern = {
-            pattern1: 1,
-            pattern2: 2
-        };
+        expect(clone.pattern.pattern.pattern2 instanceof NgEmpty).toBe(true);
+        expect(paternInstance.pattern.pattern.pattern2 instanceof NgEmpty).toBe(true);
+        expect(clone.pattern.pattern.pattern2 === paternInstance.pattern.pattern.pattern2).toBe(false);
+        clone.pattern.pattern.pattern2 = 1;
+        expect(clone.pattern.pattern.pattern2 instanceof NgEmpty).toBe(false);
+        expect(paternInstance.pattern.pattern.pattern2 instanceof NgEmpty).toBe(true);
+        expect(clone.pattern.pattern.pattern2 === paternInstance.pattern.pattern.pattern2).toBe(false);
         expect(JSON.stringify(paternInstance.pattern) == JSON.stringify(clone.pattern)).toBe(false);
     });
 
