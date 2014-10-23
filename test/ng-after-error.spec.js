@@ -11,7 +11,8 @@ describe('NgAfterError', function() {
       expect(o.message).toBe('Missing content at node: 1');
       expect(o.pattern).toBe(pattern);
       expect(o.node).toBe(node);
-      expect(o.className).toBe('NgAfterError');
+      expect(o.errorClassName).toBe('NgAfterError');
+      expect(o.className).toBe('NgNotAllowed');
 
     });
 });

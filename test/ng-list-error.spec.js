@@ -10,7 +10,8 @@ describe('NgListError', function() {
       expect(o.message).toBe('list invalid, "a" found  on "node"');
       expect(o.pattern).toBe(pattern);
       expect(o.node).toBe(node);
-      expect(o.className).toBe('NgListError');
+      expect(o.errorClassName).toBe('NgListError');
+      expect(o.className).toBe('NgNotAllowed');
     });
 });
 

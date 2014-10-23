@@ -22,6 +22,6 @@ export class NgElementError extends NgNotAllowed {
         this.instanceOf(NgElementError);
         super(message, node, pattern);
         this.qName = qName;
-        this.className = 'NgElementError';
+        this.errorClassName = 'NgElementError';
      }
 }

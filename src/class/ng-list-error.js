@@ -28,6 +28,6 @@ export class NgListError extends NgNotAllowed {
             message = `list invalid, "${str}" found  on "${nodeLocal}"`;
         this.instanceOf(NgListError);
         super(message, node, pattern);
-        this.className = 'NgListError';
+        this.errorClassName = 'NgListError';
      }
 }

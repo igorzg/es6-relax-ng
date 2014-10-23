@@ -35,6 +35,6 @@ export class NgDataExceptError extends NgNotAllowed {
             this.dataTypePattern = ngNotAllowed.pattern;
         }
         this.expected = !!noExpectedValue;
-        this.className = 'NgDataExceptError';
+        this.errorClassName = 'NgDataExceptError';
      }
 }
