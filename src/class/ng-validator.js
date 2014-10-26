@@ -69,7 +69,7 @@ export class NgValidator extends NgClass {
     qName(node) {
         var value = "";
         forEach(node.getNamespaces(), (ns) => {
-            if ((ns.prefix === NS && ns.localName === ns.typePrefix) &&
+            if ((ns.prefix === NS && ns.localName === node.typePrefix) ||
                 (ns.name === NS && !ns.prefix)) {
                 value = ns.value;
             }
@@ -215,11 +215,11 @@ export class NgValidator extends NgClass {
      *
      */
     choice(pattern1, pattern2) {
-        if (pattern2 instanceof NgNotAllowed) {
+        if (pattern2.className === 'NgNotAllowed') {
             return pattern1;
-        } else if (pattern1 instanceof NgNotAllowed) {
+        } else if (pattern1.className === 'NgNotAllowed') {
             return pattern2;
-        } else if (pattern1 instanceof NgEmpty && pattern2 instanceof NgEmpty) {
+        } else if (pattern1.className === 'NgEmpty' && pattern2.className === 'NgEmpty') {
             return new NgEmpty();
         }
         return new NgChoice(pattern1, pattern2);
@@ -240,13 +240,13 @@ export class NgValidator extends NgClass {
      * group p1 p2 = Group p1 p2
      */
     group(pattern1, pattern2) {
-        if (pattern1 instanceof NgNotAllowed) {
+        if (pattern1.className === 'NgNotAllowed') {
             return pattern1;
-        } else if (pattern2 instanceof NgNotAllowed) {
+        } else if (pattern2.className === 'NgNotAllowed') {
             return pattern2;
-        } else if (pattern2 instanceof NgEmpty) {
+        } else if (pattern2.className === 'NgEmpty') {
             return pattern1;
-        } else if (pattern1 instanceof NgEmpty) {
+        } else if (pattern1.className === 'NgEmpty') {
             return pattern2;
         }
         return new NgGroup(pattern1, pattern2);
@@ -266,13 +266,13 @@ export class NgValidator extends NgClass {
      * interleave p1 p2 = Interleave p1 p2
      */
     interleave(pattern1, pattern2) {
-        if (pattern1 instanceof NgNotAllowed) {
+        if (pattern1.className === 'NgNotAllowed') {
             return pattern1;
-        } else if (pattern2 instanceof NgNotAllowed) {
+        } else if (pattern2.className === 'NgNotAllowed') {
             return pattern2;
-        } else if (pattern2 instanceof NgEmpty) {
+        } else if (pattern2.className === 'NgEmpty') {
             return pattern1;
-        } else if (pattern1 instanceof NgEmpty) {
+        } else if (pattern1.className === 'NgEmpty') {
             return pattern2;
         }
         return new NgInterLeave(pattern1, pattern2);
@@ -290,9 +290,9 @@ export class NgValidator extends NgClass {
      * after p1 p2 = After p1 p2
      */
     after(pattern1, pattern2) {
-        if (pattern2 instanceof NgNotAllowed) {
+        if (pattern2.className === 'NgNotAllowed') {
             return pattern2;
-        } else if (pattern1 instanceof NgNotAllowed) {
+        } else if (pattern1.className === 'NgNotAllowed') {
             return pattern1;
         }
         return new NgAfter(pattern1, pattern2);
