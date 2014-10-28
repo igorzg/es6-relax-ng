@@ -78,7 +78,6 @@ describe('NgValidator', function () {
     });
 
 
-
     it('strip', function () {
         var validator = new NgValidator(patternInstance);
         var commentF = false;
@@ -121,8 +120,6 @@ describe('NgValidator', function () {
     });
 
 
-
-
     it('contains', function () {
         var validator = new NgValidator(patternInstance);
         var qNode = {};
@@ -159,8 +156,6 @@ describe('NgValidator', function () {
     });
 
 
-
-
     it('nullable', function () {
         var validator = new NgValidator(patternInstance);
         var o;
@@ -194,6 +189,7 @@ describe('NgValidator', function () {
             o = validator.nullable(pattern);
             expect(o).toBe(value);
         }
+
         createCase2('NgElement', false);
         createCase2('NgAttribute', false);
         createCase2('NgList', false);
@@ -209,7 +205,6 @@ describe('NgValidator', function () {
         o = validator.nullable(pattern);
         expect(o.errorClassName).toBe('NgValidatorNullableError');
     });
-
 
 
     it('choice', function () {
@@ -238,7 +233,6 @@ describe('NgValidator', function () {
         p1.className = 'NgEmpty';
         var o = validator.choice(p1, p2);
         expect(o.className).toBe('NgEmpty');
-
 
 
         p2.className = '1';
@@ -280,13 +274,11 @@ describe('NgValidator', function () {
         createCase(p1, p2, p2);
 
 
-
         p2.className = '1';
         p1.className = '2';
         var o = validator.group(p1, p2);
         expect(o.className).toBe('NgGroup');
     });
-
 
 
     it('interleave', function () {
@@ -321,13 +313,11 @@ describe('NgValidator', function () {
         createCase(p1, p2, p2);
 
 
-
         p2.className = '1';
         p1.className = '2';
         var o = validator.interleave(p1, p2);
         expect(o.className).toBe('NgInterLeave');
     });
-
 
 
     it('after', function () {
@@ -369,11 +359,416 @@ describe('NgValidator', function () {
         var o = validator.oneOrMore(p1);
         expect(o).toBe(p1);
 
-        p1.className= '1';
+        p1.className = '1';
         o = validator.oneOrMore(p1);
         expect(o.className).toBe('NgOneOrMore');
     });
 
+
+    it('endTagDeriv', function () {
+        var validator = new NgValidator(patternInstance);
+        var node = {};
+        var p1 = {
+            className: 'NgNotAllowed',
+            endTagDeriv(a, b) {
+                expect(a).toBe(p1);
+                expect(b).toBe(node);
+                return p1;
+            }
+        };
+        var o;
+
+        spyOn(p1, 'endTagDeriv').andCallThrough();
+        o = validator.endTagDeriv(p1, node);
+        expect(o).toBe(p1);
+
+        p1.className = 'NgChoice';
+        o = validator.endTagDeriv(p1, node);
+        expect(o).toBe(p1);
+        expect(p1.endTagDeriv).toHaveBeenCalled();
+
+        p1.className = 'NgAfter';
+        o = validator.endTagDeriv(p1, node);
+        expect(o).toBe(p1);
+        expect(p1.endTagDeriv).toHaveBeenCalled();
+
+
+        p1.className = '1';
+        o = validator.endTagDeriv(p1, node);
+        expect(p1.endTagDeriv).toHaveBeenCalled();
+        expect(o.errorClassName).toBe('NgValidatorEndTagDerivError');
+    });
+
+
+    it('applyAfter', function () {
+        var validator = new NgValidator(patternInstance);
+
+
+        var p1 = {
+            className: 'NgNotAllowed',
+            applyAfter(a, b) {
+                expect(a).toBe(p1);
+                expect(b).toBe(p1);
+                return p1;
+            }
+        };
+        var o;
+
+        spyOn(p1, 'applyAfter').andCallThrough();
+        o = validator.applyAfter(p1, p1);
+        expect(o).toBe(p1);
+
+        p1.className = 'NgChoice';
+        o = validator.applyAfter(p1, p1);
+        expect(o).toBe(p1);
+        expect(p1.applyAfter).toHaveBeenCalled();
+
+        p1.className = 'NgAfter';
+        o = validator.applyAfter(p1, p1);
+        expect(o).toBe(p1);
+        expect(p1.applyAfter).toHaveBeenCalled();
+
+
+        p1.className = '1';
+        o = validator.applyAfter(p1, p1);
+        expect(p1.applyAfter).toHaveBeenCalled();
+        expect(o.errorClassName).toBe('NgValidatorApplyAfterError');
+    });
+
+
+    it('listDeriv', function () {
+        var validator = new NgValidator(patternInstance);
+        var node = {};
+        var p = {};
+        var context = [];
+        var str = [];
+        var ctx = {
+            textDeriv(a, b, c, d) {
+                expect(a).toBe(context);
+                expect(b).toBe(p);
+                expect(c).toBe(1);
+                expect(d).toBe(node);
+                return p;
+            },
+            listDeriv(a, b, c) {
+                expect(a).toBe(context);
+                expect(b).toBe(p);
+                expect(c).toBe(str);
+                return b;
+            }
+        }
+        var o;
+
+        spyOn(ctx, 'textDeriv').andCallThrough();
+        spyOn(ctx, 'listDeriv').andCallThrough();
+        o = validator.listDeriv.call(ctx, context, p, str, node);
+        expect(o).toBe(p);
+
+        str.push(1);
+        o = validator.listDeriv.call(ctx, context, p, str, node);
+        expect(o).toBe(p);
+
+        expect(ctx.textDeriv).toHaveBeenCalled();
+        expect(ctx.listDeriv).toHaveBeenCalled();
+
+
+    });
+
+
+    it('textDeriv', function () {
+        var validator = new NgValidator(patternInstance);
+        var o;
+        var node = {};
+
+        var context = [];
+        var str = 'str';
+        var pattern = {
+            className: '',
+            textDeriv(a, b, c, d) {
+                expect(a).toBe(context);
+                expect(b).toBe(pattern);
+                expect(c).toBe(str);
+                expect(d).toBe(node);
+                return 'textDeriv';
+            }
+        };
+        spyOn(pattern, 'textDeriv').andCallThrough();
+        function createCase(className, errorClassName, isCustom = true) {
+            pattern.className = className;
+            o = validator.textDeriv(context, pattern, str, node);
+            if (errorClassName) {
+                if (isCustom) {
+                    expect(o.errorClassName).toBe(errorClassName);
+                } else {
+                    expect(o.className).toBe(errorClassName);
+                }
+            } else {
+                expect(pattern.textDeriv).toHaveBeenCalled();
+                expect(o).toBe('textDeriv');
+            }
+        }
+
+        createCase('NgChoice');
+        createCase('NgInterLeave');
+        createCase('NgGroup');
+        createCase('NgAfter');
+        createCase('NgOneOrMore');
+        createCase('NgText');
+        createCase('NgValue');
+        createCase('NgData');
+        createCase('NgDataExcept');
+        createCase('NgList');
+        createCase('NgReference');
+
+
+        createCase('NgEmpty', 'NgValidatorTextDerivNotAllowedError');
+        createCase('NgElement', 'NgValidatorTextDerivNotAllowedError');
+        createCase('NgNotAllowed', 'NgNotAllowed', false);
+
+        createCase('1', 'NgValidatorTextDerivError');
+    });
+
+
+    it('attDeriv', function () {
+        var validator = new NgValidator(patternInstance);
+        var o;
+        var node = {};
+
+        var context = [];
+        var pattern = {
+            className: '',
+            attDeriv(a, b, c) {
+                expect(a).toBe(context);
+                expect(b).toBe(pattern);
+                expect(c).toBe(node);
+                return 'attDeriv';
+            }
+        };
+        spyOn(pattern, 'attDeriv').andCallThrough();
+        function createCase(className, errorClassName, isCustom = true) {
+            pattern.className = className;
+            o = validator.attDeriv(context, pattern, node);
+            if (errorClassName) {
+                if (isCustom) {
+                    expect(o.errorClassName).toBe(errorClassName);
+                } else {
+                    expect(o.className).toBe(errorClassName);
+                }
+            } else {
+                expect(pattern.attDeriv).toHaveBeenCalled();
+                expect(o).toBe('attDeriv');
+            }
+        }
+
+        createCase('NgAfter');
+        createCase('NgChoice');
+        createCase('NgGroup');
+        createCase('NgInterLeave');
+        createCase('NgOneOrMore');
+        createCase('NgAttribute');
+        createCase('NgReference');
+
+        createCase('NgNotAllowed', 'NgNotAllowed', false);
+
+        createCase('1', 'NgValidatorAttDerivError');
+    });
+
+
+    it('startTagOpenDeriv', function () {
+        var validator = new NgValidator(patternInstance);
+        var o;
+        var node = {};
+
+        var qName = {};
+        var pattern = {
+            className: '',
+            startTagOpenDeriv(a, b, c) {
+                expect(a).toBe(pattern);
+                expect(b).toBe(qName);
+                expect(c).toBe(node);
+                return 'startTagOpenDeriv';
+            }
+        };
+        spyOn(pattern, 'startTagOpenDeriv').andCallThrough();
+        function createCase(className, errorClassName, isCustom = true) {
+            pattern.className = className;
+            o = validator.startTagOpenDeriv(pattern, qName, node);
+            if (errorClassName) {
+                if (isCustom) {
+                    expect(o.errorClassName).toBe(errorClassName);
+                } else {
+                    expect(o.className).toBe(errorClassName);
+                }
+            } else {
+                expect(pattern.startTagOpenDeriv).toHaveBeenCalled();
+                expect(o).toBe('startTagOpenDeriv');
+            }
+        }
+
+        createCase('NgChoice');
+        createCase('NgElement');
+        createCase('NgInterLeave');
+        createCase('NgOneOrMore');
+        createCase('NgGroup');
+        createCase('NgReference');
+        createCase('NgAfter');
+
+        createCase('NgEmpty', 'NgValidatorStartTagOpenDerivNgEmptyError');
+        createCase('NgNotAllowed', 'NgNotAllowed', false);
+
+        createCase('1', 'NgValidatorStartTagOpenDerivError');
+    });
+
+
+    it('startTagCloseDeriv', function () {
+        var validator = new NgValidator(patternInstance);
+        var o;
+        var hasAttriubte = true;
+        var node = {
+            hasAttribute() {
+                return hasAttriubte;
+            }
+        };
+        var pattern = {
+            className: '',
+            nameClass: {
+                localName: '1'
+            },
+            startTagCloseDeriv(a, b) {
+                expect(a).toBe(pattern);
+                expect(b).toBe(node);
+                return 'startTagCloseDeriv';
+            }
+        };
+        spyOn(node, 'hasAttribute').andCallThrough();
+        spyOn(pattern, 'startTagCloseDeriv').andCallThrough();
+        function createCase(className, errorClassName, isCustom = true) {
+            pattern.className = className;
+            o = validator.startTagCloseDeriv(pattern, node);
+            if (errorClassName) {
+                if (isCustom) {
+                    expect(o.errorClassName).toBe(errorClassName);
+                } else {
+                    expect(o.className).toBe(errorClassName);
+                }
+            } else {
+                expect(pattern.startTagCloseDeriv).toHaveBeenCalled();
+                expect(o).toBe('startTagCloseDeriv');
+            }
+        }
+
+        createCase('NgReference');
+        createCase('NgAfter');
+        createCase('NgChoice');
+        createCase('NgGroup');
+        createCase('NgInterLeave');
+        createCase('NgOneOrMore');
+
+        createCase('NgAttribute', 'NgAttributeInvalidValueError');
+        expect(node.hasAttribute).toHaveBeenCalled();
+        hasAttriubte = false;
+        pattern.nameClass.localName = null;
+        createCase('NgAttribute', 'NgAttributeMissingValueError');
+        expect(node.hasAttribute).toHaveBeenCalled();
+
+        pattern.className = '1';
+        createCase('1', '1', false);
+    });
+
+
+    it('attsDeriv', function () {
+        var validator = new NgValidator(patternInstance);
+        var o;
+        var node = {};
+        var attrs = [];
+        var context = [];
+        var pattern = {
+            className: 'NgChoice'
+        };
+        var ctx = {
+            attsDeriv(a, b, c, d) {
+                expect(a).toBe(context);
+                expect(b).toBe(pattern);
+                expect(c).toBe(attrs);
+                expect(d).toBe(node);
+                return 'attsDeriv';
+            },
+            attDeriv(a, b, c) {
+                expect(a).toBe(context);
+                expect(b).toBe(pattern);
+                expect(c.className).toBe('NgAttributeNode');
+                return pattern;
+            }
+        };
+
+        spyOn(ctx, 'attsDeriv').andCallThrough();
+        spyOn(ctx, 'attDeriv').andCallThrough();
+
+        o = validator.attsDeriv.call(ctx, context, pattern, attrs, node);
+        expect(o).toBe(pattern);
+
+        attrs.push({
+            namespaceURI: "http://www.w3.org/2000/xmlns/"
+        });
+        o = validator.attsDeriv.call(ctx, context, pattern, attrs, node);
+        expect(o).toBe('attsDeriv');
+        expect(ctx.attsDeriv).toHaveBeenCalled();
+
+
+        attrs.push({
+            namespaceURI: "1",
+            localName: "ln",
+            value: 'value'
+        });
+        o = validator.attsDeriv.call(ctx, context, pattern, attrs, node);
+        expect(o).toBe('attsDeriv');
+        expect(ctx.attsDeriv).toHaveBeenCalled();
+        expect(ctx.attDeriv).toHaveBeenCalled();
+    });
+
+
+    it('valueMatch', function () {
+        var validator = new NgValidator(patternInstance);
+        var o;
+        var node = {};
+        var str = 'aaa';
+        var context = [];
+        var pattern = {
+            className: 'NgChoice'
+        };
+        var isNullable = true;
+        var ctx = {
+            nullable() {
+                return isNullable;
+            },
+            isWhitespace() {
+                return true;
+            },
+            textDeriv(a, b, c, d) {
+                expect(a).toBe(context);
+                expect(b).toBe(pattern);
+                expect(c).toBe(str);
+                expect(d).toBe(node);
+                return 'textDeriv';
+            }
+        };
+
+        spyOn(ctx, 'nullable').andCallThrough();
+        spyOn(ctx, 'isWhitespace').andCallThrough();
+        spyOn(ctx, 'textDeriv').andCallThrough();
+        o = validator.valueMatch.call(ctx, context, pattern, str, node);
+        expect(o.className).toBe('NgEmpty');
+        expect(ctx.nullable).toHaveBeenCalled();
+        expect(ctx.isWhitespace).toHaveBeenCalled();
+        isNullable = false;
+
+
+        o = validator.valueMatch.call(ctx, context, pattern, str, node);
+        expect(o).toBe('textDeriv');
+        expect(ctx.nullable).toHaveBeenCalled();
+        expect(ctx.isWhitespace).toHaveBeenCalled();
+        expect(ctx.textDeriv).toHaveBeenCalled();
+    });
 
     it('Construct', function () {
         var validator = new NgValidator(patternInstance);
