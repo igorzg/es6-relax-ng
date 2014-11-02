@@ -611,7 +611,7 @@ export class NgValidator extends NgClass {
         try {
             return this.datatypeLibrary.datatypeAllows(datatype, paramList, string, context);
         } catch (e) {
-            throw new NgError(e.message);
+            throw new NgError(`datatypeLibrary don't have an datatypeAllows method`);
         }
 
     }
@@ -653,7 +653,7 @@ export class NgValidator extends NgClass {
         try {
             return this.datatypeLibrary.datatypeEqual(datatype, string1, context1, string2, context2);
         } catch (e) {
-            throw new NgError(e.message);
+            throw new NgError(`datatypeLibrary don't have an datatypeEqual method`);
         }
     }
 

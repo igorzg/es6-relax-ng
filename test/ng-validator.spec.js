@@ -770,12 +770,417 @@ describe('NgValidator', function () {
         expect(ctx.textDeriv).toHaveBeenCalled();
     });
 
+
+    it('datatypeAllows', function () {
+        var validator = new NgValidator(patternInstance);
+        var o;
+        var str = 'aaa';
+        var datatype = {
+            localName: "token",
+            uri: null
+        };
+        var context = [];
+        var paramlist = [];
+        var ctx = {
+            datatypeLibrary: {
+                datatypeAllows: function (a, b, c, d) {
+                    expect(a).toBe(datatype);
+                    expect(b).toBe(paramlist);
+                    expect(c).toBe(str);
+                    expect(d).toBe(context);
+                    return 'datatypeAllows';
+                }
+            }
+        };
+        var message;
+
+
+        o = validator.datatypeAllows.call(ctx, datatype, paramlist, str, context);
+        expect(o.className).toBe('NgEmpty');
+
+        datatype.localName = "null";
+        o = validator.datatypeAllows.call(ctx, datatype, paramlist, str, context);
+        expect(o.className).toBe('NgNotAllowed');
+        expect(o.errorClassName).toBe('NgDataTypeError');
+        datatype.uri = "token";
+        datatype.localName = "token";
+        spyOn(ctx.datatypeLibrary, 'datatypeAllows').andCallThrough();
+        o = validator.datatypeAllows.call(ctx, datatype, paramlist, str, context);
+        expect(o).toBe('datatypeAllows');
+        expect(ctx.datatypeLibrary.datatypeAllows).toHaveBeenCalled();
+        try {
+            ctx.datatypeLibrary = {};
+            validator.datatypeAllows.call(ctx, datatype, paramlist, str, context);
+        } catch (e) {
+            message = e.message;
+        }
+
+        expect(message).toBe('datatypeLibrary don\'t have an datatypeAllows method');
+    });
+
+
+    it('datatypeEqual', function () {
+        var validator = new NgValidator(patternInstance);
+        var o;
+        var str = 'aaa';
+        var str1 = 'aaa';
+        var datatype = {
+            localName: "string",
+            uri: null
+        };
+        var context = [];
+        var context1 = [];
+        var ctx = {
+            datatypeLibrary: {
+                datatypeEqual: function (a, b, c, d, e) {
+                    expect(a).toBe(datatype);
+                    expect(b).toBe(str);
+                    expect(c).toBe(context);
+                    expect(d).toBe(str1);
+                    expect(e).toBe(context1);
+                    return 'datatypeEqual';
+                }
+            },
+            normalizeWhitespace(a) {
+                return a;
+            }
+        };
+        var message;
+        spyOn(ctx.datatypeLibrary, 'datatypeEqual').andCallThrough();
+        spyOn(ctx, 'normalizeWhitespace').andCallThrough();
+
+        o = validator.datatypeEqual.call(ctx, datatype, str, context, str1, context1);
+        expect(o.className).toBe('NgEmpty');
+        str1 = 'bbb';
+        o = validator.datatypeEqual.call(ctx, datatype, str, context, str1, context1);
+        expect(o.className).toBe('NgNotAllowed');
+        expect(o.errorClassName).toBe('NgDataTypeEqualityError');
+        datatype.localName = 'token';
+
+        str1 = 'aaa';
+        o = validator.datatypeEqual.call(ctx, datatype, str, context, str1, context1);
+        expect(o.className).toBe('NgEmpty');
+        expect(ctx.normalizeWhitespace).toHaveBeenCalled();
+        str1 = 'bbb';
+        o = validator.datatypeEqual.call(ctx, datatype, str, context, str1, context1);
+        expect(o.className).toBe('NgNotAllowed');
+        expect(o.errorClassName).toBe('NgDataTypeEqualityError');
+        expect(ctx.normalizeWhitespace).toHaveBeenCalled();
+
+        datatype.localName = 'null';
+        o = validator.datatypeEqual.call(ctx, datatype, str, context, str1, context1);
+        expect(o.className).toBe('NgNotAllowed');
+        expect(o.errorClassName).toBe('NgDataTypeError');
+
+
+        datatype.uri = "token";
+
+        o = validator.datatypeEqual.call(ctx, datatype, str, context, str1, context1);
+        expect(o).toBe('datatypeEqual');
+
+        try {
+            ctx.datatypeLibrary = {};
+            validator.datatypeEqual.call(ctx, datatype, str, context, str1, context1);
+        } catch (e) {
+            message = e.message;
+        }
+        expect(message).toBe('datatypeLibrary don\'t have an datatypeEqual method');
+    });
+
+
+    it('childrenDeriv', function () {
+        var validator = new NgValidator(patternInstance);
+        var isTextNode = true;
+        var isWhitespace = true;
+        var o;
+        var children = [];
+        var context = [];
+        var pattern = {};
+        var node = {
+            isTextNode() {
+                return isTextNode;
+            },
+            getValue() {
+
+            }
+        };
+        var ctx = {
+            childDeriv(a, b, c) {
+                expect(a).toBe(context);
+                expect(b).toBe(pattern);
+                expect(c).toBe(node);
+                return 'childDeriv';
+            },
+            isWhitespace(a) {
+                return isWhitespace;
+            },
+            choice(a, b) {
+                expect(a).toBe(pattern);
+                expect(b).toBe('childDeriv');
+                return 'choice';
+            },
+            stripChildrenDeriv(a, b, c) {
+                expect(a).toBe(context);
+                expect(b).toBe(pattern);
+                expect(c).toBe(children);
+                return 'strip';
+            }
+        };
+
+        spyOn(ctx, 'childDeriv').andCallThrough();
+        spyOn(ctx, 'isWhitespace').andCallThrough();
+        spyOn(ctx, 'choice').andCallThrough();
+        spyOn(ctx, 'stripChildrenDeriv').andCallThrough();
+
+        o = validator.childrenDeriv.call(ctx, context, pattern, children);
+        expect(o).toBe(pattern);
+
+        children.push(node);
+        o = validator.childrenDeriv.call(ctx, context, pattern, children);
+        expect(o).toBe('choice');
+
+        expect(ctx.childDeriv).toHaveBeenCalled();
+        expect(ctx.choice).toHaveBeenCalled();
+        expect(ctx.isWhitespace).toHaveBeenCalled();
+
+        isWhitespace = false;
+        children.push(node);
+        o = validator.childrenDeriv.call(ctx, context, pattern, children);
+        expect(o).toBe('childDeriv');
+
+        expect(ctx.childDeriv).toHaveBeenCalled();
+        expect(ctx.choice).toHaveBeenCalled();
+        isTextNode = false;
+        isWhitespace = false;
+        children.push(node);
+        o = validator.childrenDeriv.call(ctx, context, pattern, children);
+        expect(o).toBe('strip');
+    });
+
+
+    it('stripChildrenDeriv', function () {
+        var validator = new NgValidator(patternInstance);
+        var strip = false;
+        var o;
+        var children = [];
+        var context = [];
+        var pattern = {};
+        var node = {};
+        var ctx = {
+            childDeriv(a, b, c) {
+                expect(a).toBe(context);
+                expect(b).toBe(pattern);
+                expect(c).toBe(node);
+                return pattern;
+            },
+            strip() {
+                return strip;
+            },
+            stripChildrenDeriv(a, b, c) {
+                expect(a).toBe(context);
+                expect(b).toBe(pattern);
+                expect(c).toBe(children);
+                return 'strip';
+            }
+        };
+
+        spyOn(ctx, 'childDeriv').andCallThrough();
+        spyOn(ctx, 'strip').andCallThrough();
+        spyOn(ctx, 'stripChildrenDeriv').andCallThrough();
+
+        o = validator.stripChildrenDeriv.call(ctx, context, pattern, children);
+        expect(o).toBe(pattern);
+
+        children.push(node);
+        o = validator.stripChildrenDeriv.call(ctx, context, pattern, children);
+        expect(o).toBe('strip');
+        expect(ctx.childDeriv).toHaveBeenCalled();
+        expect(ctx.strip).toHaveBeenCalled();
+        expect(ctx.stripChildrenDeriv).toHaveBeenCalled();
+    });
+
+
+    it('childDeriv', function () {
+        var validator = new NgValidator(patternInstance);
+        var textNode = true;
+        var isElNode = true;
+        var o;
+        var context = [];
+        var pattern = {};
+        var node = {
+            getValue() {
+                return 'value';
+            },
+            isTextNode() {
+                return textNode;
+            },
+            isElementNode() {
+                return isElNode;
+            },
+            getNamespaces() {
+                return 'namespaces';
+            },
+            getAttributes() {
+                return 'attributes';
+            },
+            children() {
+                return 'children';
+            }
+        };
+        var ctx = {
+            textDeriv(a, b, c, d) {
+                expect(a).toBe(context);
+                expect(b).toBe(pattern);
+                expect(c).toBe('value');
+                expect(d).toBe(node);
+                return pattern;
+            },
+            qName(a) {
+                expect(a).toBe(node);
+                return a;
+            },
+            startTagOpenDeriv(a, b, c) {
+                expect(a).toBe(pattern);
+                expect(b).toBe(node);
+                expect(c).toBe(node);
+                return pattern;
+            },
+            attsDeriv(a, b, c, d) {
+                expect(a).toBe('namespaces');
+                expect(b).toBe(pattern);
+                expect(c).toBe('attributes');
+                expect(d).toBe(node);
+                return b;
+            },
+            startTagCloseDeriv(a, b) {
+                expect(a).toBe(pattern);
+                expect(b).toBe(node);
+                return a;
+            },
+            childrenDeriv(a, b, c) {
+                expect(a).toBe('namespaces');
+                expect(b).toBe(pattern);
+                expect(c).toBe('children');
+                return b;
+            },
+            endTagDeriv(a, b) {
+                expect(a).toBe(pattern);
+                expect(b).toBe(node);
+                return a;
+            }
+        };
+        spyOn(node, 'getValue').andCallThrough();
+        spyOn(node, 'isTextNode').andCallThrough();
+        spyOn(node, 'isElementNode').andCallThrough();
+        spyOn(node, 'getNamespaces').andCallThrough();
+        spyOn(node, 'getAttributes').andCallThrough();
+        spyOn(node, 'children').andCallThrough();
+
+
+        spyOn(ctx, 'textDeriv').andCallThrough();
+        spyOn(ctx, 'qName').andCallThrough();
+        spyOn(ctx, 'startTagOpenDeriv').andCallThrough();
+        spyOn(ctx, 'attsDeriv').andCallThrough();
+        spyOn(ctx, 'startTagCloseDeriv').andCallThrough();
+        spyOn(ctx, 'childrenDeriv').andCallThrough();
+        spyOn(ctx, 'endTagDeriv').andCallThrough();
+
+        o = validator.childDeriv.call(ctx, context, pattern, node);
+        expect(o).toBe(pattern);
+        expect(ctx.textDeriv).toHaveBeenCalled();
+        expect(node.getValue).toHaveBeenCalled();
+        expect(node.isTextNode).toHaveBeenCalled();
+
+        textNode = false;
+        o = validator.childDeriv.call(ctx, context, pattern, node);
+        expect(o).toBe(pattern);
+        expect(ctx.qName).toHaveBeenCalled();
+        expect(ctx.startTagOpenDeriv).toHaveBeenCalled();
+        expect(ctx.attsDeriv).toHaveBeenCalled();
+        expect(ctx.startTagCloseDeriv).toHaveBeenCalled();
+        expect(ctx.childrenDeriv).toHaveBeenCalled();
+        expect(ctx.endTagDeriv).toHaveBeenCalled();
+
+        expect(node.isElementNode).toHaveBeenCalled();
+        expect(node.getNamespaces).toHaveBeenCalled();
+        expect(node.children).toHaveBeenCalled();
+
+
+        textNode = false;
+        isElNode = false;
+
+
+        var message;
+        try {
+            o = validator.childDeriv.call(ctx, context, pattern, node);
+            expect(o).toBe(pattern);
+            expect(node.isElementNode).toHaveBeenCalled();
+            expect(node.isTextNode).toHaveBeenCalled();
+        } catch (e) {
+            message = e.message;
+        }
+
+        expect(message).toBe('only text and element nodes are allowed in childDeriv');
+
+    });
+
+
+    it('validate', function () {
+        var validator = new NgValidator(patternInstance);
+        var o;
+        var pattern = {};
+
+        var node = new NgDOM({nodeType: 3});
+        node.isDocumentNode = function () {
+            return true;
+        };
+        node.firstElementChild = function () {
+            return node;
+        };
+        var ctx = {
+            childDeriv(a, b, c) {
+                expect(a.className).toBe('NgContext');
+                expect(b).toBe(pattern);
+                expect(c).toBe(node);
+                return 'childDeriv';
+            },
+            patternInstance: {
+                getPattern() {
+                    return pattern;
+                }
+            }
+        };
+
+
+        spyOn(node, 'isDocumentNode').andCallThrough();
+        spyOn(node, 'firstElementChild').andCallThrough();
+        spyOn(ctx, 'childDeriv').andCallThrough();
+        spyOn(ctx.patternInstance, 'getPattern').andCallThrough();
+
+        o = validator.validate.call(ctx, node, null);
+        expect(o).toBe('childDeriv');
+
+        expect(node.isDocumentNode).toHaveBeenCalled();
+        expect(node.firstElementChild).toHaveBeenCalled();
+        expect(ctx.childDeriv).toHaveBeenCalled();
+
+
+        o = validator.validate.call(ctx, node, pattern);
+        expect(o).toBe('childDeriv');
+
+        expect(node.isDocumentNode).toHaveBeenCalled();
+        expect(node.firstElementChild).toHaveBeenCalled();
+        expect(ctx.childDeriv).toHaveBeenCalled();
+        expect(ctx.patternInstance.getPattern).toHaveBeenCalled();
+    });
+
     it('Construct', function () {
         var validator = new NgValidator(patternInstance);
-        //console.log('xml', xml);
         var validation = validator.validate(xml);
-        //console.log(validation.errorClassName);
-        //console.log(validation);
+        expect(validation.errorClassName).toBe('NgElementError');
+        expect(validation.className).toBe('NgNotAllowed');
+        expect(validation.message).toBe(`invalid tag name: 'title' or uri: '',
+        expected tag name is: 'content' and uri: ''`);
     });
 
 
