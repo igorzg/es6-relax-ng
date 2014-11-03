@@ -1,5 +1,4 @@
 import {NgValue} from '../src/class/ng-value';
-import {NgValueError} from '../src/class/ng-value-error';
 import {NgNotAllowed} from '../src/class/ng-not-allowed';
 describe('NgValue', function() {
 
@@ -52,8 +51,7 @@ describe('NgValue', function() {
         var ob =new NgValue(1, 2, 3);
 
         spyOn(ctx, 'datatypeEqual').andCallThrough();
-        var r = ob.textDeriv.call(ctx, context, ob, str, node);
-        expect(r instanceof NgValueError).toBe(true);
+        ob.textDeriv.call(ctx, context, ob, str, node);
         expect(ctx.datatypeEqual).toHaveBeenCalled();
     });
 });

@@ -1090,6 +1090,7 @@ describe('NgSchema', function () {
         schemaInstance.simplify();
         var t2 = (new Date).getTime();
         console.log('SIMPLIFY TIME', t2 - t1);
+        //console.log(schemaInstance.toXML(true));
         expect(schemaInstance.toXML(true)).toBe(schemaInstanceResult.toXML(true));
 
     });

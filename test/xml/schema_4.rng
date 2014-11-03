@@ -351,9 +351,7 @@
                 </choice>
             </attribute>
         </optional>
-        <optional>
-            <attribute name="width"/>
-        </optional>
+        <attribute name="width"/>
         <optional>
             <attribute name="position-origin">
                 <choice>
@@ -364,9 +362,7 @@
                 </choice>
             </attribute>
         </optional>
-        <optional>
-            <attribute name="x-position"/>
-        </optional>
+        <attribute name="x-position"/>
         <optional>
             <attribute name="y-position"/>
         </optional>

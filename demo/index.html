@@ -9,8 +9,8 @@
         requirejs.config({
             baseUrl: '../dist/'
         });
-        require(['class/ng-schema', 'class/ng-pattern','core'], function(sch, patt, core) {
-            core.getXML('../test/xml/schema.rng').then(function (xml) {
+        require(['class/ng-schema', 'class/ng-pattern','core', 'class/ng-collection', 'class/ng-dom'], function(sch, patt, core, col, dom) {
+            core.getXML('../test/xml/schema_4.rng').then(function (xml) {
 
                 try {
 
@@ -32,6 +32,38 @@
                     el3.appendChild(document.createTextNode(JSON.stringify(pattern.pattern, null, "\t")));
                     console.log(pattern.getPattern());
                     console.timeEnd('CREATE_PATTERN');
+
+                    var collection = new col.NgCollection(pattern);
+
+                    core.getXML('../test/xml/test3.xml').then(function (xmlfile) {
+                        var el4 = document.getElementById("result");
+                        var el5 = document.getElementById("xml-to-validate-result");
+                        console.time('COLLECT_VALIDATION');
+                        try {
+                            collection.collect(new dom.NgDOM(xmlfile));
+                        } catch (e) {
+                            console.log('collection error', e);
+                        }
+                        console.timeEnd('COLLECT_VALIDATION');
+                        console.log('collection', collection);
+
+                        var collected = [];
+
+                        collection.collection.forEach(function(item) {
+                            collected.push({
+                                className: item.className,
+                                errorClassName: item.errorClassName,
+                                message: item.message
+                            });
+                        });
+
+                        el5.appendChild(document.createTextNode(core.toXML(xmlfile)));
+                        el4.appendChild(document.createTextNode(JSON.stringify(collected, null, "\t")));
+
+                    }, function(xhr) {
+                        console.log('error', xhr);
+                    });
+
 
                 } catch (e) {
                     console.log(e);
@@ -85,6 +117,16 @@
         <li>
             <h1>Pattern:</h1>
             <pre class="schema json" id="pattern"></pre>
+        </li>
+    </ul>
+    <ul class="clearfix">
+        <li>
+            <h1>Xml to validate:</h1>
+            <pre class="schema json" id="xml-to-validate-result"></pre>
+        </li>
+        <li>
+            <h1>Validation (open console to se more):</h1>
+            <pre class="schema json" id="result"></pre>
         </li>
     </ul>
 </div>

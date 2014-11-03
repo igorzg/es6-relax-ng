@@ -1,6 +1,5 @@
 import {NgClass} from './ng-class';
 import {NgNotAllowed} from './ng-not-allowed';
-import {NgValueError} from './ng-value-error';
 /**
  * @license  2014
  * @since 0.0.1
@@ -41,7 +40,8 @@ export class NgValue extends NgClass {
     textDeriv(context, pattern, str, node) {
         var p = this.datatypeEqual(pattern.datatype, pattern.string, pattern.context, str, context);
         if (p instanceof NgNotAllowed) {
-            return new NgValueError(node, pattern, p);
+            p.node = node;
+            p.pattern = pattern;
         }
         return p;
     }

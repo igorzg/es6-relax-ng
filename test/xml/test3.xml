@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<article>
+    <content>
+        <title invalid="true">HTML enhanced for web apps!</title>
+        <subtitle>
+            <b>This is an fancy bold subtitle</b>
+            How it works ?
+            <b>1</b>
+            How it works ?
+            <b>2</b>
+            ccc
+            <a>2</a>
+        </subtitle>
+        <text>
+            <p>Hello Igor! This is a test only</p>
+            <pre code-type="application/javascript1" style="style-15">
+                export function instanceOf(type, Class) {
+                if (isFunction(Class)) {
+                return type instanceof Class;
+                }
+                return false;
+                }
+            </pre>
+            <div>
+                <p>Programing namespaces</p>
+            </div>
+        </text>
+    </content>
+    <app>
+        <headline position="none" position-origin="top-left" />
+    </app>
+</article>

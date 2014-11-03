@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+<?xml version="1.0" encoding="UTF-8" ?><grammar xmlns="http://relaxng.org/ns/structure/1.0">
     <start>
         <ref name="article"/>
     </start>
@@ -612,13 +611,10 @@
                                                 </attribute>
                                                 <empty/>
                                             </choice>
-                                            <choice>
-                                                <attribute>
-                                                    <name ns="">width</name>
-                                                    <text/>
-                                                </attribute>
-                                                <empty/>
-                                            </choice>
+                                            <attribute>
+                                                <name ns="">width</name>
+                                                <text/>
+                                            </attribute>
                                         </group>
                                         <choice>
                                             <attribute>
@@ -637,13 +633,10 @@
                                             <empty/>
                                         </choice>
                                     </group>
-                                    <choice>
-                                        <attribute>
-                                            <name ns="">x-position</name>
-                                            <text/>
-                                        </attribute>
-                                        <empty/>
-                                    </choice>
+                                    <attribute>
+                                        <name ns="">x-position</name>
+                                        <text/>
+                                    </attribute>
                                 </group>
                                 <choice>
                                     <attribute>
@@ -3124,4 +3117,4 @@
             <empty/>
         </element>
     </define>
-</grammar> 
+</grammar>
