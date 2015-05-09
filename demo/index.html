@@ -3,8 +3,8 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
-    <script src="../node_modules/traceur/bin/traceur-runtime.js"></script>
-    <script src="../node_modules/requirejs/require.js"></script>
+    <script src="./traceur-runtime.js"></script>
+    <script src="./require.js"></script>
     <script>
         requirejs.config({
             baseUrl: '../dist/'
@@ -76,9 +76,8 @@
     </script>
     <style>
         .schemas ul li{
-            float: left;
-            width: 45%;
-            margin-right: 20px;
+            width: 95%;
+
             list-style: none;
         }
         .schema{
@@ -105,17 +104,17 @@
     <h1>RelaxNG</h1>
     <ul class="clearfix">
         <li>
-            <h1>Complex:</h1>
+            <h1>Complex schema:</h1>
             <pre class="schema xml" id="sch1"></pre>
         </li>
         <li>
-            <h1>Simplified</h1>
+            <h1>Simplified schema:</h1>
             <pre class="schema xml" id="sch2"></pre>
         </li>
     </ul>
     <ul class="clearfix">
         <li>
-            <h1>Pattern:</h1>
+            <h1>Validation pattern:</h1>
             <pre class="schema json" id="pattern"></pre>
         </li>
     </ul>
