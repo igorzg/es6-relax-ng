@@ -19,12 +19,12 @@ export class NgDataError extends NgNotAllowed {
      * @param ngNotAllowed
      */
      constructor(node, pattern, ngNotAllowed) {
-        this.instanceOf(NgDataError);
         super(ngNotAllowed.message, node, pattern);
         if (instanceOf(ngNotAllowed.node, NgDataType)) {
             this.dataType = ngNotAllowed.node;
             this.dataTypePattern = ngNotAllowed.pattern;
         }
+        this.instanceOf(NgDataError);
         this.className = 'NgDataError';
      }
 }

@@ -10,8 +10,8 @@ import {NgNotAllowed} from './ng-not-allowed';
 export class NgValidatorContainsError extends NgNotAllowed{
     constructor(nameClass, qName) {
         var message = `invalid pattern: -> schema pattern is not valid pattern in contains`;
-        this.instanceOf(NgValidatorContainsError);
         super(message, null, nameClass);
+        this.instanceOf(NgValidatorContainsError);
         this.qName = qName;
         this.errorClassName = 'NgValidatorContainsError';
     }
@@ -30,8 +30,8 @@ export class NgValidatorContainsError extends NgNotAllowed{
 export class NgValidatorNullableError extends NgNotAllowed{
     constructor(pattern) {
         var message = `invalid pattern: -> schema pattern is not valid pattern in nullable`;
-        this.instanceOf(NgValidatorNullableError);
         super(message, null, pattern);
+        this.instanceOf(NgValidatorNullableError);
         this.errorClassName = 'NgValidatorNullableError';
     }
 }
@@ -48,8 +48,8 @@ export class NgValidatorNullableError extends NgNotAllowed{
 export class NgValidatorEndTagDerivError extends NgNotAllowed{
     constructor(pattern, node) {
         var message = `invalid pattern on endTagDeriv`;
-        this.instanceOf(NgValidatorEndTagDerivError);
         super(message, node, pattern);
+        this.instanceOf(NgValidatorEndTagDerivError);
         this.errorClassName = 'NgValidatorEndTagDerivError';
     }
 }
@@ -67,8 +67,8 @@ export class NgValidatorEndTagDerivError extends NgNotAllowed{
 export class NgValidatorApplyAfterError extends NgNotAllowed{
     constructor(func, pattern) {
         var message = `invalid pattern on applyAfter`;
-        this.instanceOf(NgValidatorApplyAfterError);
         super(message, null, pattern);
+        this.instanceOf(NgValidatorApplyAfterError);
         this.func = func;
         this.errorClassName = 'NgValidatorApplyAfterError';
     }
@@ -87,8 +87,8 @@ export class NgValidatorApplyAfterError extends NgNotAllowed{
 export class NgValidatorTextDerivNotAllowedError extends NgNotAllowed{
     constructor(node, pattern) {
         var message = `not allowed to have pattern "${pattern.className}" at textDeriv`;
-        this.instanceOf(NgValidatorTextDerivNotAllowedError);
         super(message, node, pattern);
+        this.instanceOf(NgValidatorTextDerivNotAllowedError);
         this.errorClassName = 'NgValidatorTextDerivNotAllowedError';
     }
 }
@@ -107,8 +107,8 @@ export class NgValidatorTextDerivNotAllowedError extends NgNotAllowed{
 export class NgValidatorTextDerivError extends NgNotAllowed{
     constructor(node, pattern) {
         var message = `invalid pattern on textDeriv`;
-        this.instanceOf(NgValidatorTextDerivError);
         super(message, node, pattern);
+        this.instanceOf(NgValidatorTextDerivError);
         this.errorClassName = 'NgValidatorTextDerivError';
     }
 }
@@ -126,8 +126,8 @@ export class NgValidatorTextDerivError extends NgNotAllowed{
 export class NgValidatorAttDerivError extends NgNotAllowed{
     constructor(node, pattern) {
         var message = `invalid pattern at attrDeriv`;
-        this.instanceOf(NgValidatorAttDerivError);
         super(message, node, pattern);
+        this.instanceOf(NgValidatorAttDerivError);
         this.errorClassName = 'NgValidatorAttDerivError';
     }
 }
@@ -145,8 +145,8 @@ export class NgValidatorAttDerivError extends NgNotAllowed{
 export class NgDataTypeError extends NgNotAllowed{
     constructor(datatype, value, match) {
         var message = `"${datatype.localName}" is not correct datatype allowed is string and token`;
-        this.instanceOf(NgDataTypeError);
         super(message, null, null);
+        this.instanceOf(NgDataTypeError);
         this.datatype = datatype;
         this.value = value;
         this.match = match;
@@ -168,8 +168,8 @@ export class NgDataTypeError extends NgNotAllowed{
 export class NgDataTypeEqualityError extends NgNotAllowed{
     constructor(datatype, value, match) {
         var message = `strings are not equals requested is: ${value} , provided is: ${match}`;
-        this.instanceOf(NgDataTypeEqualityError);
         super(message, null, null);
+        this.instanceOf(NgDataTypeEqualityError);
         this.datatype = datatype;
         this.value = value;
         this.match = match;
@@ -192,8 +192,8 @@ export class NgDataTypeEqualityError extends NgNotAllowed{
 export class NgValidatorStartTagOpenDerivNgEmptyError extends NgNotAllowed{
     constructor(node, pattern, qName) {
         var message = `invalid pattern NgEmpty on startTagOpenDeriv`;
-        this.instanceOf(NgValidatorStartTagOpenDerivNgEmptyError);
         super(message, node, pattern);
+        this.instanceOf(NgValidatorStartTagOpenDerivNgEmptyError);
         this.qName = qName;
         this.errorClassName = 'NgValidatorStartTagOpenDerivNgEmptyError';
     }
@@ -213,8 +213,8 @@ export class NgValidatorStartTagOpenDerivNgEmptyError extends NgNotAllowed{
 export class NgValidatorStartTagOpenDerivError extends NgNotAllowed{
     constructor(node, pattern, qName) {
         var message = `node ${qName.localName} is not allowed in here`;
-        this.instanceOf(NgValidatorStartTagOpenDerivError);
         super(message, node, pattern);
+        this.instanceOf(NgValidatorStartTagOpenDerivError);
         this.qName = qName;
         this.errorClassName = 'NgValidatorStartTagOpenDerivError';
     }

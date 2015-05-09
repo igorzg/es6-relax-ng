@@ -19,8 +19,8 @@ export class NgElementError extends NgNotAllowed {
      constructor(node, pattern, qName) {
         var message = `invalid tag name: '${qName.localName}' or uri: '${qName.uri}',
         expected tag name is: '${pattern.nameClass.localName}' and uri: '${pattern.nameClass.uri}'`;
-        this.instanceOf(NgElementError);
         super(message, node, pattern);
+        this.instanceOf(NgElementError);
         this.qName = qName;
         this.errorClassName = 'NgElementError';
      }

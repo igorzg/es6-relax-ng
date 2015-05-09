@@ -16,9 +16,9 @@ export class NgAfterError extends NgNotAllowed {
      * @param pattern
      */
      constructor(node, pattern) {
-        this.instanceOf(NgAfterError);
         var nodeLocal = node.toXML();
         super(`Missing content at node: ${nodeLocal}`, node, pattern);
+        this.instanceOf(NgAfterError);
         this.errorClassName = 'NgAfterError';
      }
 }

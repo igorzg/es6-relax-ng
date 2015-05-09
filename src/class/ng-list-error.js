@@ -26,8 +26,8 @@ export class NgListError extends NgNotAllowed {
      constructor(node, pattern, str) {
         var nodeLocal = node.toXML(),
             message = `list invalid, "${str}" found  on "${nodeLocal}"`;
-        this.instanceOf(NgListError);
         super(message, node, pattern);
+        this.instanceOf(NgListError);
         this.errorClassName = 'NgListError';
      }
 }

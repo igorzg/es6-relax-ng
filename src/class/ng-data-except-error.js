@@ -28,12 +28,12 @@ export class NgDataExceptError extends NgNotAllowed {
      * @param {boolean} noExpectedValue there is no expected value provided
      */
      constructor(node, pattern, ngNotAllowed, noExpectedValue = false) {
-        this.instanceOf(NgDataExceptError);
         super(ngNotAllowed.message, node, pattern);
         if (instanceOf(ngNotAllowed.node, NgDataType)) {
             this.dataType = ngNotAllowed.node;
             this.dataTypePattern = ngNotAllowed.pattern;
         }
+        this.instanceOf(NgDataExceptError);
         this.expected = !!noExpectedValue;
         this.errorClassName = 'NgDataExceptError';
      }

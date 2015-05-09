@@ -17,8 +17,9 @@
     "dependencies": {},
     "devDependencies": {
         "es6-shim": "0.18.x",
+        "traceur": "0.0.89",
         "gulp": "~3.8.x",
-        "gulp-traceur": "git://github.com/igorzg/gulp-traceur.git#master",
+        "gulp-traceur": "0.17.x",
         "gulp-webserver": "0.8.3",
         "karma": "~0.12.x",
         "karma-chrome-launcher": "0.1.4",
@@ -30,8 +31,7 @@
         "karma-phantomjs-launcher": "0.1.4",
         "karma-requirejs": "0.2.2",
         "karma-sauce-launcher": "~0.2.5",
-        "karma-script-launcher": "git://github.com/igorzg/karma-traceur-preprocessor.git#master",
-        "traceur": "~0.0.67"
+        "karma-script-launcher": "git://github.com/igorzg/karma-traceur-preprocessor.git#master"
     },
     "scripts": {
         "test": "karma start karma.conf.js"

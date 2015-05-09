@@ -19,11 +19,11 @@ export class NgAttributeError extends NgNotAllowed {
      * @param pattern
      */
     constructor(attrNode, pattern) {
-        this.instanceOf(NgAttributeError);
         var message = `invalid attribute on node: "${attrNode.node.type}",
         attribute: "${attrNode.qName.localName}", ns "${attrNode.qName.uri}",
         is not allowed on this element`;
         super(message, attrNode.node, pattern);
+        this.instanceOf(NgAttributeError);
         this.errorClassName = 'NgAttributeError';
     }
 }
@@ -43,11 +43,11 @@ export class NgAttributeError extends NgNotAllowed {
 
 export class NgAttributeInvalidValueError extends NgNotAllowed {
      constructor(node, pattern) {
-        this.instanceOf(NgAttributeInvalidValueError);
         var message = `invalid attribute on node: "${node.type}",
         attribute: "${pattern.nameClass.localName}", ns "${pattern.nameClass.uri}",
         has an invalid value`;
         super(message, node, pattern);
+        this.instanceOf(NgAttributeInvalidValueError);
         this.errorClassName = 'NgAttributeInvalidValueError';
     }
 }
@@ -68,10 +68,10 @@ export class NgAttributeInvalidValueError extends NgNotAllowed {
 
 export class NgAttributeMissingValueError extends NgNotAllowed {
     constructor(node, pattern) {
-        this.instanceOf(NgAttributeMissingValueError);
         var message = `missing attribute on node: "${node.type}",
         attribute: "${pattern.nameClass.localName}", ns "${pattern.nameClass.uri}"`;
         super(message, node, pattern);
+        this.instanceOf(NgAttributeMissingValueError);
         this.errorClassName = 'NgAttributeMissingValueError';
     }
 }
