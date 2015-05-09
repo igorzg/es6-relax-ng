@@ -3,11 +3,11 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
-    <script src="./traceur-runtime.js"></script>
-    <script src="./require.js"></script>
+    <script src="js/traceur-runtime.js"></script>
+    <script src="js/require.js"></script>
     <script>
         requirejs.config({
-            baseUrl: '../dist/'
+            baseUrl: 'dist/'
         });
         require(['class/ng-schema', 'class/ng-pattern','core', 'class/ng-collection', 'class/ng-dom'], function(sch, patt, core, col, dom) {
             core.getXML('../test/xml/schema_4.rng').then(function (xml) {
