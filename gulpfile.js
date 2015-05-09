@@ -9,7 +9,7 @@ gulp.task('es5', function () {
         .pipe(traceur({
             modules: 'amd'
         }))
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest('demo/dist'));
 });
 
 
