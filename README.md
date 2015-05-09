@@ -3,7 +3,7 @@ es6-relax-ng  [![Build Status](https://travis-ci.org/igorzg/es6-relax-ng.svg?bra
 
 Javascript version of relaxng  schema simplifier and validation algorithm.
 
-[VIEW LIVE DEMO](http://htmlpreview.github.com/?https://github.com/igorzg/es6-relax-ng/blob/master/demo/index.html)
+[VIEW LIVE DEMO](http://htmlpreview.github.com/?https://github.com/igorzg/es6-relax-ng/blob/master/github-preview.html)
 
 
 ##### Run:
